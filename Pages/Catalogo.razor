@@ -1,0 +1,448 @@
+﻿@using NovaLaundryAppWebAdminBlazor.Server.Models;
+@using NovaLaundryAppWebAdminBlazor.Server.ViewModels;
+
+@inject ProtectedLocalStorage localStorage
+<div class=" d-flex justify-content-center align-items-center flex-column" style="height:100%; width:100%;">
+
+    <!--Navegacion Por Pesta;as-->
+    <div style="width:100%;height:85vh;background-color:white">
+
+        <!--Navegacion (headers)-->
+        <ul class="d-none nav nav-tabs" id="myTab" role="tablist">
+            <li class="nav-item">
+                <a class="nav-link active" id="tab1-tab" data-toggle="tab" href="#tab1" role="tab" aria-controls="tab1" aria-selected="true">Pestaña 1</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="tab2-tab" data-toggle="tab" href="#tab2" role="tab" aria-controls="tab2" aria-selected="false">Pestaña 2</a>
+            </li>
+        </ul>
+
+        <!--TcMain-->
+        <div class="tab-content" id="TCMain">
+
+            @if (pestañaActual == 1)
+            {
+
+                <!--Menu-->
+                <div class="tab-pane fade show active tab-pane fade " id="TIMenu" role="tabpanel" aria-labelledby="tab1-tab">
+
+                    <div class="row overflow-auto d-flex justify-content-around align-items-center px-4 pt-2" style="width:100%;height:85vh">
+
+                        <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-4">
+                            <div class="card d-flex flex-column align-items-stretch h-100" style="width:100%">
+                                <div class="card-body d-flex flex-column align-items-stretch">
+                                    <h5 class="card-title w-100  text-dark shadow-sm p-3 mb-5 rounded" style="background-color:#add8e6">Almacenes</h5>
+                                    <p class="card-text">Listado de ubicaciones para almacenar productos.  <br><br><br></p>
+                                    <a class="btn mt-auto" id="botonEstatus" style="background-color:#add8e6" >Ingresar</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-4">
+                            <div class="card d-flex">
+                                <div class="card-body d-flex flex-column flex-fill">
+                                    <h5 class="card-title w-100  text-dark shadow-sm p-3 mb-5 rounded" style="background-color:#98FB98">Clave Producto Servicio</h5>
+                                    <p class="card-text">Identificador único asignado a un producto o servicio para su registro y seguimiento dentro del sistema de gestión.</p>
+                                    <a href="#" class="btn mt-auto" style="background-color:#98FB98">Ingresar</a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-4">
+                            <div class="card d-flex flex-column align-items-stretch h-100" style="width:100%">
+                                <div class="card-body d-flex flex-column align-items-stretch">
+                                    <h5 class="card-title w-100 text-dark shadow-sm p-3 mb-5 rounded " style="background-color:#FFFFE0">Clave Unidad</h5>
+                                    <p class="card-text">Identificador único asignado a una unidad de medida estándar para productos o servicios. <br><br></p>
+                                    <a href="#" class="btn" style="background-color:#FFFFE0">Ingresar</a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-4">
+                            <div class="card d-flex flex-column align-items-stretch h-100" style="width:100%">
+                                <div class="card-body d-flex flex-column align-items-stretch">
+                                    <h5 class="card-title w-100 text-dark shadow-sm p-3 mb-5 rounded" style="background-color:#E6E6FA">Empresa</h5>
+                                    <p class="card-text">Organización o entidad comercial que se dedica a actividades económicas, como la producción, distribución o venta de bienes y servicios.</p>
+                                    <a href="#" class="btn" style="background-color:#E6E6FA">Ingresar</a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-4">
+                            <div class="card d-flex flex-column align-items-stretch h-100" style="width:100%">
+                                <div class="card-body d-flex flex-column align-items-stretch">
+                                    <h5 class="card-title w-100 text-dark shadow-sm p-3 mb-5 rounded" style="background-color:#FFB6C1">Equipos</h5>
+                                    <p class="card-text">Conjunto de herramientas, maquinaria o dispositivos utilizados para realizar tareas específicas dentro de una organización o proyecto.</p>
+                                    <a href="#" class="btn" style="background-color:#FFB6C1">Ingresar</a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-4">
+                            <div class="card d-flex flex-column align-items-stretch h-100" style="width:100%">
+                                <div class="card-body d-flex flex-column align-items-stretch">
+                                    <h5 class="card-title w-100 text-dark shadow-sm p-3 mb-5 rounded " style="background-color:#40E0D0">Estatus</h5>
+                                    <p class="card-text">Estado o condición actual de un objeto, proceso o situación, que puede indicar su disponibilidad, progreso, validez.</p>
+                                    <a href="#" class="btn" style="background-color:#40E0D0">Ingresar</a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-4">
+                            <div class="card d-flex flex-column align-items-stretch h-100" style="width:100%">
+                                <div class="card-body d-flex flex-column align-items-stretch">
+                                    <h5 class="card-title w-100 text-dark shadow-sm p-3 mb-5 rounded" style="background-color:#FFDAB9">Estatus Pago</h5>
+                                    <p class="card-text">Estado o condición del proceso de pago.<br><br><br></p>
+                                    <a href="#" class="btn" style="background-color:#FFDAB9">Ingresar</a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-4">
+                            <div class="card d-flex flex-column align-items-stretch h-100" style="width:100%">
+                                <div class="card-body d-flex flex-column align-items-stretch">
+                                    <h5 class="card-title w-100 text-dark shadow-sm p-3 mb-5 rounded" style="background-color:#E0D8E6">Familia</h5>
+                                    <p class="card-text">Agrupación o categorización de productos, servicios o elementos relacionados por características comunes, como tipo, función o uso.</p>
+                                    <a href="#" class="btn" style="background-color:#E0D8E6">Ingresar</a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-4">
+                            <div class="card d-flex flex-column align-items-stretch h-100" style="width:100%">
+                                <div class="card-body d-flex flex-column align-items-stretch">
+                                    <h5 class="card-title w-100 text-dark shadow-sm p-3 mb-5 rounded" style="background-color:#00FF00">Formas Pago</h5>
+                                    <p class="card-text">Métodos aceptados para realizar transacciones financieras.</p>
+                                    <a href="#" class="btn" style="background-color:#00FF00">Ingresar</a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-4">
+                            <div class="card d-flex flex-column align-items-stretch h-100" style="width:100%">
+                                <div class="card-body d-flex flex-column align-items-stretch">
+                                    <h5 class="card-title w-100 text-dark shadow-sm p-3 mb-5 rounded" style="background-color:#FF7F50">Impuesto</h5>
+                                    <p class="card-text">Cargos obligatorios impuestos por el gobierno sobre bienes, servicios, o ingresos.</p>
+                                    <a href="#" class="btn" style="background-color:#FF7F50">Ingresar</a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-4">
+                            <div class="card d-flex flex-column align-items-stretch h-100" style="width:100%">
+                                <div class="card-body d-flex flex-column align-items-stretch">
+                                    <h5 class="card-title w-100 text-light shadow-sm p-3 mb-5 rounded" style="background-color:#808000">Líneas</h5>
+                                    <p class="card-text">Se refiere a las diferentes categorías o líneas de productos.</p>
+                                    <a href="#" class="btn text-light" style="background-color:#808000">Ingresar</a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-4">
+                            <div class="card d-flex flex-column align-items-stretch h-100" style="width:100%">
+                                <div class="card-body d-flex flex-column align-items-stretch">
+                                    <h5 class="card-title w-100 text-dark shadow-sm p-3 mb-5 rounded" style="background-color:#FFD1DC">Motivos Cancelación</h5>
+                                    <p class="card-text">Razones o causas que llevan a la anulación o interrupción de una transacción.</p>
+                                    <a href="#" class="btn" style="background-color:#FFD1DC">Ingresar</a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-4">
+                            <div class="card d-flex flex-column align-items-stretch h-100" style="width:100%">
+                                <div class="card-body d-flex flex-column align-items-stretch">
+                                    <h5 class="card-title w-100 text-dark shadow-sm p-3 mb-5 rounded" style="background-color:#FFFACD">Notas Proceso</h5>
+                                    <p class="card-text">Estado o condición del proceso de una nota.<br><br><br></p>
+                                    <a href="#" class="btn" style="background-color:#FFFACD">Ingresar</a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-4">
+                            <div class="card d-flex flex-column align-items-stretch h-100" style="width:100%">
+                                <div class="card-body d-flex flex-column align-items-stretch">
+                                    <h5 class="card-title w-100 text-light shadow-sm p-3 mb-5 rounded" style="background-color:#4682B4">Paquetes</h5>
+                                    <p class="card-text">Conjuntos o grupos de productos o servicios que se ofrecen juntos como una unidad para satisfacer una necesidad específica del cliente.</p>
+                                    <a href="#" class="btn text-light" style="background-color:#4682B4">Ingresar</a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-4">
+                            <div class="card d-flex flex-column align-items-stretch h-100" style="width:100%">
+                                <div class="card-body d-flex flex-column align-items-stretch">
+                                    <h5 class="card-title w-100 text-light shadow-sm p-3 mb-5 rounded " style="background-color:#FF00FF">Productos</h5>
+                                    <p class="card-text">Productos ofrecidos por la empresa.<br><br><br></p>
+                                    <a href="#" class="btn text-light " style="background-color:#FF00FF">Ingresar</a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-4">
+                            <div class="card d-flex flex-column align-items-stretch h-100" style="width:100%">
+                                <div class="card-body d-flex flex-column align-items-stretch">
+                                    <h5 class="card-title w-100  text-dark shadow-sm p-3 mb-5 rounded" style="background-color:#40E0D0">Régimen Fiscal</h5>
+                                    <p class="card-text">Conjunto de normativas y disposiciones legales que regulan la forma en que una persona física o moral debe cumplir con sus obligaciones fiscales.</p>
+                                    <a href="#" class="btn" style="background-color:#40E0D0">Ingresar</a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-4">
+                            <div class="card d-flex flex-column align-items-stretch h-100" style="width:100%">
+                                <div class="card-body d-flex flex-column align-items-stretch">
+                                    <h5 class="card-title w-100 text-dark shadow-sm p-3 mb-5 rounded" style="background-color:#FFA07A">Sucursales</h5>
+                                    <p class="card-text">Locales o establecimientos adicionales de la empresa.<br><br><br></p>
+                                    <a href="#" class="btn" style="background-color:#FFA07A">Ingresar</a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-4">
+                            <div class="card d-flex flex-column align-items-stretch h-100" style="width:100%">
+                                <div class="card-body d-flex flex-column align-items-stretch">
+                                    <h5 class="card-title w-100 text-dark shadow-sm p-3 mb-5 rounded" style="background-color:#ADD8E6">Uso CFDI</h5>
+                                    <p class="card-text">Indicación del propósito o finalidad para la emisión de un Comprobante Fiscal Digital por Internet (CFDI), establecido por el Servicio de Administración Tributaria.</p>
+                                    <a href="#" class="btn" style="background-color:#ADD8E6">Ingresar</a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-4">
+                            <div class="card d-flex flex-column align-items-stretch h-100" style="width:100%">
+                                <div class="card-body d-flex flex-column align-items-stretch">
+                                    <h5 class="card-title w-100 bg-primary text-light shadow-sm p-3 mb-5 rounded ">Usuarios</h5>
+                                    <p class="card-text"> Individuos o entidades autorizadas para acceder, utilizar o interactuar con el sistema.<br><br><br></p>
+                                    <a href="#" class="btn btn-primary">Ingresar</a>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            }
+            else if (pestañaActual == 2)
+            {
+
+                <!--Buscador-->
+                <div class="tab-pane fade show active tab-pane fade" id="TIBuscar" role="tabpanel" aria-labelledby="tab2-tab">
+                    <!-- Botón Volver -->
+                    <button class="btn-volver m-1" type="button">Volver</button>
+
+                    <!--Search+Button-->
+                    <div class="container mt-5">
+                        <div class="row justify-content-center">
+                            <div class="col-md-6">
+                                <form class="form-inline d-flex justify-content-around align-items-center" action="#" method="GET">
+                                    <input class="form-control rounded mr-2 rounded-pill" type="text" name="q" placeholder="Buscar..." @bind="@filter">
+                                    <button class="btn btn-primary mx-2 rounded-pill d-flex justify-content-around align-items-center " type="button">Buscar <img src="/Search.png" alt="Logo" class="img-fluid mx-2" style="max-width: 25px;"></button>
+                                    <button class="btn btn-success mx-2 rounded-pill d-flex justify-content-around align-items-center " onclick="cargarPes('TICrear')" type="button">Crear <img src="/Create.png" alt="Logo" class="img-fluid rounded-circle mx-2" style="max-width: 25px;"></button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!--Tabla-->
+                    <div class="container mt-3">
+                        <div class="row justify-content-center">
+                            <div class="col-md-9">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th>Acciones</th>
+                                            @foreach (var header in headers)
+                                            {
+                                                <th>@header</th>
+                                            }
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var row in rows)
+                                        {
+                                            <tr>
+                                                <td>
+                                                    <button class="btn btn-primary">Actualizar</button>
+                                                    <button class="btn btn-danger my-0" >Bloquear</button>
+                                                </td>
+                                                @foreach (var cell in row)
+                                                {
+                                                    <td>@cell</td>
+                                                }
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+            }
+            else if (pestañaActual == 3)
+            {
+                <!--Crear-->
+                <div class="tab-pane fade overflow-auto show active w-90" id="TICrear" role="tabpanel" aria-labelledby="tab2-tab">
+
+                    <button class="btn alert-secondary m-1" type="button">Volver</button>
+
+                    <div class="col-md-8 w-90">
+                        <form>
+                            <div class="form-container w-90 p-2">
+
+                                @*Botones*@
+                                <div class="row mb-3">
+                                    <div class="col-md-4">
+                                        <label for="input1" class="form-label">Text Uno</label>
+                                        <input type="text" class="form-control" id="input1">
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label for="input2" class="form-label">Text Dos</label>
+                                        <input type="text" class="form-control" id="input2">
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label for="input3" class="form-label">Text Tres</label>
+                                        <input type="text" class="form-control" id="input3">
+                                    </div>
+                                </div>
+
+                                <!-- Checkboxes -->
+                                <div class="mb-3 form-check">
+                                    <input type="checkbox" class="form-check-input" id="checkbox1">
+                                    <label class="form-check-label" for="checkbox1">Checkbox 1</label>
+                                </div>
+                                <div class="mb-3 form-check">
+                                    <input type="checkbox" class="form-check-input" id="checkbox2">
+                                    <label class="form-check-label" for="checkbox2">Checkbox 2</label>
+                                </div>
+                                <div class="mb-3 form-check">
+                                    <input type="checkbox" class="form-check-input" id="checkbox3">
+                                    <label class="form-check-label" for="checkbox3">Checkbox 3</label>
+                                </div>
+
+                                <!-- Comboboxes -->
+                                <div class="mb-3">
+                                    <label for="combobox1" class="form-label">Combobox 1</label>
+                                    <select class="form-select" id="combobox1">
+                                        <option value="">Seleccione...</option>
+                                        <!-- Opciones -->
+                                    </select>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="combobox2" class="form-label">Combobox 2</label>
+                                    <select class="form-select" id="combobox2">
+                                        <option value="">Seleccione...</option>
+                                        <!-- Opciones -->
+                                    </select>
+                                </div>
+
+                            </div>
+                            <button type="submit" class="btn btn-primary m-2 float-end">Crear</button>
+                        </form>
+                    </div>
+                </div>
+
+            }
+           
+
+        </div>
+    </div>
+
+    <!--Parte de Nombres de seccion-->
+    <footer class="bg-secondary d-flex justify-content-center align-items-center  " style="width:100%;height:5vh;color:white">
+        <h2>@titulo</h2>
+    </footer>
+</div>
+
+<style>
+    .card {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .card-body {
+        flex-grow: 1;
+    }
+
+    .btn-volver {
+        display: inline-block;
+        padding: 10px 20px;
+        font-size: 16px;
+        font-weight: bold;
+        text-decoration: none;
+        background-color: #4CAF50; /* Color de fondo */
+        color: white; /* Color del texto */
+        border: 2px solid #4CAF50; /* Borde del botón */
+        border-radius: 8px; /* Borde redondeado */
+        transition: background-color 0.3s, color 0.3s; /* Transición suave al pasar el ratón */
+    }
+
+        /* Estilos hover del botón */
+        .btn-volver:hover {
+            background-color: white; /* Cambio de color de fondo al pasar el ratón */
+            color: #4CAF50; /* Cambio de color del texto al pasar el ratón */
+        }
+</style>
+
+@code {
+    private VMCatalogo vMCatalogo = new VMCatalogo();
+    private int pestañaActual = 1;
+    private string titulo = "Menú Principal";
+    List<string> headers = new List<string>();
+    List<List<object>> rows = new List<List<object>>();
+    string token;
+    string filter = "";
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            ConfigUI(1, "Menu", "");
+
+            token = await ObtenerToken();
+            StateHasChanged();
+        }
+    }
+
+    private async Task<string> ObtenerToken()
+    {
+        var token = await localStorage.GetAsync<string>("token");
+
+        return token.Value;
+    }
+
+    private async void ConfigUI(int numeroPestana, string module, string opc)
+    {
+        pestañaActual = numeroPestana;
+
+        switch (module)
+        {
+            case "Almacenes":
+
+                if (opc == "Buscar")
+                {
+                    pestañaActual = 2;
+                    titulo = "Buscar Almacén";
+                    headers = vMCatalogo.CargarHeaders(module);
+                    var data = await vMCatalogo.Filter<AlmacenesApiGetAllResponse>(1, filter,token,module);
+                    data = data;
+
+                }
+                else if(opc == "Crear")
+                {
+                    titulo = "Crear Almacén";
+                }
+                else if(opc == "Modificar")
+                {
+                    titulo = "Modificar Almacén";
+                }
+
+                break;
+            case "Menu":
+                pestañaActual = 1;
+                break;
+        }
+        
+    }
+}

@@ -1,0 +1,322 @@
+﻿
+@page "/MenuPrincipal"
+
+@inject ProtectedLocalStorage localStorage
+
+<PageTitle>Menu Principal</PageTitle>
+
+<!--Contenedor Principal-->
+<div class=" d-flex justify-content-center align-items-center" style="height:100vh; width:100%;">
+    <!--Menu Lateral-->
+    <div class="d-none d-lg-block" style=" height:100vh;width:8%;background-color:black;">
+
+        <!--Iconos del Menu-->
+        <div class="d-flex justify-content-around align-items-stretch flex-column" style="height:100%;width:100%;">
+            <div class="btnMenuLateral text-center" style="user-select: none;" @onclick="MostrarGraficos">
+                <img src="/Logo.png" alt="Logo" class="  mb-2 mt-2" style="max-width: 45px;">
+                <p class="text-light"><strong>Halia System</strong></p>
+            </div>
+
+            @*<div class="btnMenuLateral text-center" style="user-select: none;" >
+            <img src="/Settings.png" alt="Logo" class="img-fluid rounded-circle mb-2 mt-2" style="max-width: 45px;">
+            <p class="text-light"><strong>Ajustes Generales</strong></p>
+            </div>*@
+
+            <div class="btnMenuLateral text-center" style="user-select: none;" @onclick="MostrarCatalogo">
+                <img src="/Catalog.png" alt="Logo" class="img-fluid mb-2 mt-2" style="max-width: 45px;">
+                <p class="text-light"><strong>Catalogo</strong></p>
+            </div>
+
+            <div class="btnMenuLateral text-center" style="user-select: none;" @onclick="MostrarReportes">
+                <img src="/reportes.png" alt="Logo" class="img-fluid mb-2 mt-2" style="max-width: 45px;">
+                <p class="text-light"><strong>Reportes</strong></p>
+            </div>
+
+            <div class="btnMenuLateral text-center" style="user-select: none;" @onclick="MostrarPromociones">
+                <img src="/prom.png" alt="Logo" class="img-fluid mb-2 mt-2" style="max-width: 45px;">
+                <p class="text-light"><strong>Promociones</strong></p>
+            </div>
+
+            <div class="btnMenuLateral text-center" style="user-select: none;" @onclick="MostrarSoporteTecnico">
+                <img src="/Soporte.png" alt="Logo" class="img-fluid mb-2 mt-2" style="max-width: 45px;">
+                <p class="text-light"><strong>Soporte Técnico</strong></p>
+            </div>
+
+            <div class="btnMenuLateral text-center" style="user-select: none;" data-bs-toggle="modal" data-bs-target="#CerrarSesion">
+                <img src="/Logout.png" alt="Logo" class="img-fluid mb-2 mt-2" style="max-width: 45px;">
+                <p class="text-light"><strong>Cerrar Sesión</strong></p>
+            </div>
+        </div>
+
+    </div>
+    <!--Contenedor Central/Menu Superior-->
+    <div class=" d-flex justify-content-center align-items-center flex-column w-100" style="height:100vh;">
+
+        <!--Nav bar que se mostrara cuando la pantalla se mediana o peque;a-->
+
+        <nav class="d-lg-none d-md-flex d-sm-flex navbar navbar-expand-lg navbar-dark p-2 bg-secondary" style="width:100%;height:10%">
+            <img src="/Logo.png" alt="Logo" class="img-fluid rounded-circle  mb-2 mt-2" style="max-width: 45px;">
+            <p class="navbar-brand">Halia System</p>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item active">
+                        <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">About</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Services</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Contact</a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+
+        <!--Menu de Superior-->
+        <div class="d-none d-lg-flex bg-secondary w-100" style="height:10%;">
+            <!--Division de Menu Superior-->
+            <div class="d-flex justify-content-between align-items-start flex-column w-100" style="height:100%;">
+                <p class="text-light fs-4 mx-2 p-0">@TituloSucursal</p>
+                <p class="text-light fs-5 mx-2 p-0"><strong>@TituloSeccion</strong></p>
+            </div>
+            <div class="d-flex justify-content-center align-items-around d" style="width:60%;height:100%;">
+
+                <div class="btn btn-secondary text-center d-flex justify-content-center align-items-center flex-column pt-4" style="user-select: none;" @onclick="MostrarClientes">
+                    <img src="/clientes.png" alt="Logo" class="img-fluid mb-2" style="max-width: 30px;">
+                    <p class="text-light"><strong>Clientes</strong></p>
+                </div>
+
+                <div class="btn btn-secondary text-center d-flex justify-content-center align-items-center flex-column pt-4" style="user-select: none;" @onclick="MostrarInventario">
+                    <img src="/inventario.png" alt="Logo" class="img-fluid mb-2" style="max-width: 30px;">
+                    <p class="text-light"><strong>Inventario</strong></p>
+                </div>
+
+                <div class="btn btn-secondary text-center d-flex justify-content-center align-items-center flex-column pt-4" style="user-select: none;" @onclick="MostrarTarjetas">
+                    <img src="/tarjeta.png" alt="Logo" class="img-fluid mb-2" style="max-width: 30px;">
+                    <p class="text-light"><strong>Tarjetas</strong></p>
+                </div>
+
+                <div class="btn btn-secondary text-center d-flex justify-content-center align-items-center flex-column pt-4" style="user-select: none;" @onclick="MostrarNotificaciones">
+                    <img src="/noti.png" alt="Logo" class="img-fluid mb-2" style="max-width: 30px;">
+                    <p class="text-light"><strong>Notificaciones</strong></p>
+                </div>
+
+
+                <div class="d-flex justify-content-center align-items-center  w-100 h-100" >
+                    <p class="text-light fs-5 ">  <strong>@(MostrarUserResult)</strong></p>
+                    <img src="/Conn.png" alt="Logo" class="img-fluid mx-2 mb-3" style="max-width: 10px;">
+                </div>
+
+                @*style="user-select: none;"*@
+            </div>
+        </div>
+        <!--Contenido Central-->
+        <div style="width:100%;height:92%;background-color:white" id="NavegacionMenu">
+            @if (mostrarGraficos)
+            {
+                <Graficos/>
+            }
+            else if (mostrarCatalogos)
+            {
+                <Catalogo/>
+            }
+            else if (mostrarReportes)
+            {
+                <Reportes/>
+            }
+            else if (mostrarPromociones)
+            {
+                <Promociones/>
+            }
+            else if (mostrarSoporteTecnico)
+            {
+                <SoporteTecnico/>
+            }
+            else if (mostrarClientes)
+            {
+                <Clientes/>
+            }
+            else if (mostrarInventario)
+            {
+                <Inventario/>
+            }
+            else if (mostrarTarjetas)
+            {
+                <Tarjetas/>
+            }
+            else if (mostrarNotificaciones)
+            {
+                <Notificaciones/>
+            }
+        </div>
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="CerrarSesion" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Cerrar Sesión</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                ¿Estás seguro de que deseas cerrar sesión?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">
+                    <NavLink class="nav-link" href="">
+                        <span class="oi oi-plus" aria-hidden="true"></span> Cerrar Sesión
+                    </NavLink>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<style>
+    .btnMenuLateral {
+        background-color: black;
+    }
+
+        .btnMenuLateral:hover {
+            background-color: dimgrey; /* Cambia el color de fondo al hacer hover */
+            color: #ffffff; /* Cambia el color del texto al hacer hover */
+        }
+</style>
+
+@code {
+    //Variables para simular la navegacion(Menu lateral)
+    private bool mostrarGraficos = true;
+    private bool mostrarCatalogos = false;
+    private bool mostrarReportes = false;
+    private bool mostrarPromociones = false;
+    private bool mostrarSoporteTecnico = false;
+    //Variables para simular la navegacion(Menu Superior)
+    private bool mostrarClientes = false;
+    private bool mostrarInventario = false;
+    private bool mostrarTarjetas = false;
+    private bool mostrarNotificaciones = false;
+    private string TituloSeccion = "Panel Gráfico";
+    private string TituloSucursal;
+
+    private string MostrarUserResult { get; set; }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            MostrarUserResult = await MostrarUser();
+            TituloSucursal = await MostrarSucursalEmpresa();
+            StateHasChanged();
+        }
+    }
+
+    private async Task<string> MostrarUser()
+    {
+        var usuario = await localStorage.GetAsync<string>("user");
+
+        return usuario.Value;
+    }
+
+    private async Task<string> MostrarSucursalEmpresa()
+    {
+        var sucursal = await localStorage.GetAsync<string>("sucursalId");
+        var empresa = await localStorage.GetAsync<string>("empresaId");
+
+        using(SystemAdminContext db = new SystemAdminContext())
+        {
+            Sucursale sucursalBuscada = db.Sucursales.Where(s => s.SucursalId == int.Parse(sucursal.Value)).FirstOrDefault();
+            Empresa empresaBuscada = db.Empresas.Where(s => s.EmpresaId == int.Parse(empresa.Value)).FirstOrDefault();
+
+            return empresaBuscada.NombreComercial+", "+sucursalBuscada.NombreSucursal;
+        }
+    }
+
+    private void CerrarTodo()
+    {
+        //Variables para simular la navegacion(Menu lateral)
+        mostrarGraficos = false;
+        mostrarCatalogos = false;
+        mostrarReportes = false;
+        mostrarPromociones = false;
+        mostrarSoporteTecnico = false;
+        //Variables para simular la navegacion(Menu Superior)
+        mostrarClientes = false;
+        mostrarInventario = false;
+        mostrarTarjetas = false;
+        mostrarNotificaciones = false;
+    }
+
+    private void MostrarGraficos()
+    {
+        CerrarTodo();
+        mostrarGraficos = true;
+        TituloSeccion = "Panel Gráfico";
+    }
+
+    private void MostrarCatalogo()
+    {
+        CerrarTodo();
+        mostrarCatalogos = true;
+        TituloSeccion = "Catálogos";
+    }
+
+    private void MostrarReportes()
+    {
+        CerrarTodo();
+        mostrarReportes = true; 
+        TituloSeccion = "Reportes";
+    }
+
+    private void MostrarPromociones()
+    {
+        CerrarTodo();
+        mostrarPromociones = true;
+        TituloSeccion = "Promociones";
+    }
+
+    private void MostrarSoporteTecnico()
+    {
+        CerrarTodo();
+        mostrarSoporteTecnico = true;
+        TituloSeccion = "Soporte Técnico";
+    }
+    
+    private void MostrarClientes()
+    {
+        CerrarTodo();
+        mostrarClientes = true;
+        TituloSeccion = "Clientes";
+    }
+
+    private void MostrarInventario()
+    {
+        CerrarTodo();
+        mostrarInventario = true;
+        TituloSeccion = "Inventario";
+    }
+
+    private void MostrarTarjetas()
+    {
+        CerrarTodo();
+        mostrarTarjetas = true;
+        TituloSeccion = "Tarjetas";
+    }
+
+    private void MostrarNotificaciones()
+    {
+        CerrarTodo();
+        mostrarNotificaciones = true;
+        TituloSeccion = "Notificaciones";
+    }
+}
