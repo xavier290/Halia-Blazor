@@ -1,0 +1,47 @@
+# Binaries
+bin/
+obj/
+
+# User-specific files
+*.user
+*.suo
+*.cache
+*.vspscc
+*.pidb
+*.userprefs
+*.dll
+*.exe
+
+# Package files
+*.nupkg
+*.pkl
+*.zip
+*.tar.gz
+*.rar
+
+# Visual Studio files
+.vscode/
+.vs/
+.vspscc
+
+# Build results
+[Dd]ebug/
+[Dd]ebugPublic/
+[Rr]elease/
+[Rr]eleases/
+x64/
+x86/
+[Aa][Rr][Mm]/
+[Aa][Rr][Mm]64/
+bld/
+[Bb]in/
+[Oo]bj/
+[Ll]og/
+[Ll]ogs/
+[Bb]uild/
+
+# Misc
+*.bak
+*.cache
+*.log
+*.swp
