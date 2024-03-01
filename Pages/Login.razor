@@ -44,7 +44,7 @@
 
             <!--Selects-->
             <label for="CmbEmpresa" class="form-label mt-3 text-light"><strong>Empresa</strong></label>
-            <InputSelect id="CmbEmpresa" class="form-select" @bind-Value="_idEmpresa" @onclick= "@CambioEmpresa">
+            <InputSelect id="CmbEmpresa" class="form-select" @bind-Value="_idEmpresa" @onclick="@(async () => await CambioEmpresa())">
                 <option value="0">- Seleccione una empresa -</option>
                 @foreach (var item in empresas)
                 {
@@ -93,12 +93,20 @@
 
     private async Task CambioEmpresa()
     {
-        if (_idEmpresa != 0)
+        try
         {
-            using (SystemAdminContext db = new SystemAdminContext())
+            if (_idEmpresa != 0)
             {
-                sucursales = db.Sucursales.Where(s => s.EmpresaId == _idEmpresa).ToList();
+                using (SystemAdminContext db = new SystemAdminContext())
+                {
+                    sucursales = db.Sucursales.Where(s => s.EmpresaId == _idEmpresa).ToList();
+                }
             }
+        }
+        catch (Exception ex)
+        {
+            // Handle any exceptions that may occur during data loading
+            Console.WriteLine($"Error loading sucursales: {ex.Message}");
         }
     }
 
