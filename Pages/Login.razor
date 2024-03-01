@@ -53,7 +53,7 @@
             </InputSelect>
 
             <label for="CmbSucursales" class="form-label mt-3 text-light"><strong>Sucursales</strong></label>
-            <InputSelect id="CmbSucursales" class="form-select" @bind-Value="_idSucursal" >
+            <InputSelect id="CmbSucursales" class="form-select" @bind-Value="_idSucursal" @onchange="async () => await CambioEmpresa()">
                 <option value="0">@(_idEmpresa == 0 ? "- Sin empresa -" : " Seleccione una sucursal ")</option>
                 @foreach (var item in sucursales)
                 {
@@ -91,7 +91,7 @@
         }
     }
 
-    private void CambioEmpresa()
+    private async Task CambioEmpresa()
     {
         using(SystemAdminContext db = new SystemAdminContext())
         {
