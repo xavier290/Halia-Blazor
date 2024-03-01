@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("NovaLaundryAppWebAdminBlazor")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+e3e0b25e6f3339cd9f7a12b3808e7eddaf4f4523")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+8a78eff95976230cfbc0db6beab4367774b85d08")]
 [assembly: System.Reflection.AssemblyProductAttribute("NovaLaundryAppWebAdminBlazor")]
 [assembly: System.Reflection.AssemblyTitleAttribute("NovaLaundryAppWebAdminBlazor")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
