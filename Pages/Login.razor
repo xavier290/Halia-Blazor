@@ -39,17 +39,18 @@
                 </div>
                 <div class="form-group">
                     <label style="margin:0.5rem 0 0.5rem 0" for="CmbEmpresa" class="form-label">Empresa</label>
-                    <InputSelect style="padding: 0.28rem 0.75rem" id="CmbEmpresa" class="form-select" @bind-Value="@_idEmpresa" @onchange="@(async () => await CambioEmpresa())" @onclick="@(async () => await CambioEmpresa())">
+                    <InputSelect style="padding: 0.28rem 0.75rem" id="CmbEmpresa" class="form-select" @bind-Value="@_idEmpresa" @onclick="@(async () => await CambioEmpresa())">
                         <option value="0">- Seleccione una empresa -</option>
-                            @foreach (var item in empresas)
-                            {
-                                <option value="@item.EmpresaId">@item.NombreComercial</option>
-                            }
+                        @foreach (var item in empresas)
+                        {
+                            <option value="@item.EmpresaId">@item.NombreComercial</option>
+                        }
                     </InputSelect>
+
                 </div>
                 <div class="form-group">
                     <label style="margin:0.5rem 0 0.5rem 0" for="CmbSucursales" class="form-label">Sucursales</label>
-                    <InputSelect style="padding: 0.28rem 0.75rem" id="CmbSucursales" class="form-select" @bind-Value="@_idSucursal" @onchange="async () => await CambioEmpresa()">
+                    <InputSelect style="padding: 0.28rem 0.75rem" id="CmbSucursales" class="form-select" @bind-Value="@_idSucursal">
                         <option value="0">@(_idEmpresa == 0 ? "- Sin empresa -" : " Seleccione una sucursal ")</option>
                             @foreach (var item in sucursales)
                             {
@@ -94,8 +95,10 @@
                 using (SystemAdminContext db = new SystemAdminContext())
                 {
                     sucursales = await db.Sucursales.Where(s => s.EmpresaId == _idEmpresa).ToListAsync();
+                    StateHasChanged();
                 }
             }
+            StateHasChanged();
         }
         catch (Exception ex)
         {
