@@ -1,0 +1,42 @@
+.mainLoginCnt {
+    width: 100%;
+    min-height: 100vh;
+    background-color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.loginCnt {
+    width: 80%;
+    height: 90%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 10px;
+    background-color: transparent;
+    box-shadow: #2d2d3196 2px 4px 8px 0px;
+}
+
+.loginFormCnt {
+    background-color: #F1EAE0;
+    border-radius: 0px 10px 10px 0px;
+}
+
+.imgCntLogin {
+    background: #B66667;
+    border-radius: 10px 0px 0px 10px;
+}
+
+.imgCntLogin img {
+    width: 65%;
+}
+
+.imgCntLogin, .loginFormCnt {
+    width: 50%;
+    min-height: 90vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+

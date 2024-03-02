@@ -10,70 +10,64 @@
 @using Blazored.Toast.Services
 
 
-<PageTitle>Login</PageTitle>
+<PageTitle>Halia || Inicio de Sesión</PageTitle>
 
-<div class="d-flex justify-content-center align-items-center row" style="background: linear-gradient(90deg, rgba(0,0,0,1) 0%, rgba(31,31,31,1) 98%, rgba(31,31,31,1) 100%); height:100vh;margin:0; widht:100%;">
+<div class="mainLoginCnt">
+    <div class="loginCnt">
+        <div class="imgCntLogin">
+            <!-- Image Section -->
+            <img src="/Logo112.png" alt="Halia Logo Salon de Belleza">
+        </div>
 
-    <!--Panel de login-->
-    <div class="col-lg-3 col-md-6" style=";padding:0;height:fit-content;">
-        <div class="mb-3 bg-black p-4 rounded">
-            <!--Titulo de la empresa + Imagen-->
-            <div class="row d-flex justify-content-center align-items-center ">
-                <div class="col d-flex justify-content-center align-items-center">
-                    <h3 class="m-2 text-light">Halia POS</h3>
-                    <img src="/Logo.png" alt="Logo" class="img-fluid  mx-2" style="max-width: 20px;">
+        <!-- Form Section -->
+        <div class="loginFormCnt">
+            <form @onsubmit="HandleLogin">
+                <h1 style="margin-bottom:0.8rem; font-size: 2.2em">Inicio de Sesión</h1>
+                <div class="input">
+                    <label style="margin:0.5rem 0 0.5rem 0" for="username">Usuario</label>
+                    <input type="text" id="username" @bind="_user" class="form-control" style="padding: 0.28rem 0.75rem " placeholder="Nombre de Usuario" required />
                 </div>
-            </div>
-
-            <!--Subtitulo de Inciar sesion-->
-            <div class="col text-center ">
-                <h4 class="mt-3 mb-3" style="color:gold">Iniciar Sesión</h4>
-            </div>
-
-            <!--Contra/Usuario-->
-            <label for="TxtUsuario" class="form-label text-light"><strong>Usuario</strong></label>
-            <input type="text" class="form-control" style="border:0px;border-bottom:1px solid #CDCDCD; border-radius:0" id="TxtUsuario" @bind="@_user">
-            <label for="TxtContra" class="form-label mt-3 text-light"><strong>Contraseña</strong></label>
-            <input type="@(_showPassword ? "text" : "password")" class="form-control text-success" id="TxtContra" style="border: 0px; border-bottom: 1px solid #CDCDCD; border-radius: 0" @bind="@_password" />
-
-            <!--Checks-->
-            <div class="mt-2 d-flex justify-content-end align-items-center">
-                <label class="form-check-label m-2 text-light" for="chckMostrar">Mostrar Contraseña</label>
-                <input class="form-check-input" type="checkbox" id="chckMostrar" @bind="@_showPassword" />
-            </div>
-
-            <!--Selects-->
-            <label for="CmbEmpresa" class="form-label mt-3 text-light"><strong>Empresa</strong></label>
-            <InputSelect id="CmbEmpresa" class="form-select" @bind-Value="_idEmpresa" @onclick="@(async () => await CambioEmpresa())">
-                <option value="0">- Seleccione una empresa -</option>
-                @foreach (var item in empresas)
-                {
-                    <option value="@item.EmpresaId">@item.NombreComercial</option>
-                }
-            </InputSelect>
-
-            <label for="CmbSucursales" class="form-label mt-3 text-light"><strong>Sucursales</strong></label>
-            <InputSelect id="CmbSucursales" class="form-select" @bind-Value="_idSucursal" @onchange="async () => await CambioEmpresa()">
-                <option value="0">@(_idEmpresa == 0 ? "- Sin empresa -" : " Seleccione una sucursal ")</option>
-                @foreach (var item in sucursales)
-                {
-                    <option value="@item.SucursalId">@item.NombreSucursal</option>
-                }
-            </InputSelect>
-
-            <!--Boton ingresar-->
-            <button type="submit" class="btn btn-success btn-lg mt-3 mb-2" style="width:100%;" @onclick="BtnIngresar_Click">
-                Ingresar
-            </button>
+                <div class="input">
+                    <label style="margin:0.5rem 0 0.5rem 0" for="password">Contraseña</label>
+                    <input type="@(_showPassword ? "text" : "password")" class="form-control" id="password" style="padding: 0.28rem 0.75rem ;" @bind="@_password" placeholder="Contraseña" required/>
+                </div>
+                <div class="form-group">
+                    <label style="margin:0.5rem 0 0.5rem 0" for="CmbEmpresa" class="form-label">Empresa</label>
+                    <InputSelect style="padding: 0.28rem 0.75rem" id="CmbEmpresa" class="form-select" @bind-Value="@_idEmpresa" @onclick="@(async () => await CambioEmpresa())">
+                        <option value="0">- Seleccione una empresa -</option>
+                            @foreach (var item in empresas)
+                            {
+                                <option value="@item.EmpresaId">@item.NombreComercial</option>
+                            }
+                    </InputSelect>
+                </div>
+                <div class="form-group">
+                    <label style="margin:0.5rem 0 0.5rem 0" for="CmbSucursales" class="form-label">Sucursales</label>
+                    <InputSelect style="padding: 0.28rem 0.75rem" id="CmbSucursales" class="form-select" @bind-Value="@_idSucursal" @onchange="async () => await CambioEmpresa()">
+                        <option value="0">@(_idEmpresa == 0 ? "- Sin empresa -" : " Seleccione una sucursal ")</option>
+                            @foreach (var item in sucursales)
+                            {
+                            <option value="@item.SucursalId">@item.NombreSucursal</option>
+                            }
+                    </InputSelect>
+                 </div>
+                <button style="margin-top:0.8rem; width: 100%" type="submit" class="btn btn-primary">Iniciar Sesión</button>
+            </form>
         </div>
     </div>
 </div>
 
+@if (ErrorMessage != null)
+{
+    <p class="text-danger">@ErrorMessage</p>
+}
+
+
 @code {
-    //Variables
     private string _user { get; set; } = "";
     private string _password { get; set; } = "";
     private bool _showPassword { get; set; } = false;
+    private string ErrorMessage { get; set; }
     private bool _acceder { get; set; }
     private List<Empresa> empresas = new List<Empresa>();
     private List<Sucursale> sucursales = new List<Sucursale>();
@@ -110,7 +104,7 @@
         }
     }
 
-    private async void BtnIngresar_Click()
+    private async void HandleLogin()
     {
         try
         {
@@ -247,5 +241,4 @@
                 });
         }
     }
-
 }

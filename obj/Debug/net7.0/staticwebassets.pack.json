@@ -21,8 +21,24 @@
       "PackagePath": "staticwebassets\\Create.png"
     },
     {
+      "Id": "C:\\Users\\xa25a\\Documents\\Halia-Blazor\\NovaLaundryAppWebAdminBlazor\\wwwroot\\HaliaLogo.png",
+      "PackagePath": "staticwebassets\\HaliaLogo.png"
+    },
+    {
       "Id": "C:\\Users\\xa25a\\Documents\\Halia-Blazor\\NovaLaundryAppWebAdminBlazor\\wwwroot\\Logo.png",
       "PackagePath": "staticwebassets\\Logo.png"
+    },
+    {
+      "Id": "C:\\Users\\xa25a\\Documents\\Halia-Blazor\\NovaLaundryAppWebAdminBlazor\\wwwroot\\Logo103.png",
+      "PackagePath": "staticwebassets\\Logo103.png"
+    },
+    {
+      "Id": "C:\\Users\\xa25a\\Documents\\Halia-Blazor\\NovaLaundryAppWebAdminBlazor\\wwwroot\\Logo108.png",
+      "PackagePath": "staticwebassets\\Logo108.png"
+    },
+    {
+      "Id": "C:\\Users\\xa25a\\Documents\\Halia-Blazor\\NovaLaundryAppWebAdminBlazor\\wwwroot\\Logo112.png",
+      "PackagePath": "staticwebassets\\Logo112.png"
     },
     {
       "Id": "C:\\Users\\xa25a\\Documents\\Halia-Blazor\\NovaLaundryAppWebAdminBlazor\\wwwroot\\Logout.png",
@@ -51,6 +67,10 @@
     {
       "Id": "C:\\Users\\xa25a\\Documents\\Halia-Blazor\\NovaLaundryAppWebAdminBlazor\\wwwroot\\css\\bootstrap\\bootstrap.min.css.map",
       "PackagePath": "staticwebassets\\css\\bootstrap\\bootstrap.min.css.map"
+    },
+    {
+      "Id": "C:\\Users\\xa25a\\Documents\\Halia-Blazor\\NovaLaundryAppWebAdminBlazor\\wwwroot\\css\\login.css",
+      "PackagePath": "staticwebassets\\css\\login.css"
     },
     {
       "Id": "C:\\Users\\xa25a\\Documents\\Halia-Blazor\\NovaLaundryAppWebAdminBlazor\\wwwroot\\css\\open-iconic\\FONT-LICENSE",
