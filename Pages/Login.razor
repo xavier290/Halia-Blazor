@@ -39,7 +39,7 @@
                 </div>
                 <div class="form-group">
                     <label style="margin:0.5rem 0 0.5rem 0" for="CmbEmpresa" class="form-label">Empresa</label>
-                    <InputSelect style="padding: 0.28rem 0.75rem" id="CmbEmpresa" class="form-select" @bind-Value="@_idEmpresa" @onclick="@(async () => await CambioEmpresa())">
+                    <InputSelect style="padding: 0.28rem 0.75rem" id="CmbEmpresa" class="form-select" @bind-Value="@_idEmpresa" @onclick="@(async () => await CambioEmpresa())" @onfocus="@(async () => await CambioEmpresa())">
                         <option value="0">- Seleccione una empresa -</option>
                         @foreach (var item in empresas)
                         {
