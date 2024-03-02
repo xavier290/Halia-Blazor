@@ -1,0 +1,146 @@
+.mainLoginCnt {
+    width: 100%;
+    min-height: 100vh;
+    background-color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.loginCnt {
+    width: 80%;
+    height: 90%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 10px;
+    background-color: transparent;
+    box-shadow: #2d2d3196 2px 4px 8px 0px;
+}
+
+.loginFormCnt {
+    background-color: #F1EAE0;
+    border-radius: 0px 10px 10px 0px;
+}
+
+.loginFormCnt h1 {
+    margin-bottom:0.8rem; 
+    font-size: 2.2em;
+}
+
+.imgCntLogin {
+    background: #B66667;
+    border-radius: 10px 0px 0px 10px;
+}
+
+.imgCntLogin .logo {
+    width: 55%;
+}
+
+.imgCntLogin .logo-phone {
+    display: none;
+}
+
+.imgCntLogin, .loginFormCnt {
+    width: 50%;
+    min-height: 90vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+@media all and (max-width: 1024px) {
+    .imgCntLogin .logo {
+        width: 70%;
+    }
+}
+
+@media all and (max-width: 768px) and (min-width: 520px) {
+    .loginCnt {
+        width: 100%;
+        height: 100vh;
+        display: flex;
+        align-items: normal;
+    }
+
+    form {
+        max-width: 210px;
+    }
+
+    .loginFormCnt h1 {
+        font-size: 1.65rem;
+    }
+
+    .form-select, .form-control, form label, form button {
+        font-size: 0.76rem;
+    }
+}
+
+@media all and (max-width: 520px) {
+    .loginCnt {
+        flex-direction: column;
+        justify-content: normal;
+        width: 100%;
+    }
+    .imgCntLogin {
+        width: 100%;
+        min-height: 20vh;
+        max-height: 20vh;
+        border-radius: 0px;
+        position: relative;
+    }
+    .imgCntLogin .cnt {
+        position: relative;
+    }
+    .imgCntLogin .cnt::before {
+        content: ""; /* Create a pseudo-element */
+        position: absolute;
+        bottom: -25px; /* Adjust to match your border width */
+        left: 0;
+        right: 0;
+        height: 2px; /* Adjust to match your border width */
+        background: linear-gradient(to right, transparent 0%, #000 50%, #000 50%, transparent 100%);
+        pointer-events: none; /* Prevent pseudo-element from interfering with mouse events */
+    }
+    .imgCntLogin .logo {
+        width: 0;
+        height: 0;
+        display: none;
+    }
+    .logo-phone {
+        display: block !important;
+        max-width: 280px;
+        position: relative;
+    }
+    .loginFormCnt {
+        background-color: #B66667;
+        border-radius: 0px;
+        width: 100%;
+        min-height: 80vh;
+        align-items: normal !important;
+        padding-top: 10%;
+    }
+    .loginFormCnt h1, .input label, .form-group label {
+        color: #E2D8CC;
+    }
+
+    .loginFormCnt form .btn-primary {
+        background-color: #000;
+        border-color: #000;
+    }
+}
+
+@media all and (max-width: 365px) {
+    .loginFormCnt h1 {
+        font-size: 1.65em;
+    }
+    .form-control {
+        font-size: 0.85rem;
+    }
+    .form-select {
+        font-size: 0.75rem;
+    }
+    .logo-phone {
+        max-width: 220px;
+    }
+}
