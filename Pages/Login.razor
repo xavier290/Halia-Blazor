@@ -1,4 +1,7 @@
 ﻿@page "/"
+@using System;
+@using System.Linq;
+@using Microsoft.EntityFrameworkCore;
 @using Microsoft.Extensions.Hosting;
 @using NovaLaundryAppWebAdminBlazor.Server.Services
 @using NovaLaundryAppWebAdminBlazor.Server.ViewModels
@@ -16,13 +19,16 @@
     <div class="loginCnt">
         <div class="imgCntLogin">
             <!-- Image Section -->
-            <img src="/Logo112.png" alt="Halia Logo Salon de Belleza">
+            <img class="logo" src="/Logo112.png" alt="Halia Logo Salon de Belleza">
+            <div class="cnt">
+                <img class="logo-phone" src="/logo103.png" alt="Halia Logo Salon de Belleza">
+            </div>
         </div>
 
         <!-- Form Section -->
         <div class="loginFormCnt">
             <form @onsubmit="HandleLogin">
-                <h1 style="margin-bottom:0.8rem; font-size: 2.2em">Inicio de Sesión</h1>
+                <h1>Inicio de Sesión</h1>
                 <div class="input">
                     <label style="margin:0.5rem 0 0.5rem 0" for="username">Usuario</label>
                     <input type="text" id="username" @bind="_user" class="form-control" style="padding: 0.28rem 0.75rem " placeholder="Nombre de Usuario" required />
@@ -57,17 +63,10 @@
     </div>
 </div>
 
-@if (ErrorMessage != null)
-{
-    <p class="text-danger">@ErrorMessage</p>
-}
-
-
 @code {
     private string _user { get; set; } = "";
     private string _password { get; set; } = "";
     private bool _showPassword { get; set; } = false;
-    private string ErrorMessage { get; set; }
     private bool _acceder { get; set; }
     private List<Empresa> empresas = new List<Empresa>();
     private List<Sucursale> sucursales = new List<Sucursale>();
@@ -80,8 +79,9 @@
         {
             using (SystemAdminContext db = new SystemAdminContext())
             {
-                empresas = db.Empresas.Where(s => s.EstatusId == "Activo").ToList();
+                empresas = await db.Empresas.Where(s => s.EstatusId == "Activo").ToListAsync();
             }
+            StateHasChanged(); // Trigger a re-render
         }
     }
 
@@ -93,7 +93,7 @@
             {
                 using (SystemAdminContext db = new SystemAdminContext())
                 {
-                    sucursales = db.Sucursales.Where(s => s.EmpresaId == _idEmpresa).ToList();
+                    sucursales = await db.Sucursales.Where(s => s.EmpresaId == _idEmpresa).ToListAsync();
                 }
             }
         }
@@ -206,10 +206,10 @@
                     if (relUsuarioEmpresa != null)
                     {
 
-                        localStorage.SetAsync("user", usuario.PrimerNombre+" "+usuario.PrimerApellido);
-                        localStorage.SetAsync("userId",usuario.IdUsuarios);
-                        localStorage.SetAsync("sucursalId", _idSucursal.ToString());
-                        localStorage.SetAsync("empresaId", _idEmpresa.ToString());
+                        await localStorage.SetAsync("user", usuario.PrimerNombre+" "+usuario.PrimerApellido);
+                        await localStorage.SetAsync("userId",usuario.IdUsuarios);
+                        await localStorage.SetAsync("sucursalId", _idSucursal.ToString());
+                        await localStorage.SetAsync("empresaId", _idEmpresa.ToString());
 
                         nav.NavigateTo("MenuPrincipal", true);
                     }
