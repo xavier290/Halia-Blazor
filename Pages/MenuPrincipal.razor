@@ -231,12 +231,11 @@
     private async Task<string> MostrarSucursalEmpresa()
     {
         var sucursal = await localStorage.GetAsync<string>("sucursalId");
-        var empresa = await localStorage.GetAsync<string>("empresaId");
 
         using(SystemAdminContext db = new SystemAdminContext())
         {
             Sucursale sucursalBuscada = db.Sucursales.Where(s => s.SucursalId == int.Parse(sucursal.Value)).FirstOrDefault();
-            Empresa empresaBuscada = db.Empresas.Where(s => s.EmpresaId == int.Parse(empresa.Value)).FirstOrDefault();
+            Empresa empresaBuscada = db.Empresas.Where(s => s.EmpresaId == sucursalBuscada.EmpresaId).FirstOrDefault();
 
             return empresaBuscada.NombreComercial+", "+sucursalBuscada.NombreSucursal;
         }

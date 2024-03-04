@@ -36,28 +36,7 @@
                 <div class="input">
                     <label style="margin:0.5rem 0 0.5rem 0" for="password">Contraseña</label>
                     <input type="@(_showPassword ? "text" : "password")" class="form-control" id="password" style="padding: 0.28rem 0.75rem ;" @bind="@_password" placeholder="Contraseña" required/>
-                </div>
-                <div class="form-group">
-                    <label style="margin:0.5rem 0 0.5rem 0" for="CmbEmpresa" class="form-label">Empresa</label>
-                    <select style="padding: 0.28rem 0.75rem" id="CmbEmpresa" class="form-select" @bind="@_idEmpresa" @onclick="@(async () => await CambioEmpresa())" @onfocus="@(async () => await CambioEmpresa())">
-                        <option value="0">- Seleccione una empresa -</option>
-                        @foreach (var item in empresas)
-                        {
-                            <option value="@item.EmpresaId">@item.NombreComercial</option>
-                        }
-                    </select>
-
-                </div>
-                <div class="form-group">
-                    <label style="margin:0.5rem 0 0.5rem 0" for="CmbSucursales" class="form-label">Sucursales</label>
-                    <InputSelect style="padding: 0.28rem 0.75rem" id="CmbSucursales" class="form-select" @bind-Value="@_idSucursal">
-                        <option value="0">@(_idEmpresa == 0 ? "- Sin empresa -" : " Seleccione una sucursal ")</option>
-                            @foreach (var item in sucursales)
-                            {
-                            <option value="@item.SucursalId">@item.NombreSucursal</option>
-                            }
-                    </InputSelect>
-                 </div>
+                </div>             
                 <button style="margin-top:0.8rem; width: 100%" type="submit" class="btn btn-primary">Iniciar Sesión</button>
             </form>
         </div>
@@ -69,43 +48,8 @@
     private string _password { get; set; } = "";
     private bool _showPassword { get; set; } = false;
     private bool _acceder { get; set; }
-    private List<Empresa> empresas = new List<Empresa>();
-    private List<Sucursale> sucursales = new List<Sucursale>();
-    private int _idEmpresa { get; set; } = 0;
-    private int _idSucursal { get; set; } = 0;
 
-    protected override async Task OnAfterRenderAsync(bool firstRender)
-    {
-        if (firstRender)
-        {
-            using (SystemAdminContext db = new SystemAdminContext())
-            {
-                empresas = await db.Empresas.Where(s => s.EstatusId == "Activo").ToListAsync();
-            }
-            StateHasChanged(); // Trigger a re-render
-        }
-    }
 
-    private async Task CambioEmpresa()
-    {
-        try
-        {
-            if (_idEmpresa != 0)
-            {
-                using (SystemAdminContext db = new SystemAdminContext())
-                {
-                    sucursales = await db.Sucursales.Where(s => s.EmpresaId == _idEmpresa).ToListAsync();
-                    StateHasChanged();
-                }
-            }
-            StateHasChanged();
-        }
-        catch (Exception ex)
-        {
-            // Handle any exceptions that may occur during data loading
-            Console.WriteLine($"Error loading sucursales: {ex.Message}");
-        }
-    }
 
     private async void HandleLogin()
     {
@@ -155,34 +99,6 @@
                     return;
                 }
 
-                if (_idEmpresa == 0)
-                {
-                    _ = Swal.FireAsync(new SweetAlertOptions
-                        {
-                            Title = "Atención",
-                            Text = "No ha seleccionado una empresa.",
-                            Icon = SweetAlertIcon.Warning,
-                            ConfirmButtonText = "Ok",
-                            CancelButtonText = "Volver"
-                        });
-
-                    return;
-                }
-
-                if (_idSucursal == 0)
-                {
-                    _ = Swal.FireAsync(new SweetAlertOptions
-                        {
-                            Title = "Atención",
-                            Text = "No ha seleccionado una sucursal.",
-                            Icon = SweetAlertIcon.Warning,
-                            ConfirmButtonText = "Ok",
-                            CancelButtonText = "Volver"
-                        });
-
-                    return;
-                }
-
                 //Validaciones de Base
 
                 //VerificarCredenciales
@@ -204,15 +120,26 @@
                 }
                 else
                 {
-                    RelUsuarioSucursale relUsuarioEmpresa = db.RelUsuarioSucursales.Where(s => s.SucursalId == _idEmpresa && s.UsuariId == usuario.IdUsuarios).FirstOrDefault();
+                    Sucursale sucursal = db.Sucursales.Where(s => s.SucursalId == usuario.SucursalId).FirstOrDefault();
 
-                    if (relUsuarioEmpresa != null)
+                    if (sucursal != null)
                     {
 
                         await localStorage.SetAsync("user", usuario.PrimerNombre+" "+usuario.PrimerApellido);
                         await localStorage.SetAsync("userId",usuario.IdUsuarios);
-                        await localStorage.SetAsync("sucursalId", _idSucursal.ToString());
-                        await localStorage.SetAsync("empresaId", _idEmpresa.ToString());
+                        await localStorage.SetAsync("sucursalId",usuario.SucursalId.ToString());
+
+                        if(usuario.Estado == "Bloqueado")
+                        {
+                            _ = Swal.FireAsync(new SweetAlertOptions
+                                {
+                                    Title = "Atención",
+                                    Text = "Su usuario ha sido bloqueado.",
+                                    Icon = SweetAlertIcon.Warning,
+                                    ConfirmButtonText = "Ok",
+                                    CancelButtonText = "Volver"
+                                });
+                        }
 
                         nav.NavigateTo("MenuPrincipal", true);
                     }
@@ -221,7 +148,7 @@
                         _ = Swal.FireAsync(new SweetAlertOptions
                             {
                                 Title = "Atención",
-                                Text = "El usuario no tiene acceso a esa empresa.",
+                                Text = "El usuario no tiene una sucursal relacionada.",
                                 Icon = SweetAlertIcon.Warning,
                                 ConfirmButtonText = "Ok",
                                 CancelButtonText = "Volver"
