@@ -1,139 +1,143 @@
 {
   "Files": [
     {
-      "Id": "C:\\Users\\Usuario\\Desktop\\Proyecto Fer\\NuevoBlazor\\Halia-Blazor\\obj\\Debug\\net7.0\\scopedcss\\projectbundle\\NovaLaundryAppWebAdminBlazor.bundle.scp.css",
+      "Id": "C:\\Users\\xa25a\\Documents\\Halia-Blazor\\NovaLaundryAppWebAdminBlazor\\obj\\Debug\\net7.0\\scopedcss\\projectbundle\\NovaLaundryAppWebAdminBlazor.bundle.scp.css",
       "PackagePath": "staticwebassets\\NovaLaundryAppWebAdminBlazor.bundle.scp.css"
     },
     {
-      "Id": "C:\\Users\\Usuario\\Desktop\\Proyecto Fer\\NuevoBlazor\\Halia-Blazor\\wwwroot\\Bloq.png",
+      "Id": "C:\\Users\\xa25a\\Documents\\Halia-Blazor\\NovaLaundryAppWebAdminBlazor\\wwwroot\\Bloq.png",
       "PackagePath": "staticwebassets\\Bloq.png"
     },
     {
-      "Id": "C:\\Users\\Usuario\\Desktop\\Proyecto Fer\\NuevoBlazor\\Halia-Blazor\\wwwroot\\Catalog.png",
+      "Id": "C:\\Users\\xa25a\\Documents\\Halia-Blazor\\NovaLaundryAppWebAdminBlazor\\wwwroot\\Catalog.png",
       "PackagePath": "staticwebassets\\Catalog.png"
     },
     {
-      "Id": "C:\\Users\\Usuario\\Desktop\\Proyecto Fer\\NuevoBlazor\\Halia-Blazor\\wwwroot\\Conn.png",
+      "Id": "C:\\Users\\xa25a\\Documents\\Halia-Blazor\\NovaLaundryAppWebAdminBlazor\\wwwroot\\Conn.png",
       "PackagePath": "staticwebassets\\Conn.png"
     },
     {
-      "Id": "C:\\Users\\Usuario\\Desktop\\Proyecto Fer\\NuevoBlazor\\Halia-Blazor\\wwwroot\\Create.png",
+      "Id": "C:\\Users\\xa25a\\Documents\\Halia-Blazor\\NovaLaundryAppWebAdminBlazor\\wwwroot\\Create.png",
       "PackagePath": "staticwebassets\\Create.png"
     },
     {
-      "Id": "C:\\Users\\Usuario\\Desktop\\Proyecto Fer\\NuevoBlazor\\Halia-Blazor\\wwwroot\\HaliaLogo.png",
+      "Id": "C:\\Users\\xa25a\\Documents\\Halia-Blazor\\NovaLaundryAppWebAdminBlazor\\wwwroot\\HaliaLogo.png",
       "PackagePath": "staticwebassets\\HaliaLogo.png"
     },
     {
-      "Id": "C:\\Users\\Usuario\\Desktop\\Proyecto Fer\\NuevoBlazor\\Halia-Blazor\\wwwroot\\Logo.png",
+      "Id": "C:\\Users\\xa25a\\Documents\\Halia-Blazor\\NovaLaundryAppWebAdminBlazor\\wwwroot\\Logo.png",
       "PackagePath": "staticwebassets\\Logo.png"
     },
     {
-      "Id": "C:\\Users\\Usuario\\Desktop\\Proyecto Fer\\NuevoBlazor\\Halia-Blazor\\wwwroot\\Logo103.png",
+      "Id": "C:\\Users\\xa25a\\Documents\\Halia-Blazor\\NovaLaundryAppWebAdminBlazor\\wwwroot\\Logo103.png",
       "PackagePath": "staticwebassets\\Logo103.png"
     },
     {
-      "Id": "C:\\Users\\Usuario\\Desktop\\Proyecto Fer\\NuevoBlazor\\Halia-Blazor\\wwwroot\\Logo108.png",
+      "Id": "C:\\Users\\xa25a\\Documents\\Halia-Blazor\\NovaLaundryAppWebAdminBlazor\\wwwroot\\Logo108.png",
       "PackagePath": "staticwebassets\\Logo108.png"
     },
     {
-      "Id": "C:\\Users\\Usuario\\Desktop\\Proyecto Fer\\NuevoBlazor\\Halia-Blazor\\wwwroot\\Logo112.png",
+      "Id": "C:\\Users\\xa25a\\Documents\\Halia-Blazor\\NovaLaundryAppWebAdminBlazor\\wwwroot\\Logo112.png",
       "PackagePath": "staticwebassets\\Logo112.png"
     },
     {
-      "Id": "C:\\Users\\Usuario\\Desktop\\Proyecto Fer\\NuevoBlazor\\Halia-Blazor\\wwwroot\\Logout.png",
+      "Id": "C:\\Users\\xa25a\\Documents\\Halia-Blazor\\NovaLaundryAppWebAdminBlazor\\wwwroot\\Logout.png",
       "PackagePath": "staticwebassets\\Logout.png"
     },
     {
-      "Id": "C:\\Users\\Usuario\\Desktop\\Proyecto Fer\\NuevoBlazor\\Halia-Blazor\\wwwroot\\Search.png",
+      "Id": "C:\\Users\\xa25a\\Documents\\Halia-Blazor\\NovaLaundryAppWebAdminBlazor\\wwwroot\\Search.png",
       "PackagePath": "staticwebassets\\Search.png"
     },
     {
-      "Id": "C:\\Users\\Usuario\\Desktop\\Proyecto Fer\\NuevoBlazor\\Halia-Blazor\\wwwroot\\Settings.png",
+      "Id": "C:\\Users\\xa25a\\Documents\\Halia-Blazor\\NovaLaundryAppWebAdminBlazor\\wwwroot\\Settings.png",
       "PackagePath": "staticwebassets\\Settings.png"
     },
     {
-      "Id": "C:\\Users\\Usuario\\Desktop\\Proyecto Fer\\NuevoBlazor\\Halia-Blazor\\wwwroot\\Soporte.png",
+      "Id": "C:\\Users\\xa25a\\Documents\\Halia-Blazor\\NovaLaundryAppWebAdminBlazor\\wwwroot\\Soporte.png",
       "PackagePath": "staticwebassets\\Soporte.png"
     },
     {
-      "Id": "C:\\Users\\Usuario\\Desktop\\Proyecto Fer\\NuevoBlazor\\Halia-Blazor\\wwwroot\\clientes.png",
+      "Id": "C:\\Users\\xa25a\\Documents\\Halia-Blazor\\NovaLaundryAppWebAdminBlazor\\wwwroot\\clientes.png",
       "PackagePath": "staticwebassets\\clientes.png"
     },
     {
-      "Id": "C:\\Users\\Usuario\\Desktop\\Proyecto Fer\\NuevoBlazor\\Halia-Blazor\\wwwroot\\css\\bootstrap\\bootstrap.min.css",
+      "Id": "C:\\Users\\xa25a\\Documents\\Halia-Blazor\\NovaLaundryAppWebAdminBlazor\\wwwroot\\css\\bootstrap\\bootstrap.min.css",
       "PackagePath": "staticwebassets\\css\\bootstrap\\bootstrap.min.css"
     },
     {
-      "Id": "C:\\Users\\Usuario\\Desktop\\Proyecto Fer\\NuevoBlazor\\Halia-Blazor\\wwwroot\\css\\bootstrap\\bootstrap.min.css.map",
+      "Id": "C:\\Users\\xa25a\\Documents\\Halia-Blazor\\NovaLaundryAppWebAdminBlazor\\wwwroot\\css\\bootstrap\\bootstrap.min.css.map",
       "PackagePath": "staticwebassets\\css\\bootstrap\\bootstrap.min.css.map"
     },
     {
-      "Id": "C:\\Users\\Usuario\\Desktop\\Proyecto Fer\\NuevoBlazor\\Halia-Blazor\\wwwroot\\css\\login.css",
+      "Id": "C:\\Users\\xa25a\\Documents\\Halia-Blazor\\NovaLaundryAppWebAdminBlazor\\wwwroot\\css\\login.css",
       "PackagePath": "staticwebassets\\css\\login.css"
     },
     {
-      "Id": "C:\\Users\\Usuario\\Desktop\\Proyecto Fer\\NuevoBlazor\\Halia-Blazor\\wwwroot\\css\\open-iconic\\FONT-LICENSE",
+      "Id": "C:\\Users\\xa25a\\Documents\\Halia-Blazor\\NovaLaundryAppWebAdminBlazor\\wwwroot\\css\\menuPrincipal.css",
+      "PackagePath": "staticwebassets\\css\\menuPrincipal.css"
+    },
+    {
+      "Id": "C:\\Users\\xa25a\\Documents\\Halia-Blazor\\NovaLaundryAppWebAdminBlazor\\wwwroot\\css\\open-iconic\\FONT-LICENSE",
       "PackagePath": "staticwebassets\\css\\open-iconic"
     },
     {
-      "Id": "C:\\Users\\Usuario\\Desktop\\Proyecto Fer\\NuevoBlazor\\Halia-Blazor\\wwwroot\\css\\open-iconic\\ICON-LICENSE",
+      "Id": "C:\\Users\\xa25a\\Documents\\Halia-Blazor\\NovaLaundryAppWebAdminBlazor\\wwwroot\\css\\open-iconic\\ICON-LICENSE",
       "PackagePath": "staticwebassets\\css\\open-iconic"
     },
     {
-      "Id": "C:\\Users\\Usuario\\Desktop\\Proyecto Fer\\NuevoBlazor\\Halia-Blazor\\wwwroot\\css\\open-iconic\\README.md",
+      "Id": "C:\\Users\\xa25a\\Documents\\Halia-Blazor\\NovaLaundryAppWebAdminBlazor\\wwwroot\\css\\open-iconic\\README.md",
       "PackagePath": "staticwebassets\\css\\open-iconic\\README.md"
     },
     {
-      "Id": "C:\\Users\\Usuario\\Desktop\\Proyecto Fer\\NuevoBlazor\\Halia-Blazor\\wwwroot\\css\\open-iconic\\font\\css\\open-iconic-bootstrap.min.css",
+      "Id": "C:\\Users\\xa25a\\Documents\\Halia-Blazor\\NovaLaundryAppWebAdminBlazor\\wwwroot\\css\\open-iconic\\font\\css\\open-iconic-bootstrap.min.css",
       "PackagePath": "staticwebassets\\css\\open-iconic\\font\\css\\open-iconic-bootstrap.min.css"
     },
     {
-      "Id": "C:\\Users\\Usuario\\Desktop\\Proyecto Fer\\NuevoBlazor\\Halia-Blazor\\wwwroot\\css\\open-iconic\\font\\fonts\\open-iconic.eot",
+      "Id": "C:\\Users\\xa25a\\Documents\\Halia-Blazor\\NovaLaundryAppWebAdminBlazor\\wwwroot\\css\\open-iconic\\font\\fonts\\open-iconic.eot",
       "PackagePath": "staticwebassets\\css\\open-iconic\\font\\fonts\\open-iconic.eot"
     },
     {
-      "Id": "C:\\Users\\Usuario\\Desktop\\Proyecto Fer\\NuevoBlazor\\Halia-Blazor\\wwwroot\\css\\open-iconic\\font\\fonts\\open-iconic.otf",
+      "Id": "C:\\Users\\xa25a\\Documents\\Halia-Blazor\\NovaLaundryAppWebAdminBlazor\\wwwroot\\css\\open-iconic\\font\\fonts\\open-iconic.otf",
       "PackagePath": "staticwebassets\\css\\open-iconic\\font\\fonts\\open-iconic.otf"
     },
     {
-      "Id": "C:\\Users\\Usuario\\Desktop\\Proyecto Fer\\NuevoBlazor\\Halia-Blazor\\wwwroot\\css\\open-iconic\\font\\fonts\\open-iconic.svg",
+      "Id": "C:\\Users\\xa25a\\Documents\\Halia-Blazor\\NovaLaundryAppWebAdminBlazor\\wwwroot\\css\\open-iconic\\font\\fonts\\open-iconic.svg",
       "PackagePath": "staticwebassets\\css\\open-iconic\\font\\fonts\\open-iconic.svg"
     },
     {
-      "Id": "C:\\Users\\Usuario\\Desktop\\Proyecto Fer\\NuevoBlazor\\Halia-Blazor\\wwwroot\\css\\open-iconic\\font\\fonts\\open-iconic.ttf",
+      "Id": "C:\\Users\\xa25a\\Documents\\Halia-Blazor\\NovaLaundryAppWebAdminBlazor\\wwwroot\\css\\open-iconic\\font\\fonts\\open-iconic.ttf",
       "PackagePath": "staticwebassets\\css\\open-iconic\\font\\fonts\\open-iconic.ttf"
     },
     {
-      "Id": "C:\\Users\\Usuario\\Desktop\\Proyecto Fer\\NuevoBlazor\\Halia-Blazor\\wwwroot\\css\\open-iconic\\font\\fonts\\open-iconic.woff",
+      "Id": "C:\\Users\\xa25a\\Documents\\Halia-Blazor\\NovaLaundryAppWebAdminBlazor\\wwwroot\\css\\open-iconic\\font\\fonts\\open-iconic.woff",
       "PackagePath": "staticwebassets\\css\\open-iconic\\font\\fonts\\open-iconic.woff"
     },
     {
-      "Id": "C:\\Users\\Usuario\\Desktop\\Proyecto Fer\\NuevoBlazor\\Halia-Blazor\\wwwroot\\css\\site.css",
+      "Id": "C:\\Users\\xa25a\\Documents\\Halia-Blazor\\NovaLaundryAppWebAdminBlazor\\wwwroot\\css\\site.css",
       "PackagePath": "staticwebassets\\css\\site.css"
     },
     {
-      "Id": "C:\\Users\\Usuario\\Desktop\\Proyecto Fer\\NuevoBlazor\\Halia-Blazor\\wwwroot\\favicon.ico",
+      "Id": "C:\\Users\\xa25a\\Documents\\Halia-Blazor\\NovaLaundryAppWebAdminBlazor\\wwwroot\\favicon.ico",
       "PackagePath": "staticwebassets\\favicon.ico"
     },
     {
-      "Id": "C:\\Users\\Usuario\\Desktop\\Proyecto Fer\\NuevoBlazor\\Halia-Blazor\\wwwroot\\inventario.png",
+      "Id": "C:\\Users\\xa25a\\Documents\\Halia-Blazor\\NovaLaundryAppWebAdminBlazor\\wwwroot\\inventario.png",
       "PackagePath": "staticwebassets\\inventario.png"
     },
     {
-      "Id": "C:\\Users\\Usuario\\Desktop\\Proyecto Fer\\NuevoBlazor\\Halia-Blazor\\wwwroot\\noti.png",
+      "Id": "C:\\Users\\xa25a\\Documents\\Halia-Blazor\\NovaLaundryAppWebAdminBlazor\\wwwroot\\noti.png",
       "PackagePath": "staticwebassets\\noti.png"
     },
     {
-      "Id": "C:\\Users\\Usuario\\Desktop\\Proyecto Fer\\NuevoBlazor\\Halia-Blazor\\wwwroot\\prom.png",
+      "Id": "C:\\Users\\xa25a\\Documents\\Halia-Blazor\\NovaLaundryAppWebAdminBlazor\\wwwroot\\prom.png",
       "PackagePath": "staticwebassets\\prom.png"
     },
     {
-      "Id": "C:\\Users\\Usuario\\Desktop\\Proyecto Fer\\NuevoBlazor\\Halia-Blazor\\wwwroot\\reportes.png",
+      "Id": "C:\\Users\\xa25a\\Documents\\Halia-Blazor\\NovaLaundryAppWebAdminBlazor\\wwwroot\\reportes.png",
       "PackagePath": "staticwebassets\\reportes.png"
     },
     {
-      "Id": "C:\\Users\\Usuario\\Desktop\\Proyecto Fer\\NuevoBlazor\\Halia-Blazor\\wwwroot\\tarjeta.png",
+      "Id": "C:\\Users\\xa25a\\Documents\\Halia-Blazor\\NovaLaundryAppWebAdminBlazor\\wwwroot\\tarjeta.png",
       "PackagePath": "staticwebassets\\tarjeta.png"
     },
     {

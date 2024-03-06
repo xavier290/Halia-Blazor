@@ -1,0 +1,194 @@
+/* Sidebar Menu */
+.main-cnt {
+    position: relative;
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    overflow: hidden;
+}
+
+.sidebar-menu {
+    min-width: 220px;
+    max-width: 220px;
+    height: 100vh;
+    overflow-y: auto;
+    background-color: #87705E;
+    color: #F1EAE0;
+    position: fixed;
+}
+
+.main-elements {
+    padding-left: 220px;
+    width: 100%;
+}
+
+.sidebar-menu .logo-section {
+    border-bottom: solid 1px #F1EAE0;
+    height: 14vh;
+    display: flex;
+    justify-content: center;
+    padding: 20px 20px 20px 10px;
+}
+
+.sidebar-menu .logo-section img {
+    width: 100%;
+    cursor: pointer;
+}
+
+.sidebar-menu ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.sidebar-menu li {
+    margin-bottom: 15px;
+}
+.sidebar-menu .first {
+    padding-top: 10px;
+}
+
+.btn-sidebar {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    color: #fff;
+    cursor: pointer;
+    padding: 0 0 10px 10px;
+}
+
+.btn-sidebar:hover {
+    background-color: #555;
+}
+
+.btn-sidebar img {
+    max-width: 30px;
+    margin-right: 10px;
+}
+
+.sidebar-menu button {
+    background: #87705E;
+    width: 100%;
+}
+
+.sidebar-menu button p {
+    margin: 0 !important;
+}
+
+.header-home {
+    /* position: absolute; */
+    width: 100%;
+    height: 14vh;
+    display: flex;
+    flex-direction: row;
+    border-bottom: solid 1px #e0c1afd5;
+    justify-content: space-between;
+    align-items: center;
+    padding: 2%;
+}
+
+.header-home .title p {
+    margin-bottom: 0 !important;
+}
+
+.header-home .options {
+    display: flex;
+    flex-direction: row;
+}
+
+.notificaciones-btn {
+    width: 30px;
+    background-color: #fff;
+    border-right: solid 1px #000;
+    margin-right: 5px;
+}
+
+.options .user {
+    display: flex;
+    flex-direction: row;
+}
+
+.options .user p {
+    display: flex;
+    flex-direction: row;
+    margin-bottom: 0 !important;
+    margin-right: 2px;
+}
+
+.main-content {
+    padding: 2%;
+}
+/* Dropdown Menu for Small Screens */
+@media screen and (max-width: 768px) {
+    .sidebar-menu {
+        position: fixed;
+        top: 0;
+        left: -250px; /* Hide sidebar by default */
+        transition: left 0.3s ease-in-out;
+        z-index: 1000; /* Ensure it's above other content */
+    }
+
+    .sidebar-menu.open {
+        left: 0; /* Show sidebar when open */
+    }
+
+    .dropdown-toggle {
+        display: block;
+        cursor: pointer;
+        padding: 10px;
+    }
+
+    .dropdown-content {
+        display: none;
+        background-color: #333;
+        padding: 10px;
+    }
+
+    .dropdown-content a {
+        color: #fff;
+        text-decoration: none;
+        display: block;
+        padding: 5px 0;
+    }
+
+    .dropdown-content a:hover {
+        background-color: #555;
+    }
+}
+
+/* Dropdown Menu for Small Screens */
+@media screen and (max-width: 768px) {
+    .sidebar-menu {
+        position: fixed;
+        top: 0;
+        left: -250px; /* Hide sidebar by default */
+        transition: left 0.3s ease-in-out;
+        z-index: 1000; /* Ensure it's above other content */
+    }
+
+    .sidebar-menu.open {
+        left: 0; /* Show sidebar when open */
+    }
+
+    .dropdown-toggle {
+        display: block;
+        cursor: pointer;
+        padding: 10px;
+    }
+
+    .dropdown-content {
+        display: none;
+        background-color: #333;
+        padding: 10px;
+    }
+
+    .dropdown-content a {
+        color: #fff;
+        text-decoration: none;
+        display: block;
+        padding: 5px 0;
+    }
+
+    .dropdown-content a:hover {
+        background-color: #555;
+    }
+}
