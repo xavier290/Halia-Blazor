@@ -1,5 +1,6 @@
 ﻿@using NovaLaundryAppWebAdminBlazor.Server.Models;
 @using NovaLaundryAppWebAdminBlazor.Server.ViewModels;
+@inject SweetAlertService Swal
 
 @inject ProtectedLocalStorage localStorage
 <div class=" d-flex justify-content-center align-items-center flex-column" style="height:100%; width:100%;">
@@ -22,7 +23,6 @@
 
             @if (pestañaActual == 1)
             {
-
                 <!--Menu-->
                 <div class="tab-pane fade show active tab-pane fade " id="TIMenu" role="tabpanel" aria-labelledby="tab1-tab">
 
@@ -31,192 +31,13 @@
                         <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-4">
                             <div class="card d-flex flex-column align-items-stretch h-100" style="width:100%">
                                 <div class="card-body d-flex flex-column align-items-stretch">
-                                    <h5 class="card-title w-100  text-dark shadow-sm p-3 mb-5 rounded" style="background-color:#add8e6">Almacenes</h5>
-                                    <p class="card-text">Listado de ubicaciones para almacenar productos.  <br><br><br></p>
-                                    <a class="btn mt-auto" id="botonEstatus" style="background-color:#add8e6" >Ingresar</a>
+                                    <h5 class="card-title w-100  text-dark shadow-sm p-3 mb-5 rounded" style="background-color:#add8e6">Empresas Terceros</h5>
+                                    <p class="card-text"> - <br><br><br></p>
+                                    <a class="btn mt-auto" id="botonEstatus" style="background-color:#add8e6" @onclick="@( e => ConfigUI("EmpresasTerceras","Buscar"))">Ingresar</a>
                                 </div>
                             </div>
                         </div>
-                        <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-4">
-                            <div class="card d-flex">
-                                <div class="card-body d-flex flex-column flex-fill">
-                                    <h5 class="card-title w-100  text-dark shadow-sm p-3 mb-5 rounded" style="background-color:#98FB98">Clave Producto Servicio</h5>
-                                    <p class="card-text">Identificador único asignado a un producto o servicio para su registro y seguimiento dentro del sistema de gestión.</p>
-                                    <a href="#" class="btn mt-auto" style="background-color:#98FB98">Ingresar</a>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-4">
-                            <div class="card d-flex flex-column align-items-stretch h-100" style="width:100%">
-                                <div class="card-body d-flex flex-column align-items-stretch">
-                                    <h5 class="card-title w-100 text-dark shadow-sm p-3 mb-5 rounded " style="background-color:#FFFFE0">Clave Unidad</h5>
-                                    <p class="card-text">Identificador único asignado a una unidad de medida estándar para productos o servicios. <br><br></p>
-                                    <a href="#" class="btn" style="background-color:#FFFFE0">Ingresar</a>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-4">
-                            <div class="card d-flex flex-column align-items-stretch h-100" style="width:100%">
-                                <div class="card-body d-flex flex-column align-items-stretch">
-                                    <h5 class="card-title w-100 text-dark shadow-sm p-3 mb-5 rounded" style="background-color:#E6E6FA">Empresa</h5>
-                                    <p class="card-text">Organización o entidad comercial que se dedica a actividades económicas, como la producción, distribución o venta de bienes y servicios.</p>
-                                    <a href="#" class="btn" style="background-color:#E6E6FA">Ingresar</a>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-4">
-                            <div class="card d-flex flex-column align-items-stretch h-100" style="width:100%">
-                                <div class="card-body d-flex flex-column align-items-stretch">
-                                    <h5 class="card-title w-100 text-dark shadow-sm p-3 mb-5 rounded" style="background-color:#FFB6C1">Equipos</h5>
-                                    <p class="card-text">Conjunto de herramientas, maquinaria o dispositivos utilizados para realizar tareas específicas dentro de una organización o proyecto.</p>
-                                    <a href="#" class="btn" style="background-color:#FFB6C1">Ingresar</a>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-4">
-                            <div class="card d-flex flex-column align-items-stretch h-100" style="width:100%">
-                                <div class="card-body d-flex flex-column align-items-stretch">
-                                    <h5 class="card-title w-100 text-dark shadow-sm p-3 mb-5 rounded " style="background-color:#40E0D0">Estatus</h5>
-                                    <p class="card-text">Estado o condición actual de un objeto, proceso o situación, que puede indicar su disponibilidad, progreso, validez.</p>
-                                    <a href="#" class="btn" style="background-color:#40E0D0">Ingresar</a>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-4">
-                            <div class="card d-flex flex-column align-items-stretch h-100" style="width:100%">
-                                <div class="card-body d-flex flex-column align-items-stretch">
-                                    <h5 class="card-title w-100 text-dark shadow-sm p-3 mb-5 rounded" style="background-color:#FFDAB9">Estatus Pago</h5>
-                                    <p class="card-text">Estado o condición del proceso de pago.<br><br><br></p>
-                                    <a href="#" class="btn" style="background-color:#FFDAB9">Ingresar</a>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-4">
-                            <div class="card d-flex flex-column align-items-stretch h-100" style="width:100%">
-                                <div class="card-body d-flex flex-column align-items-stretch">
-                                    <h5 class="card-title w-100 text-dark shadow-sm p-3 mb-5 rounded" style="background-color:#E0D8E6">Familia</h5>
-                                    <p class="card-text">Agrupación o categorización de productos, servicios o elementos relacionados por características comunes, como tipo, función o uso.</p>
-                                    <a href="#" class="btn" style="background-color:#E0D8E6">Ingresar</a>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-4">
-                            <div class="card d-flex flex-column align-items-stretch h-100" style="width:100%">
-                                <div class="card-body d-flex flex-column align-items-stretch">
-                                    <h5 class="card-title w-100 text-dark shadow-sm p-3 mb-5 rounded" style="background-color:#00FF00">Formas Pago</h5>
-                                    <p class="card-text">Métodos aceptados para realizar transacciones financieras.</p>
-                                    <a href="#" class="btn" style="background-color:#00FF00">Ingresar</a>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-4">
-                            <div class="card d-flex flex-column align-items-stretch h-100" style="width:100%">
-                                <div class="card-body d-flex flex-column align-items-stretch">
-                                    <h5 class="card-title w-100 text-dark shadow-sm p-3 mb-5 rounded" style="background-color:#FF7F50">Impuesto</h5>
-                                    <p class="card-text">Cargos obligatorios impuestos por el gobierno sobre bienes, servicios, o ingresos.</p>
-                                    <a href="#" class="btn" style="background-color:#FF7F50">Ingresar</a>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-4">
-                            <div class="card d-flex flex-column align-items-stretch h-100" style="width:100%">
-                                <div class="card-body d-flex flex-column align-items-stretch">
-                                    <h5 class="card-title w-100 text-light shadow-sm p-3 mb-5 rounded" style="background-color:#808000">Líneas</h5>
-                                    <p class="card-text">Se refiere a las diferentes categorías o líneas de productos.</p>
-                                    <a href="#" class="btn text-light" style="background-color:#808000">Ingresar</a>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-4">
-                            <div class="card d-flex flex-column align-items-stretch h-100" style="width:100%">
-                                <div class="card-body d-flex flex-column align-items-stretch">
-                                    <h5 class="card-title w-100 text-dark shadow-sm p-3 mb-5 rounded" style="background-color:#FFD1DC">Motivos Cancelación</h5>
-                                    <p class="card-text">Razones o causas que llevan a la anulación o interrupción de una transacción.</p>
-                                    <a href="#" class="btn" style="background-color:#FFD1DC">Ingresar</a>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-4">
-                            <div class="card d-flex flex-column align-items-stretch h-100" style="width:100%">
-                                <div class="card-body d-flex flex-column align-items-stretch">
-                                    <h5 class="card-title w-100 text-dark shadow-sm p-3 mb-5 rounded" style="background-color:#FFFACD">Notas Proceso</h5>
-                                    <p class="card-text">Estado o condición del proceso de una nota.<br><br><br></p>
-                                    <a href="#" class="btn" style="background-color:#FFFACD">Ingresar</a>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-4">
-                            <div class="card d-flex flex-column align-items-stretch h-100" style="width:100%">
-                                <div class="card-body d-flex flex-column align-items-stretch">
-                                    <h5 class="card-title w-100 text-light shadow-sm p-3 mb-5 rounded" style="background-color:#4682B4">Paquetes</h5>
-                                    <p class="card-text">Conjuntos o grupos de productos o servicios que se ofrecen juntos como una unidad para satisfacer una necesidad específica del cliente.</p>
-                                    <a href="#" class="btn text-light" style="background-color:#4682B4">Ingresar</a>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-4">
-                            <div class="card d-flex flex-column align-items-stretch h-100" style="width:100%">
-                                <div class="card-body d-flex flex-column align-items-stretch">
-                                    <h5 class="card-title w-100 text-light shadow-sm p-3 mb-5 rounded " style="background-color:#FF00FF">Productos</h5>
-                                    <p class="card-text">Productos ofrecidos por la empresa.<br><br><br></p>
-                                    <a href="#" class="btn text-light " style="background-color:#FF00FF">Ingresar</a>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-4">
-                            <div class="card d-flex flex-column align-items-stretch h-100" style="width:100%">
-                                <div class="card-body d-flex flex-column align-items-stretch">
-                                    <h5 class="card-title w-100  text-dark shadow-sm p-3 mb-5 rounded" style="background-color:#40E0D0">Régimen Fiscal</h5>
-                                    <p class="card-text">Conjunto de normativas y disposiciones legales que regulan la forma en que una persona física o moral debe cumplir con sus obligaciones fiscales.</p>
-                                    <a href="#" class="btn" style="background-color:#40E0D0">Ingresar</a>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-4">
-                            <div class="card d-flex flex-column align-items-stretch h-100" style="width:100%">
-                                <div class="card-body d-flex flex-column align-items-stretch">
-                                    <h5 class="card-title w-100 text-dark shadow-sm p-3 mb-5 rounded" style="background-color:#FFA07A">Sucursales</h5>
-                                    <p class="card-text">Locales o establecimientos adicionales de la empresa.<br><br><br></p>
-                                    <a href="#" class="btn" style="background-color:#FFA07A">Ingresar</a>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-4">
-                            <div class="card d-flex flex-column align-items-stretch h-100" style="width:100%">
-                                <div class="card-body d-flex flex-column align-items-stretch">
-                                    <h5 class="card-title w-100 text-dark shadow-sm p-3 mb-5 rounded" style="background-color:#ADD8E6">Uso CFDI</h5>
-                                    <p class="card-text">Indicación del propósito o finalidad para la emisión de un Comprobante Fiscal Digital por Internet (CFDI), establecido por el Servicio de Administración Tributaria.</p>
-                                    <a href="#" class="btn" style="background-color:#ADD8E6">Ingresar</a>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-4">
-                            <div class="card d-flex flex-column align-items-stretch h-100" style="width:100%">
-                                <div class="card-body d-flex flex-column align-items-stretch">
-                                    <h5 class="card-title w-100 bg-primary text-light shadow-sm p-3 mb-5 rounded ">Usuarios</h5>
-                                    <p class="card-text"> Individuos o entidades autorizadas para acceder, utilizar o interactuar con el sistema.<br><br><br></p>
-                                    <a href="#" class="btn btn-primary">Ingresar</a>
-                                </div>
-                            </div>
-                        </div>
-
+                   
                     </div>
 
                 </div>
@@ -236,8 +57,8 @@
                             <div class="col-md-6">
                                 <form class="form-inline d-flex justify-content-around align-items-center" action="#" method="GET">
                                     <input class="form-control rounded mr-2 rounded-pill" type="text" name="q" placeholder="Buscar..." @bind="@filter">
-                                    <button class="btn btn-primary mx-2 rounded-pill d-flex justify-content-around align-items-center " type="button">Buscar <img src="/Search.png" alt="Logo" class="img-fluid mx-2" style="max-width: 25px;"></button>
-                                    <button class="btn btn-success mx-2 rounded-pill d-flex justify-content-around align-items-center " onclick="cargarPes('TICrear')" type="button">Crear <img src="/Create.png" alt="Logo" class="img-fluid rounded-circle mx-2" style="max-width: 25px;"></button>
+                                    <button class="btn btn-primary mx-2 rounded-pill d-flex justify-content-around align-items-center " type="button" @onclick="@(e => FuncionesPrincipales())">Buscar <img src="/Search.png" alt="Logo" class="img-fluid mx-2" style="max-width: 25px;"></button>
+                                    <button class="btn btn-success mx-2 rounded-pill d-flex justify-content-around align-items-center " type="button" @onclick="@(e => ConfigUI(moduloAux,"Crear"))">Crear <img src="/Create.png" alt="Logo" class="img-fluid rounded-circle mx-2" style="max-width: 25px;"></button>
                                 </form>
                             </div>
                         </div>
@@ -276,7 +97,6 @@
                             </div>
                         </div>
                     </div>
-
                 </div>
 
             }
@@ -285,60 +105,71 @@
                 <!--Crear-->
                 <div class="tab-pane fade overflow-auto show active w-90" id="TICrear" role="tabpanel" aria-labelledby="tab2-tab">
 
-                    <button class="btn alert-secondary m-1" type="button">Volver</button>
+                    <button class="btn btn-secondary m-1 mb-4" type="button" @onclick="@(e => ConfigUI(moduloAux, "Buscar"))">Volver</button>
 
                     <div class="col-md-8 w-90">
                         <form>
                             <div class="form-container w-90 p-2">
 
-                                @*Botones*@
-                                <div class="row mb-3">
-                                    <div class="col-md-4">
-                                        <label for="input1" class="form-label">Text Uno</label>
-                                        <input type="text" class="form-control" id="input1">
+                                @if(VisibleGeneralUno)
+                                {
+                                    <div class="col-md-3">
+                                        <label for="TxtGeneralUno" class="form-label">@LblGeneralUno</label>
+                                        <input type="text" class="form-control" id="TxtGeneralUno" @bind="@TxtGeneralUno">
                                     </div>
-                                    <div class="col-md-4">
-                                        <label for="input2" class="form-label">Text Dos</label>
-                                        <input type="text" class="form-control" id="input2">
+                                }
+                                @if (VisibleGeneralDos)
+                                {
+                                    <div class="col-md-3">
+                                        <label for="TxtGeneralDos" class="form-label">@LblGeneralDos</label>
+                                        <input type="text" class="form-control" id="TxtGeneralDos" @bind="@TxtGeneralDos">
                                     </div>
-                                    <div class="col-md-4">
-                                        <label for="input3" class="form-label">Text Tres</label>
-                                        <input type="text" class="form-control" id="input3">
+                                }
+                                @if (VisibleGeneralTres)
+                                {
+                                    <div class="col-md-3">
+                                        <label for="TxtGeneralTres" class="form-label">@LblGeneralTres</label>
+                                        <input type="text" class="form-control" id="TxtGeneralTres" @bind="@TxtGeneralTres">
                                     </div>
-                                </div>
-
-                                <!-- Checkboxes -->
-                                <div class="mb-3 form-check">
-                                    <input type="checkbox" class="form-check-input" id="checkbox1">
-                                    <label class="form-check-label" for="checkbox1">Checkbox 1</label>
-                                </div>
-                                <div class="mb-3 form-check">
-                                    <input type="checkbox" class="form-check-input" id="checkbox2">
-                                    <label class="form-check-label" for="checkbox2">Checkbox 2</label>
-                                </div>
-                                <div class="mb-3 form-check">
-                                    <input type="checkbox" class="form-check-input" id="checkbox3">
-                                    <label class="form-check-label" for="checkbox3">Checkbox 3</label>
-                                </div>
-
-                                <!-- Comboboxes -->
-                                <div class="mb-3">
-                                    <label for="combobox1" class="form-label">Combobox 1</label>
-                                    <select class="form-select" id="combobox1">
-                                        <option value="">Seleccione...</option>
-                                        <!-- Opciones -->
-                                    </select>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="combobox2" class="form-label">Combobox 2</label>
-                                    <select class="form-select" id="combobox2">
-                                        <option value="">Seleccione...</option>
-                                        <!-- Opciones -->
-                                    </select>
-                                </div>
+                                }
+                                @if (VisibleGeneralCuatro)
+                                {
+                                    <div class="col-md-3">
+                                        <label for="TxtGeneralCuatro" class="form-label">@LblGeneralCuatro</label>
+                                        <input type="text" class="form-control" id="TxtGeneralCuatro" @bind="@TxtGeneralCuatro">
+                                    </div>
+                                }
+                                @if (VisibleGeneralCinco)
+                                {
+                                    <div class="col-md-3">
+                                        <label for="TxtGeneralCinco" class="form-label">@LblGeneralCinco</label>
+                                        <input type="text" class="form-control" id="TxtGeneralCinco" @bind="@TxtGeneralCinco">
+                                    </div>
+                                }
+                                @if (VisibleGeneralSeis)
+                                {
+                                    <div class="col-md-3">
+                                        <label for="TxtGeneralSeis" class="form-label">@LblGeneralSeis</label>
+                                        <input type="text" class="form-control" id="TxtGeneralSeis" @bind="@TxtGeneralSeis">
+                                    </div>
+                                }
+                                @if (VisibleGeneralSiete)
+                                {
+                                    <div class="col-md-3">
+                                        <label for="TxtGeneralSiete" class="form-label">@LblGeneralSiete</label>
+                                        <input type="text" class="form-control" id="TxtGeneralSiete" @bind="@TxtGeneralSiete">
+                                    </div>
+                                }
+                                @if (VisibleGeneralOcho)
+                                {
+                                    <div class="col-md-3">
+                                        <label for="TxtGeneralOcho" class="form-label" disabled="@VisibleGeneralOcho">@LblGeneralOcho</label>
+                                        <input type="text" class="form-control" id="TxtGeneralOcho" disabled="@VisibleGeneralOcho" @bind="@TxtGeneralOcho">
+                                    </div>
+                                }
 
                             </div>
-                            <button type="submit" class="btn btn-primary m-2 float-end">Crear</button>
+                            <button type="button" class="btn btn-primary m-2 float-end" @onclick = "@FuncionesPrincipales">Guardar</button>
                         </form>
                     </div>
                 </div>
@@ -391,58 +222,246 @@
     private string titulo = "Menú Principal";
     List<string> headers = new List<string>();
     List<List<object>> rows = new List<List<object>>();
-    string token;
     string filter = "";
+    string moduloAux = "";
+    string opcAux = "";
+
+    //Herremientas UI Generales
+    string TxtGeneralUno = "";
+    string TxtGeneralDos = "";
+    string TxtGeneralTres = "";
+    string TxtGeneralCuatro = "";
+    string TxtGeneralCinco = "";
+    string TxtGeneralSeis = "";
+    string TxtGeneralSiete = "";
+    string TxtGeneralOcho = "";
+
+    string LblGeneralUno = "";
+    string LblGeneralDos = "";
+    string LblGeneralTres = "";
+    string LblGeneralCuatro = "";
+    string LblGeneralCinco = "";
+    string LblGeneralSeis = "";
+    string LblGeneralSiete = "";
+    string LblGeneralOcho = "";
+
+    bool VisibleGeneralUno = false;
+    bool VisibleGeneralDos = false;
+    bool VisibleGeneralTres = false;
+    bool VisibleGeneralCuatro = false;
+    bool VisibleGeneralCinco = false;
+    bool VisibleGeneralSeis = false;
+    bool VisibleGeneralSiete = false;
+    bool VisibleGeneralOcho = false;
+
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (firstRender)
         {
-            ConfigUI(1, "Menu", "");
+            await ConfigUI("Menu", "");
 
-            token = await ObtenerToken();
             StateHasChanged();
         }
     }
 
-    private async Task<string> ObtenerToken()
+    private async Task ConfigUI(string modulo,string opc)
     {
-        var token = await localStorage.GetAsync<string>("token");
+        opcAux = opc;
+        moduloAux = modulo;
 
-        return token.Value;
-    }
-
-    private async void ConfigUI(int numeroPestana, string module, string opc)
-    {
-        pestañaActual = numeroPestana;
-
-        switch (module)
+        switch (modulo)
         {
-            case "Almacenes":
+            case "EmpresasTerceras":
 
                 if (opc == "Buscar")
                 {
                     pestañaActual = 2;
-                    titulo = "Buscar Almacén";
-                    headers = vMCatalogo.CargarHeaders(module);
-                    var data = await vMCatalogo.Filter<AlmacenesApiGetAllResponse>(1, filter,token,module);
-                    data = data;
-
+                    titulo = "Buscar Empresas Tercerizadas";
+                    FuncionesPrincipales();
                 }
                 else if(opc == "Crear")
                 {
-                    titulo = "Crear Almacén";
+                    pestañaActual = 3;
+                    titulo = "Crear Empresa Tercerizada";
+                    CargarDatos();
                 }
                 else if(opc == "Modificar")
                 {
-                    titulo = "Modificar Almacén";
+                    titulo = "Modificar Empresa Tercerizada";
                 }
 
                 break;
+
             case "Menu":
                 pestañaActual = 1;
                 break;
         }
-        
+
+        StateHasChanged();
     }
+
+    private void CargarDatos()
+    {
+        switch (moduloAux)
+        {
+            case "EmpresasTerceras":
+
+                LimpiarDatos();
+                VisibleGeneralUno = true;
+                VisibleGeneralDos = true;
+                VisibleGeneralTres = true;
+                VisibleGeneralCuatro = true;
+                VisibleGeneralCinco = true;
+
+                LblGeneralUno = "Nombre";
+                LblGeneralDos = "Nombre Comercial";
+                LblGeneralTres = "RUC";
+                LblGeneralCuatro = "Dirección";
+                LblGeneralCinco = "Telefono";
+
+                if (opcAux == "Modificar")
+                {
+
+                }
+
+                break;
+        }
+        StateHasChanged();
+    }
+
+    private void LimpiarDatos()
+    {
+        switch (moduloAux)
+        {
+            case "EmpresasTerceras":
+                 TxtGeneralUno = "";
+                 TxtGeneralDos = "";
+                 TxtGeneralTres = "";
+                 TxtGeneralCuatro = "";
+                 TxtGeneralCinco = "";
+                 TxtGeneralSeis = "";
+                 TxtGeneralSiete = "";
+                 TxtGeneralOcho = "";
+                break;
+        }
+        StateHasChanged();
+    }
+
+    private void FuncionesPrincipales()
+    {
+        switch (moduloAux)
+        {
+            case "EmpresasTerceras":
+
+                if (opcAux == "Buscar")
+                {
+                    CargarTitulos();
+
+                    using (HaliabdContext db = new HaliabdContext())
+                    {
+                        List<EmpresasTercera> empresasTercerasList = db.EmpresasTerceras.Where(s => s.NombreComercial.Contains(filter)).ToList();
+
+                        rows.Clear(); // Limpiamos la lista antes de agregar nuevos datos
+
+                        foreach (var item in empresasTercerasList)
+                        {
+                            List<object> fila = new List<object>();
+                            fila.Add(item.EmpresasTercerasId);
+                            fila.Add(item.Nombre);
+                            fila.Add(item.NombreComercial);
+                            fila.Add(item.Ruc);
+                            fila.Add(item.Dirección);
+                            fila.Add(item.Telefono);
+
+                            rows.Add(fila);
+                        }
+                    }
+                }
+                else if (opcAux == "Crear")
+                {
+                    if (Validaciones())
+                    {
+                        using(HaliabdContext db = new HaliabdContext())
+                        {
+                                EmpresasTercera empresasTercera = new EmpresasTercera()
+                                {
+                                    Nombre = TxtGeneralUno.Trim(),
+                                    NombreComercial = TxtGeneralDos.Trim(),
+                                    Ruc = TxtGeneralTres.Trim(),
+                                    Dirección = TxtGeneralCuatro.Trim(),
+                                    Telefono = TxtGeneralCinco.Trim(), 
+                                };   
+
+                            db.Add(empresasTercera);
+                            db.SaveChanges();
+                        }
+                    }
+
+                    ConfigUI(moduloAux, "Buscar");
+                }
+                else if (opcAux == "Modificar")
+                {
+
+                }
+
+                break;
+        }
+        StateHasChanged();
+    }
+
+    private bool Validaciones()
+    {
+        switch (moduloAux)
+        {
+            case "EmpresasTerceras":
+
+                if(TxtGeneralUno.Trim().Length == 0)
+                {
+                    _ = Swal.FireAsync(new SweetAlertOptions
+                        {
+                            Title = "Atención",
+                            Text = "Debe digitar el nombre de la empresa.",
+                            Icon = SweetAlertIcon.Warning,
+                            ConfirmButtonText = "Ok",
+                            CancelButtonText = "Volver"
+                        });
+
+                        return false;
+                }
+
+                if (TxtGeneralDos.Trim().Length == 0)
+                {
+                    _ = Swal.FireAsync(new SweetAlertOptions
+                        {
+                            Title = "Atención",
+                            Text = "Debe digitar el nombre comercial de la empresa.",
+                            Icon = SweetAlertIcon.Warning,
+                            ConfirmButtonText = "Ok",
+                            CancelButtonText = "Volver"
+                        });
+
+                        return false;
+                }
+
+                return true;
+                break;
+        }
+
+        return false;
+    }
+
+    private void CargarTitulos()
+    {
+        switch (moduloAux)
+        {
+            case "EmpresasTerceras":
+                headers = new List<string>() {"Clave","Nombre","Nombre Comercial","RUC","Dirección","Telefono"};
+                break;
+        }
+
+        StateHasChanged();
+    }
+
+   
 }
