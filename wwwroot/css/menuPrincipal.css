@@ -32,6 +32,8 @@
 
 .sidebar-menu .logo-section img {
     width: 100%;
+    height: 40px;
+    max-height: 40px;
     cursor: pointer;
 }
 
