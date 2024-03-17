@@ -1,9 +1,42 @@
 ﻿@inherits LayoutComponentBase
+@inject IAuthenticationService AuthenticationService
 
-<PageTitle>NovaLaundryAppWebAdminBlazor</PageTitle>
-<BlazoredToasts />
-<div class="page">
-    <main style="width:100%; height:100vh; padding:0; margin:0;">
+<div>
+    @if (isAuthenticated)
+    {
+        <div class="main-cnt" style="height:100vh; width:100%;">
+         <NovaLaundryAppWebAdminBlazor.Pages.Components.menu.SidebarMenu />
+
+         <div class="main-elements">
+            <CascadingValue Value="TituloSeccion">
+               <NovaLaundryAppWebAdminBlazor.Pages.Components.menu.HeaderMenu />
+            </CascadingValue>            
+            
             @Body
-    </main>
+         </div>
+      </div>
+    }
+    else
+    {
+        <div class="unauthenticated-content">
+            <!-- Render content for unauthenticated users -->
+            <NovaLaundryAppWebAdminBlazor.Pages.Login />
+        </div>
+    }
 </div>
+
+@code 
+{
+   private bool isAuthenticated = false;
+   private string TituloSeccion = "Inicio";
+
+   protected override async Task OnAfterRenderAsync(bool firstRender)
+   {
+      if(firstRender) 
+      {
+         // Check if the user is authenticated
+         isAuthenticated = await AuthenticationService.IsAuthenticatedAsync();
+         StateHasChanged();
+      }
+   }
+}

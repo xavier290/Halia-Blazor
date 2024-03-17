@@ -1,0 +1,27 @@
+.card {
+    display: flex;
+    flex-direction: column;
+}
+
+.card-body {
+    flex-grow: 1;
+}
+
+.btn-volver {
+    display: inline-block;
+    padding: 10px 20px;
+    font-size: 16px;
+    font-weight: bold;
+    text-decoration: none;
+    background-color: #4CAF50; /* Color de fondo */
+    color: white; /* Color del texto */
+    border: 2px solid #4CAF50; /* Borde del botón */
+    border-radius: 8px; /* Borde redondeado */
+    transition: background-color 0.3s, color 0.3s; /* Transición suave al pasar el ratón */
+}
+
+    /* Estilos hover del botón */
+    .btn-volver:hover {
+        background-color: white; /* Cambio de color de fondo al pasar el ratón */
+        color: #4CAF50; /* Cambio de color del texto al pasar el ratón */
+    }
