@@ -19,45 +19,31 @@ public partial class HaliabdContext : DbContext
 
     public virtual DbSet<Almacene> Almacenes { get; set; }
 
-    public virtual DbSet<AuditoriaSistema> AuditoriaSistemas { get; set; }
-
-    public virtual DbSet<Banco> Bancos { get; set; }
-
-    public virtual DbSet<Cliente> Clientes { get; set; }
-
     public virtual DbSet<Empresa> Empresas { get; set; }
 
     public virtual DbSet<EmpresasTercera> EmpresasTerceras { get; set; }
 
-    public virtual DbSet<Imagene> Imagenes { get; set; }
-
     public virtual DbSet<Inventario> Inventarios { get; set; }
 
-    public virtual DbSet<MotivosCancelacion> MotivosCancelacions { get; set; }
+    public virtual DbSet<Linea> Lineas { get; set; }
 
-    public virtual DbSet<Proveedore> Proveedores { get; set; }
+    public virtual DbSet<Producto> Productos { get; set; }
+
+    public virtual DbSet<Proveedor> Proveedors { get; set; }
 
     public virtual DbSet<RelAlmacenDetalle> RelAlmacenDetalles { get; set; }
 
     public virtual DbSet<RelAlmacenProducto> RelAlmacenProductos { get; set; }
 
-    public virtual DbSet<RelBancoTipo> RelBancoTipos { get; set; }
-
     public virtual DbSet<RelProductoSucursale> RelProductoSucursales { get; set; }
+
+    public virtual DbSet<RelUsuarioSucursale> RelUsuarioSucursales { get; set; }
 
     public virtual DbSet<RolPermiso> RolPermisos { get; set; }
 
     public virtual DbSet<RolUsuario> RolUsuarios { get; set; }
 
-    public virtual DbSet<ServiciosEstadare> ServiciosEstadares { get; set; }
-
     public virtual DbSet<Sucursale> Sucursales { get; set; }
-
-    public virtual DbSet<TipoCambio> TipoCambios { get; set; }
-
-    public virtual DbSet<TipoServicio> TipoServicios { get; set; }
-
-    public virtual DbSet<TipoTarjetum> TipoTarjeta { get; set; }
 
     public virtual DbSet<Usuario> Usuarios { get; set; }
 
@@ -86,71 +72,6 @@ public partial class HaliabdContext : DbContext
             entity.Property(e => e.Estatus).HasMaxLength(50);
             entity.Property(e => e.NombreAlmacen).HasMaxLength(100);
             entity.Property(e => e.SucursalId).HasColumnName("SucursalID");
-        });
-
-        modelBuilder.Entity<AuditoriaSistema>(entity =>
-        {
-            entity.HasKey(e => e.IdAuditoria);
-
-            entity.ToTable("AuditoriaSistema");
-
-            entity.Property(e => e.Campo).HasMaxLength(50);
-            entity.Property(e => e.Fecha).HasMaxLength(50);
-            entity.Property(e => e.Nivel)
-                .HasMaxLength(10)
-                .IsFixedLength();
-            entity.Property(e => e.Sector).HasMaxLength(50);
-            entity.Property(e => e.Tipo).HasMaxLength(50);
-            entity.Property(e => e.Usuario).HasMaxLength(100);
-        });
-
-        modelBuilder.Entity<Banco>(entity =>
-        {
-            entity.Property(e => e.BancoId).HasColumnName("BancoID");
-            entity.Property(e => e.Banco1)
-                .HasMaxLength(100)
-                .HasColumnName("Banco");
-            entity.Property(e => e.Estado).HasMaxLength(50);
-        });
-
-        modelBuilder.Entity<Cliente>(entity =>
-        {
-            entity.HasKey(e => e.IdCliente).HasName("PK__Clientes__D5946642123EB7A3");
-
-            entity.ToTable("Clientes", "RRHH");
-
-            entity.Property(e => e.Cedula).HasMaxLength(255);
-            entity.Property(e => e.Celular).HasMaxLength(50);
-            entity.Property(e => e.Departamento).HasMaxLength(100);
-            entity.Property(e => e.Direccion).HasMaxLength(255);
-            entity.Property(e => e.Email).HasMaxLength(60);
-            entity.Property(e => e.EstadoCivil)
-                .HasMaxLength(255)
-                .HasColumnName("Estado Civil");
-            entity.Property(e => e.Fax).HasMaxLength(50);
-            entity.Property(e => e.FechaNac).HasColumnType("date");
-            entity.Property(e => e.NoRuc).HasMaxLength(50);
-            entity.Property(e => e.Observacion)
-                .HasMaxLength(400)
-                .HasColumnName("observacion");
-            entity.Property(e => e.Pais)
-                .HasMaxLength(100)
-                .HasColumnName("pais");
-            entity.Property(e => e.Papellido)
-                .HasMaxLength(255)
-                .HasColumnName("PApellido");
-            entity.Property(e => e.Pnombre)
-                .HasMaxLength(255)
-                .HasColumnName("PNombre");
-            entity.Property(e => e.Profesion).HasMaxLength(255);
-            entity.Property(e => e.Sapellido)
-                .HasMaxLength(255)
-                .HasColumnName("SAPellido");
-            entity.Property(e => e.Sexo).HasMaxLength(255);
-            entity.Property(e => e.Snombre)
-                .HasMaxLength(255)
-                .HasColumnName("SNombre");
-            entity.Property(e => e.Telefono).HasMaxLength(50);
         });
 
         modelBuilder.Entity<Empresa>(entity =>
@@ -187,17 +108,6 @@ public partial class HaliabdContext : DbContext
             entity.Property(e => e.Telefono).HasMaxLength(50);
         });
 
-        modelBuilder.Entity<Imagene>(entity =>
-        {
-            entity.HasKey(e => e.IdImagen).HasName("PK__Imagenes__B42D8F2AB83BC61E");
-
-            entity.ToTable("Imagenes", "RECURSOS");
-
-            entity.Property(e => e.Imagen)
-                .HasColumnType("image")
-                .HasColumnName("imagen");
-        });
-
         modelBuilder.Entity<Inventario>(entity =>
         {
             entity.ToTable("Inventario");
@@ -206,28 +116,36 @@ public partial class HaliabdContext : DbContext
             entity.Property(e => e.ProductoId).HasColumnName("ProductoID");
         });
 
-        modelBuilder.Entity<MotivosCancelacion>(entity =>
+        modelBuilder.Entity<Linea>(entity =>
         {
-            entity.HasKey(e => e.MotivoCancelacionId);
+            entity.HasKey(e => e.LineaId).HasName("PK_LInea");
 
-            entity.ToTable("MotivosCancelacion");
+            entity.ToTable("Linea");
 
-            entity.Property(e => e.MotivoCancelacionId).HasColumnName("MotivoCancelacionID");
-            entity.Property(e => e.Estado).HasMaxLength(50);
-            entity.Property(e => e.Motivo).HasMaxLength(100);
+            entity.Property(e => e.Nombre).HasMaxLength(50);
         });
 
-        modelBuilder.Entity<Proveedore>(entity =>
+        modelBuilder.Entity<Producto>(entity =>
         {
-            entity.HasKey(e => e.IdProveedor).HasName("PK__Proveedo__E8B631AFC844EB8F");
+            entity.ToTable("Producto");
 
-            entity.ToTable("Proveedores", "OPERATIVOS");
+            entity.Property(e => e.CodigoProducto).HasMaxLength(50);
+            entity.Property(e => e.Descripcion).HasMaxLength(100);
+            entity.Property(e => e.FechaCreacion).HasColumnType("datetime");
+            entity.Property(e => e.NombreProducto).HasMaxLength(100);
+            entity.Property(e => e.Precio).HasColumnType("decimal(18, 2)");
+            entity.Property(e => e.ProductoServicio).HasMaxLength(50);
+        });
 
-            entity.Property(e => e.Correo).HasMaxLength(30);
+        modelBuilder.Entity<Proveedor>(entity =>
+        {
+            entity.ToTable("Proveedor");
+
+            entity.Property(e => e.DepartamentoEstado).HasMaxLength(50);
             entity.Property(e => e.Direccion).HasMaxLength(200);
-            entity.Property(e => e.NoRuc).HasMaxLength(30);
-            entity.Property(e => e.NoTelefono).HasMaxLength(30);
-            entity.Property(e => e.NombreEmpresa).HasMaxLength(200);
+            entity.Property(e => e.NombreProveedor).HasMaxLength(50);
+            entity.Property(e => e.NumeroTelefono).HasMaxLength(50);
+            entity.Property(e => e.Pais).HasMaxLength(50);
         });
 
         modelBuilder.Entity<RelAlmacenDetalle>(entity =>
@@ -250,16 +168,6 @@ public partial class HaliabdContext : DbContext
             entity.Property(e => e.RelAlmacenProductoId).HasColumnName("RelAlmacenProductoID");
         });
 
-        modelBuilder.Entity<RelBancoTipo>(entity =>
-        {
-            entity.HasKey(e => e.RelBancoTarjetaTipo);
-
-            entity.ToTable("RelBancoTipo");
-
-            entity.Property(e => e.BancoId).HasColumnName("BancoID");
-            entity.Property(e => e.TarjetaTipoId).HasColumnName("TarjetaTipoID");
-        });
-
         modelBuilder.Entity<RelProductoSucursale>(entity =>
         {
             entity.HasKey(e => e.RelProductoSucursalesId);
@@ -267,6 +175,15 @@ public partial class HaliabdContext : DbContext
             entity.Property(e => e.RelProductoSucursalesId).HasMaxLength(50);
             entity.Property(e => e.ProductoId).HasColumnName("ProductoID");
             entity.Property(e => e.SucursalId).HasColumnName("SucursalID");
+        });
+
+        modelBuilder.Entity<RelUsuarioSucursale>(entity =>
+        {
+            entity.HasKey(e => e.RelUsuarioSucursalId).HasName("PK_RelUsuarioEmpresaID");
+
+            entity.Property(e => e.RelUsuarioSucursalId).HasColumnName("RelUsuarioSucursalID");
+            entity.Property(e => e.SucursalId).HasColumnName("SucursalID");
+            entity.Property(e => e.UsuariId).HasColumnName("UsuariID");
         });
 
         modelBuilder.Entity<RolPermiso>(entity =>
@@ -378,21 +295,6 @@ public partial class HaliabdContext : DbContext
             entity.Property(e => e.Rol).HasMaxLength(100);
         });
 
-        modelBuilder.Entity<ServiciosEstadare>(entity =>
-        {
-            entity.HasKey(e => e.IdEstandar).HasName("PK__Servicio__BB570ABD4589517F");
-
-            entity.ToTable("Servicios_Estadares", "OPERATIVOS");
-
-            entity.Property(e => e.ClasificacionInventario).HasMaxLength(50);
-            entity.Property(e => e.Codigo).HasMaxLength(100);
-            entity.Property(e => e.Descripcion).HasMaxLength(500);
-            entity.Property(e => e.Estado).HasMaxLength(50);
-            entity.Property(e => e.MontoVd).HasColumnName("MontoVD");
-            entity.Property(e => e.NombreEstandar).HasMaxLength(100);
-            entity.Property(e => e.TipoServicio).HasMaxLength(50);
-        });
-
         modelBuilder.Entity<Sucursale>(entity =>
         {
             entity.HasKey(e => e.SucursalId);
@@ -406,34 +308,6 @@ public partial class HaliabdContext : DbContext
             entity.Property(e => e.Telefono).HasMaxLength(50);
         });
 
-        modelBuilder.Entity<TipoCambio>(entity =>
-        {
-            entity.HasKey(e => e.IdTasaCambio).HasName("PK__TipoCamb__E5C307FB17CC6D75");
-
-            entity.ToTable("TipoCambio", "OPERATIVOS");
-
-            entity.Property(e => e.FechaCambio).HasColumnType("datetime");
-        });
-
-        modelBuilder.Entity<TipoServicio>(entity =>
-        {
-            entity.HasKey(e => e.TipoServicionId).HasName("PK_OPERATIVOS.TipoServicios");
-
-            entity.Property(e => e.TipoServicionId).HasColumnName("TipoServicionID");
-            entity.Property(e => e.Descripcion).HasMaxLength(100);
-            entity.Property(e => e.Estado).HasMaxLength(50);
-        });
-
-        modelBuilder.Entity<TipoTarjetum>(entity =>
-        {
-            entity.HasKey(e => e.TipoTarjetaId);
-
-            entity.Property(e => e.TipoTarjetaId)
-                .ValueGeneratedNever()
-                .HasColumnName("TipoTarjetaID");
-            entity.Property(e => e.Estado).HasMaxLength(50);
-            entity.Property(e => e.NombreTipo).HasMaxLength(100);
-        });
 
         modelBuilder.Entity<Usuario>(entity =>
         {

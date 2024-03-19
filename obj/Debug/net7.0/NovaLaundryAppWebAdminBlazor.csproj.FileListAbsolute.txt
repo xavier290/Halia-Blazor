@@ -236,7 +236,6 @@ C:\Users\xa25a\Documents\Halia-Blazor\NovaLaundryAppWebAdminBlazor\obj\Debug\net
 C:\Users\xa25a\Documents\Halia-Blazor\NovaLaundryAppWebAdminBlazor\obj\Debug\net7.0\NovaLaundryAppWebAdminBlazor.MvcApplicationPartsAssemblyInfo.cache
 C:\Users\xa25a\Documents\Halia-Blazor\NovaLaundryAppWebAdminBlazor\obj\Debug\net7.0\NovaLaundryAppWebAdminBlazor.RazorAssemblyInfo.cache
 C:\Users\xa25a\Documents\Halia-Blazor\NovaLaundryAppWebAdminBlazor\obj\Debug\net7.0\NovaLaundryAppWebAdminBlazor.RazorAssemblyInfo.cs
-C:\Users\xa25a\Documents\Halia-Blazor\NovaLaundryAppWebAdminBlazor\obj\Debug\net7.0\NovaLaundryAppWebAdminBlazor.sourcelink.json
 C:\Users\xa25a\Documents\Halia-Blazor\NovaLaundryAppWebAdminBlazor\obj\Debug\net7.0\staticwebassets.build.json
 C:\Users\xa25a\Documents\Halia-Blazor\NovaLaundryAppWebAdminBlazor\obj\Debug\net7.0\staticwebassets.development.json
 C:\Users\xa25a\Documents\Halia-Blazor\NovaLaundryAppWebAdminBlazor\obj\Debug\net7.0\staticwebassets\msbuild.NovaLaundryAppWebAdminBlazor.Microsoft.AspNetCore.StaticWebAssets.props
@@ -359,3 +358,4 @@ C:\Users\Usuario\Desktop\Proyecto Fer\NuevoBlazor\Halia-Blazor\obj\Debug\net7.0\
 C:\Users\Usuario\Desktop\Proyecto Fer\NuevoBlazor\Halia-Blazor\obj\Debug\net7.0\NovaLaundryAppWebAdminBlazor.genruntimeconfig.cache
 C:\Users\Usuario\Desktop\Proyecto Fer\NuevoBlazor\Halia-Blazor\obj\Debug\net7.0\ref\NovaLaundryAppWebAdminBlazor.dll
 C:\Users\xa25a\Documents\Halia-Blazor\NovaLaundryAppWebAdminBlazor\bin\Debug\net7.0\Microsoft.AspNetCore.Identity.EntityFrameworkCore.dll
+C:\Users\xa25a\Documents\Halia-Blazor\NovaLaundryAppWebAdminBlazor\obj\Debug\net7.0\NovaLaundryAppWebAdminBlazor.sourcelink.json

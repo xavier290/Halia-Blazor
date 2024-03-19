@@ -30,6 +30,26 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ29tcG9uZW50c1xjYXRhbG9nXENhdGFsb2dvLnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
 
+[C:/Users/xa25a/Documents/Halia-Blazor/NovaLaundryAppWebAdminBlazor/Pages/Components/catalog/CreateProductPage.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ29tcG9uZW50c1xjYXRhbG9nXENyZWF0ZVByb2R1Y3RQYWdlLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/xa25a/Documents/Halia-Blazor/NovaLaundryAppWebAdminBlazor/Pages/Components/catalog/ProductLinesPage.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ29tcG9uZW50c1xjYXRhbG9nXFByb2R1Y3RMaW5lc1BhZ2UucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/xa25a/Documents/Halia-Blazor/NovaLaundryAppWebAdminBlazor/Pages/Components/catalog/ProductsPage.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ29tcG9uZW50c1xjYXRhbG9nXFByb2R1Y3RzUGFnZS5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/xa25a/Documents/Halia-Blazor/NovaLaundryAppWebAdminBlazor/Pages/Components/catalog/ProvidersPage.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ29tcG9uZW50c1xjYXRhbG9nXFByb3ZpZGVyc1BhZ2UucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/xa25a/Documents/Halia-Blazor/NovaLaundryAppWebAdminBlazor/Pages/Components/catalog/UpdateProductPage.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ29tcG9uZW50c1xjYXRhbG9nXFVwZGF0ZVByb2R1Y3RQYWdlLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
 [C:/Users/xa25a/Documents/Halia-Blazor/NovaLaundryAppWebAdminBlazor/Pages/Components/menu/HeaderMenu.razor]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ29tcG9uZW50c1xtZW51XEhlYWRlck1lbnUucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
