@@ -7,10 +7,12 @@ using NovaLaundryAppWebAdminBlazor.Server.ViewModels;
 using NovaLaundryAppWebAdminBlazor.ModelsHalia;
 
 using NovaLaundryAppWebAdminBlazor.Server.Services;
+using Microsoft.EntityFrameworkCore;
 
 
 public class CatalogService : IcatalogService 
 {
+    // public Producto Product { get; set; }
     public async Task<List<List<object>>> GetProductAsync(string filter) 
     {
         List<List<object>> rows = new List<List<object>>();
@@ -33,6 +35,16 @@ public class CatalogService : IcatalogService
 
         return rows;
     }
+
+    public async Task<Producto> GetSingleProductAsync(int entryId)
+    {
+        using (HaliabdContext db = new HaliabdContext())
+        {
+            Producto producto = await db.Productos.FirstOrDefaultAsync(e => e.ProductoId == entryId);
+            return producto;
+        }
+    }
+
     public async Task AddProductAsync(string name, decimal price, string productService, string code, string description) 
     {
         using(HaliabdContext db = new HaliabdContext())
