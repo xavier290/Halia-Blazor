@@ -60,11 +60,11 @@
 
         @if (showPopup && !editMode)
         {
-            <NovaLaundryAppWebAdminBlazor.Pages.Components.catalog.CreateProductPage OnSave="HandleSave" />
+            <NovaLaundryAppWebAdminBlazor.Pages.Components.catalog.CRUD.CreateProductPage OnSave="HandleSave" />
         }
         else if (showPopup && editMode)
         {
-            <NovaLaundryAppWebAdminBlazor.Pages.Components.catalog.UpdateProductPage OnSave="HandleSave" SelectedItemId="@entryId" />
+            <NovaLaundryAppWebAdminBlazor.Pages.Components.catalog.CRUD.UpdateProductPage OnSave="HandleSave" SelectedItemId="@entryId" />
         }
     </div>  
 </div>

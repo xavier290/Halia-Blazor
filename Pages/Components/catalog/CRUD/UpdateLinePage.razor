@@ -1,0 +1,66 @@
+@inject IcatalogService catalogService
+
+@using NovaLaundryAppWebAdminBlazor.Server.Services
+@using NovaLaundryAppWebAdminBlazor.Server.ViewModels
+@using NovaLaundryAppWebAdminBlazor.ModelsHalia
+
+<div class="popup-section">
+    <div class="modal-content">
+        <span class="close" @onclick="ClosePopup">&times;</span>
+        <h2>Actualizar Linea de Productos</h2>
+        @if (Line != null)
+        {
+            <!-- Render the content that depends on Product -->
+            <form @onsubmit="UpdateProduct">
+                <label for="name">Nombre</label>
+                <input type="text" id="name" name="name" @bind="LineName" required>
+
+                <button type="submit">Guardar</button>
+            </form>
+        }
+        else
+        {
+            <!-- Render a placeholder or loading message -->
+            <p>Loading...</p>
+        }
+    </div>
+</div>
+
+@code 
+{
+    [Parameter]
+    public EventCallback OnSave { get; set; }
+
+    [Parameter]
+    public int SelectedItemId { get; set; }
+    private Linea Line { get; set; }
+    private string LineName;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await LoadData(SelectedItemId);
+        }
+        
+        StateHasChanged();
+    }
+
+    private async Task LoadData(int entryId)
+    {
+        Line = await catalogService.GetSingleProductLineAsync(entryId);
+        
+        LineName = Line.Nombre;
+    }
+    public async Task ClosePopup() 
+    {
+        await OnSave.InvokeAsync();
+    }
+
+    public async Task UpdateProduct()
+    {
+        await catalogService.UpdateProductLineAsync(SelectedItemId, LineName);
+        // Optionally, notify parent component that save button is clicked
+        await OnSave.InvokeAsync();
+    }
+}

@@ -1,3 +1,130 @@
 @page "/Catalog/Providers"
+@inject IcatalogService CatalogService;
+@inject NavigationManager NavigationManager;
+
 
 <PageTitle>Halia || Proveedores</PageTitle>
+
+<!--Buscador-->
+<div class="tab-content" id="TCMain">
+    <div class="tab-pane fade show active tab-pane fade" id="TIBuscar" role="tabpanel" aria-labelledby="tab2-tab">
+        <!-- Botón Volver -->
+        <button @onclick="Comeback" class="btn-volver m-1" type="button">Volver</button>
+
+        <!--Search+Button-->
+        <div class="container mt-5">
+            <div class="row justify-content-center">
+                <div class="col-md-6">
+                    <form @onsubmit="LoadData" class="form-inline d-flex justify-content-around align-items-center">
+                        <input @bind="@filter" class="form-control rounded mr-2 rounded-pill" type="text" name="q" placeholder="Buscar...">
+                        <button class="btn btn-primary mx-2 rounded-pill d-flex justify-content-around align-items-center " type="submit">Buscar <img src="/Search.png" alt="Logo" class="img-fluid mx-2" style="max-width: 25px;"></button>
+                        <button @onclick="OpenPopupCreate" class="btn btn-success mx-2 rounded-pill d-flex justify-content-around align-items-center " type="button">Crear <img src="/Create.png" alt="Logo" class="img-fluid rounded-circle mx-2" style="max-width: 25px;"></button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!--Tabla-->
+        <div class="container mt-3">
+            <div class="row justify-content-center">
+                <div class="col-md-9">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Acciones</th>
+                                @foreach (var header in headers)
+                                {
+                                    <th>@header</th>
+                                }
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var row in rows)
+                            {
+                                <tr>
+                                    <td>
+                                        <button @onclick="() => OpenPopupEdit(row)" class="btn btn-primary">Actualizar</button>
+                                        <button class="btn btn-danger my-0" >Bloquear</button>
+                                    </td>
+                                    @foreach (var cell in row)
+                                    {
+                                        <td>@cell</td>
+                                    }
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        @if (showPopup && !editMode)
+        {
+            <NovaLaundryAppWebAdminBlazor.Pages.Components.catalog.CRUD.CreateProviderPage OnSave="HandleSave" />
+        }
+        else if (showPopup && editMode)
+        {
+            <NovaLaundryAppWebAdminBlazor.Pages.Components.catalog.CRUD.UpdateProviderPage OnSave="HandleSave" SelectedItemId="@entryId" />
+        }
+    </div>  
+</div>
+
+
+@code {
+    List<string> headers = new List<string>() {"Clave","Nombre","Telefono","Dirección","País"};
+    List<List<object>> rows = new List<List<object>>();
+    private bool showPopup = false;
+    private bool editMode = false;
+    private int entryId;
+    string filter = "";
+    private async Task HandleSave()
+    {
+        showPopup = false; // Close the popup window
+        LoadData(); // Reload data after saving
+    }
+
+    private void OpenPopupCreate()
+    {
+        showPopup = true;
+        editMode = false;
+    }
+
+    private async Task OpenPopupEdit(List<object> Id)
+    {
+        entryId = Convert.ToInt32(Id[0]);
+        showPopup = true;
+        editMode = true;
+    }
+
+    private void ClosePopup()
+    {
+        showPopup = false;
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            @* LoadTitles(); *@
+            await LoadData();
+        }
+
+        StateHasChanged();
+    }
+
+    private async Task LoadData()
+    {
+        rows.Clear();
+        List<List<object>> dataProducts = await CatalogService.GetProviderAsync(filter);
+
+        foreach (var rowData in dataProducts)
+        {
+            rows.Add(rowData);
+        }
+    }
+
+    private async Task Comeback()
+    {
+        NavigationManager.NavigateTo("/Catalog");
+    }
+}
