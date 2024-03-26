@@ -4,7 +4,6 @@
     <!--Division de Menu Superior-->
     <div class="title">
         <p>@TituloSucursal</p>
-        <p>@tituloSeccionFromLayout</p>
     </div>
     <div class="options">
         <button class="notificaciones-btn">
@@ -21,18 +20,11 @@
 </header>
 
 @code {
-    [CascadingParameter]
-    private string tituloSeccionFromLayout { get; set; }
     private string TituloSucursal;
     private string MostrarUserResult { get; set; }
 
     [Inject]
     protected ILocalStorageService _localStorage { get; set; }
-
-    @* public HeaderMenu(ILocalStorageService localStorage)
-    {
-        _localStorage = localStorage;
-    } *@
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
