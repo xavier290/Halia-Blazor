@@ -63,7 +63,7 @@
         align-items: normal;
     }
 
-    form {
+    .login-form {
         max-width: 210px;
     }
 

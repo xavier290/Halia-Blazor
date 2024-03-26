@@ -6,67 +6,57 @@
 <PageTitle>Halia || Productos</PageTitle>
 
 <!--Buscador-->
-<div class="tab-content" id="TCMain">
-    <div class="tab-pane fade show active tab-pane fade" id="TIBuscar" role="tabpanel" aria-labelledby="tab2-tab">
-        <!-- Botón Volver -->
-        <button @onclick="Comeback" class="btn-volver m-1" type="button">Volver</button>
+<div class="main-container">
+    <!-- Botón Volver -->
+    <button @onclick="Comeback" class="btn-volver" type="button">Volver</button>
 
-        <!--Search+Button-->
-        <div class="container mt-5">
-            <div class="row justify-content-center">
-                <div class="col-md-6">
-                    <form @onsubmit="LoadData" class="form-inline d-flex justify-content-around align-items-center">
-                        <input @bind="@filter" class="form-control rounded mr-2 rounded-pill" type="text" name="q" placeholder="Buscar...">
-                        <button class="btn btn-primary mx-2 rounded-pill d-flex justify-content-around align-items-center " type="submit">Buscar <img src="/Search.png" alt="Logo" class="img-fluid mx-2" style="max-width: 25px;"></button>
-                        <button @onclick="OpenPopupCreate" class="btn btn-success mx-2 rounded-pill d-flex justify-content-around align-items-center " type="button">Crear <img src="/Create.png" alt="Logo" class="img-fluid rounded-circle mx-2" style="max-width: 25px;"></button>
-                    </form>
-                </div>
-            </div>
-        </div>
+    <!--Search+Button-->
+    <div class="search-container">
+        <form @onsubmit="LoadData" class="search-form">
+            <input @bind="@filter" class="search-input" type="text" name="q" placeholder="Buscar...">
+            <button class="search-button" type="submit"><span class="hide-text">Buscar </span><img src="/Search.png" alt="Logo" class="search-icon"></button>
+            <button @onclick="OpenPopupCreate" class="create-button" type="button">Crear <img src="/Create.png" alt="Logo" class="create-icon"></button>
+        </form>
+    </div>
 
-        <!--Tabla-->
-        <div class="container mt-3">
-            <div class="row justify-content-center">
-                <div class="col-md-9">
-                    <table class="table">
-                        <thead>
-                            <tr>
-                                <th>Acciones</th>
-                                @foreach (var header in headers)
-                                {
-                                    <th>@header</th>
-                                }
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach (var row in rows)
-                            {
-                                <tr>
-                                    <td>
-                                        <button @onclick="() => OpenPopupEdit(row)" class="btn btn-primary">Actualizar</button>
-                                        <button class="btn btn-danger my-0" >Bloquear</button>
-                                    </td>
-                                    @foreach (var cell in row)
-                                    {
-                                        <td>@cell</td>
-                                    }
-                                </tr>
-                            }
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
+    <!--Tabla-->
+    <div class="table-container">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th class="actions-row">Acciones</th>
+                    @foreach (var header in headers)
+                    {
+                        <th>@header</th>
+                    }
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var row in rows)
+                {
+                    <tr>
+                        <td class="actions-btns">
+                            <button @onclick="() => OpenPopupEdit(row)" class="action-button update">Actualizar</button>
+                            <button class="action-button block">Bloquear</button>
+                        </td>
+                        @foreach (var cell in row)
+                        {
+                            <td>@cell</td>
+                        }
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
 
-        @if (showPopup && !editMode)
-        {
-            <NovaLaundryAppWebAdminBlazor.Pages.Components.catalog.CRUD.CreateProductPage OnSave="HandleSave" />
-        }
-        else if (showPopup && editMode)
-        {
-            <NovaLaundryAppWebAdminBlazor.Pages.Components.catalog.CRUD.UpdateProductPage OnSave="HandleSave" SelectedItemId="@entryId" />
-        }
-    </div>  
+    @if (showPopup && !editMode)
+    {
+        <NovaLaundryAppWebAdminBlazor.Pages.Components.catalog.CRUD.CreateProductPage OnSave="HandleSave" />
+    }
+    else if (showPopup && editMode)
+    {
+        <NovaLaundryAppWebAdminBlazor.Pages.Components.catalog.CRUD.UpdateProductPage OnSave="HandleSave" SelectedItemId="@entryId" />
+    }
 </div>
 
 

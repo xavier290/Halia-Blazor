@@ -1,10 +1,11 @@
-﻿@inherits LayoutComponentBase
+﻿@inject NavigationManager NavigationManager
+@inherits LayoutComponentBase
 @inject IAuthenticationService AuthenticationService
 
 <div>
-    @if (isAuthenticated)
-    {
-        <div class="main-cnt" style="height:100vh; width:100%;">
+   @if(isAuthenticated)
+   {
+      <div class="main-cnt" style="height:100vh; width:100%;">
          <NovaLaundryAppWebAdminBlazor.Pages.Components.menu.SidebarMenu />
 
          <div class="main-elements">
@@ -13,14 +14,10 @@
             @Body
          </div>
       </div>
-    }
-    else
-    {
-        <div class="unauthenticated-content">
-            <!-- Render content for unauthenticated users -->
-            <NovaLaundryAppWebAdminBlazor.Pages.Login />
-        </div>
-    }
+   }
+   else {
+      <NovaLaundryAppWebAdminBlazor.Pages.Login />
+   }
 </div>
 
 @code 

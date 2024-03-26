@@ -36,7 +36,7 @@
 
                 <!-- Form Section -->
                 <div class="loginFormCnt">
-                    <form @onsubmit="HandleLogin">
+                    <form class="login-form" @onsubmit="HandleLogin">
                         <h1>Inicio de Sesión</h1>
                         <div class="input">
                             <label style="margin:0.5rem 0 0.5rem 0" for="username">Usuario</label>
@@ -45,7 +45,7 @@
                         <div class="input">
                             <label style="margin:0.5rem 0 0.5rem 0" for="password">Contraseña</label>
                             <input type="@(_showPassword ? "text" : "password")" class="form-control" id="password" style="padding: 0.28rem 0.75rem ;" @bind="@_password" placeholder="Contraseña" required/>
-                        </div>             
+                        </div>
                         <button style="margin-top:0.8rem; width: 100%" type="submit" class="btn btn-primary">Iniciar Sesión</button>
                     </form>
                 </div>
@@ -81,10 +81,12 @@
             if (result)
             {
                 // Redirect to the home page after successful login
-                NavigationManager.NavigateTo("/Home");
+                @* isAuthenticated = await AuthenticationService.IsAuthenticatedAsync(); *@
+                NavigationManager.NavigateTo("/Home", forceLoad: true);
             }
             else
             {
+                @* isAuthenticated = await AuthenticationService.IsAuthenticatedAsync(); *@
                 // Show an error message for unsuccessful login attempts
                 _ = Swal.FireAsync(new SweetAlertOptions
                 {
@@ -99,6 +101,7 @@
         catch (Exception ex)
         {
             // Log any exceptions
+            @* isAuthenticated = false; *@
             _ = Swal.FireAsync(new SweetAlertOptions
                 {
                     Title = "Atención",
