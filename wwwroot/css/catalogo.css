@@ -105,3 +105,19 @@
 .popup-section label, .popup-section input, .popup-section button {
     margin-bottom: 10px;
 }
+
+@media (max-width: 768px) {
+    .catalog-cnt {
+        flex-direction: column; /* Change to a vertical layout */
+        align-items: stretch; /* Stretch items to fill the container */
+    }
+
+    .section-item {
+        width: 100%; /* Occupy full width on smaller devices */
+        margin-bottom: 20px; /* Add some space between items */
+    }
+
+    .section-content {
+        margin-bottom: 10px; /* Add space between title and description */
+    }
+}

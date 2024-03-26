@@ -7,7 +7,9 @@
 
 <nav class="sidebar-menu @(sidebarVisible ? "open" : "")" role="navigation" aria-label="Main Menu">
         <div @onclick="ToggleSidebar" class="logo-section" style="user-select: none;">
-            <img src="/Logo103.png" alt="Halia System Logo" class="mb-2 mt-2">
+            <a href="/Home">
+                <img src="/Logo103.png" alt="Halia System Logo" class="mb-2 mt-2">
+            </a>
         </div>
         <ul>
             <li>
@@ -17,7 +19,7 @@
                 </a>
             </li>
             <li>
-                <a @onclick="ToggleSidebar" href="#" class="btn-sidebar" style="user-select: none;">
+                <a @onclick="ToggleSidebar" href="/Home" class="btn-sidebar" style="user-select: none;">
                     <img src="/inventario.png" alt="Logo" class="img-fluid mb-2">
                     <span class="text-light">Inventario</span>
                 </a>
@@ -29,31 +31,31 @@
                 </a>
             </li>
             <li>
-                <a @onclick="ToggleSidebar" href="#" class="btn-sidebar" style="user-select: none;">
+                <a @onclick="ToggleSidebar" href="/Home" class="btn-sidebar" style="user-select: none;">
                     <img src="/tarjeta.png" alt="Logo" class="img-fluid mb-2">
                     <span class="text-light">Facturación</span>
                 </a>
             </li>
             <li>
-                <a @onclick="ToggleSidebar" href="#" class="btn-sidebar" style="user-select: none;">
+                <a @onclick="ToggleSidebar" href="/Home" class="btn-sidebar" style="user-select: none;">
                     <img src="/reportes.png" alt="Reportes Icon" class="img-fluid mb-2 mt-2">
                     <span class="text-light">Reportes</span>
                 </a>
             </li>
             <li>
-                <a @onclick="ToggleSidebar" href="#" class="btn-sidebar" style="user-select: none;">
+                <a @onclick="ToggleSidebar" href="/Home" class="btn-sidebar" style="user-select: none;">
                     <img src="/prom.png" alt="Promociones Icon" class="img-fluid mb-2 mt-2">
                     <span class="text-light">Promociones</span>
                 </a>
             </li>
             <li>
-                <a @onclick="ToggleSidebar" href="#" class="btn-sidebar" style="user-select: none;">
+                <a @onclick="ToggleSidebar" href="/Home" class="btn-sidebar" style="user-select: none;">
                     <img src="/clientes.png" alt="Logo" class="img-fluid mb-2">
                     <span class="text-light">Clientes</span>
                 </a>
             </li>
             <li>
-                <a @onclick="ToggleSidebar" href="#" class="btn-sidebar" style="user-select: none;">
+                <a @onclick="ToggleSidebar" href="/Home" class="btn-sidebar" style="user-select: none;">
                     <img src="/Soporte.png" alt="Soporte Técnico Icon" class="img-fluid mb-2 mt-2">
                     <span class="text-light">Soporte Técnico</span>
                 </a>
