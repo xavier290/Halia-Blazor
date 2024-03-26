@@ -1,0 +1,53 @@
+@inject IcatalogService catalogService
+@inject NavigationManager NavigationManager
+
+
+<div class="popup-section">
+    <div class="modal-content">
+        <span class="close" @onclick="ClosePopup">&times;</span>
+        <h2>Crear Nuevo Producto</h2>
+        <form @onsubmit="SaveProduct">
+            <label for="name">Nombre</label>
+            <input type="text" id="name" name="name" @bind="productName" required>
+
+            <label for="productService">Producto o Servicio?</label>
+            <input type="text" id="productService" name="productService" @bind="productService">
+
+            <label for="code">Codigo</label>
+            <input type="text" id="code" name="code" @bind="code">
+
+            <label for="description">Description</label>
+            <input type="text" id="description" name="description" @bind="description">
+
+            <label for="price">Precio</label>
+            <input type="text" id="price" name="price" @bind="productPrice">
+
+            <button type="submit">Guardar</button>
+        </form>
+    </div>
+</div>
+
+@code 
+{
+    [Parameter]
+    public EventCallback OnSave { get; set; }
+    
+    // Define fields to bind with input elements
+    private string productName;
+    private decimal productPrice;
+    private string productService;
+    private string code;
+    private string description;
+
+    public async Task ClosePopup() 
+    {
+        await OnSave.InvokeAsync();
+    }
+    
+    public async Task SaveProduct()
+    {
+        await catalogService.AddProductAsync(productName, productPrice, productService, code, description);
+        // Optionally, notify parent component that save button is clicked
+        await OnSave.InvokeAsync();
+    }
+}

@@ -1,0 +1,81 @@
+@inject IcatalogService catalogService
+
+@using NovaLaundryAppWebAdminBlazor.Server.Services
+@using NovaLaundryAppWebAdminBlazor.Server.ViewModels
+@using NovaLaundryAppWebAdminBlazor.ModelsHalia
+
+<div class="popup-section">
+    <div class="modal-content">
+        <span class="close" @onclick="ClosePopup">&times;</span>
+        <h2>Actualizar Proveedor</h2>
+        @if (Provider != null)
+        {
+            <!-- Render the content that depends on Product -->
+            <form @onsubmit="UpdateProvider">
+                <label for="name">Nombre</label>
+                <input type="text" id="name" name="name" @bind="ProviderName" required>
+
+                <label for="telefono">Telefono</label>
+                <input type="text" id="telefono" name="telefono" @bind="ProviderTelefono">
+
+                <label for="direccion">Dirección</label>
+                <input type="text" id="direccion" name="direccion" @bind="ProviderDireccion">
+
+                <label for="pais">País</label>
+                <input type="text" id="pais" name="pais" @bind="ProviderPais">
+
+                <button type="submit">Guardar</button>
+            </form>
+        }
+        else
+        {
+            <!-- Render a placeholder or loading message -->
+            <p>Loading...</p>
+        }
+    </div>
+</div>
+
+@code 
+{
+    [Parameter]
+    public EventCallback OnSave { get; set; }
+
+    [Parameter]
+    public int SelectedItemId { get; set; }
+    private Proveedor Provider { get; set; }
+    private string ProviderName;
+    private string ProviderTelefono;
+    private string ProviderDireccion;
+    private string ProviderPais;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await LoadData(SelectedItemId);
+        }
+        
+        StateHasChanged();
+    }
+
+    private async Task LoadData(int entryId)
+    {
+        Provider = await catalogService.GetSingleProviderAsync(entryId);
+
+        ProviderName = Provider.NombreProveedor;
+        ProviderTelefono = Provider.NumeroTelefono;
+        ProviderDireccion = Provider.Direccion;
+        ProviderPais = Provider.Pais;
+    }
+    public async Task ClosePopup() 
+    {
+        await OnSave.InvokeAsync();
+    }
+
+    public async Task UpdateProvider()
+    {
+        await catalogService.UpdateProviderAsync(SelectedItemId, ProviderName, ProviderTelefono, ProviderDireccion, ProviderPais);
+        // Optionally, notify parent component that save button is clicked
+        await OnSave.InvokeAsync();
+    }
+}

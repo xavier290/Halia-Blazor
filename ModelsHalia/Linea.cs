@@ -3,9 +3,9 @@ using System.Collections.Generic;
 
 namespace NovaLaundryAppWebAdminBlazor.ModelsHalia;
 
-public partial class Imagene
+public partial class Linea
 {
-    public int IdImagen { get; set; }
+    public int LineaId { get; set; }
 
-    public byte[]? Imagen { get; set; }
+    public string? Nombre { get; set; }
 }

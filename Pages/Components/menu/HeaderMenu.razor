@@ -1,0 +1,58 @@
+@using Blazored.LocalStorage;
+
+<header class="header-home">
+    <!--Division de Menu Superior-->
+    <div class="title">
+        <p>@TituloSucursal</p>
+    </div>
+    <div class="options">
+        <button class="notificaciones-btn">
+            <img src="/Bell.svg" alt="Logo">
+        </button>
+
+        <div class="user">
+            <p>@(MostrarUserResult)</p>
+            <div class="imgCnt">
+                <img src="/Conn.png" alt="Logo" style="max-width: 10px;">
+            </div>
+        </div>
+    </div>
+</header>
+
+@code {
+    private string TituloSucursal;
+    private string MostrarUserResult { get; set; }
+
+    [Inject]
+    protected ILocalStorageService _localStorage { get; set; }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            MostrarUserResult = await MostrarUser();
+            TituloSucursal = await MostrarSucursalEmpresa();
+            StateHasChanged();
+        }
+    }
+
+    private async Task<string> MostrarUser()
+    {
+        var usuario = await _localStorage.GetItemAsync<string>("user");
+
+        return usuario;
+    }
+
+    private async Task<string> MostrarSucursalEmpresa()
+    {
+        var sucursal = await _localStorage.GetItemAsync<string>("sucursalId");
+
+        using(SystemAdminContext db = new SystemAdminContext())
+        {
+            Sucursale sucursalBuscada = db.Sucursales.Where(s => s.SucursalId == int.Parse(sucursal)).FirstOrDefault();
+            Empresa empresaBuscada = db.Empresas.Where(s => s.EmpresaId == sucursalBuscada.EmpresaId).FirstOrDefault();
+
+            return empresaBuscada.NombreComercial+", "+sucursalBuscada.NombreSucursal;
+        }
+    }
+}

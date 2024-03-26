@@ -1,0 +1,86 @@
+@inject IcatalogService catalogService
+
+@using NovaLaundryAppWebAdminBlazor.Server.Services
+@using NovaLaundryAppWebAdminBlazor.Server.ViewModels
+@using NovaLaundryAppWebAdminBlazor.ModelsHalia
+
+<div class="popup-section">
+    <div class="modal-content">
+        <span class="close" @onclick="ClosePopup">&times;</span>
+        <h2>Actualizar Producto</h2>
+        @if (Product != null)
+        {
+            <!-- Render the content that depends on Product -->
+            <form @onsubmit="UpdateProduct">
+                <label for="name">Nombre</label>
+                <input type="text" id="name" name="name" @bind="productName" required>
+
+                <label for="productService">Producto o Servicio?</label>
+                <input type="text" id="productService" name="productService" @bind="productService">
+
+                <label for="code">Codigo</label>
+                <input type="text" id="code" name="code" @bind="code">
+
+                <label for="description">Descripción</label>
+                <input type="text" id="description" name="description" @bind="description">
+
+                <label for="price">Precio</label>
+                <input type="text" id="price" name="price" @bind="productPrice">
+
+                <button type="submit">Guardar</button>
+            </form>
+        }
+        else
+        {
+            <!-- Render a placeholder or loading message -->
+            <p>Loading...</p>
+        }
+    </div>
+</div>
+
+@code 
+{
+    [Parameter]
+    public EventCallback OnSave { get; set; }
+
+    [Parameter]
+    public int SelectedItemId { get; set; }
+    private Producto Product { get; set; }
+    private string productName;
+    private decimal productPrice;
+    private string productService;
+    private string code;
+    private string description;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await LoadData(SelectedItemId);
+        }
+        
+        StateHasChanged();
+    }
+
+    private async Task LoadData(int entryId)
+    {
+        Product = await catalogService.GetSingleProductAsync(entryId);
+        
+        productName = Product.NombreProducto;
+        productPrice = Product.Precio ?? 0;
+        productService = Product.ProductoServicio;
+        code = Product.CodigoProducto;
+        description = Product.Descripcion;
+    }
+    public async Task ClosePopup() 
+    {
+        await OnSave.InvokeAsync();
+    }
+
+    public async Task UpdateProduct()
+    {
+        await catalogService.UpdateProductAsync(SelectedItemId, productName, productPrice, productService, code, description);
+        // Optionally, notify parent component that save button is clicked
+        await OnSave.InvokeAsync();
+    }
+}

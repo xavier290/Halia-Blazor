@@ -1,0 +1,99 @@
+
+<button class="hamburger-btn @(sidebarVisible ? "active" : "")" @onclick="ToggleSidebar">
+    <span class="hamburger"></span>
+    <span class="hamburger"></span>
+    <span class="hamburger"></span>
+</button>
+
+<nav class="sidebar-menu @(sidebarVisible ? "open" : "")" role="navigation" aria-label="Main Menu">
+        <div @onclick="ToggleSidebar" class="logo-section" style="user-select: none;">
+            <img src="/Logo103.png" alt="Halia System Logo" class="mb-2 mt-2">
+        </div>
+        <ul>
+            <li>
+                <a @onclick="ToggleSidebar" href="/catalog" class="btn-sidebar first" style="user-select: none;">
+                    <img src="/Catalog.png" alt="Catalogo Icon" class="img-fluid mb-2 mt-2">
+                    <span class="text-light">Catálogo</span>
+                </a>
+            </li>
+            <li>
+                <a @onclick="ToggleSidebar" href="#" class="btn-sidebar" style="user-select: none;">
+                    <img src="/inventario.png" alt="Logo" class="img-fluid mb-2">
+                    <span class="text-light">Inventario</span>
+                </a>
+            </li>
+            <li>
+                <a @onclick="ToggleSidebar" href="/tools" class="btn-sidebar" style="user-select: none;">
+                    <img src="/tools.svg" alt="Logo" class="img-fluid mb-2">
+                    <span class="text-light">Herramientas</span>
+                </a>
+            </li>
+            <li>
+                <a @onclick="ToggleSidebar" href="#" class="btn-sidebar" style="user-select: none;">
+                    <img src="/tarjeta.png" alt="Logo" class="img-fluid mb-2">
+                    <span class="text-light">Facturación</span>
+                </a>
+            </li>
+            <li>
+                <a @onclick="ToggleSidebar" href="#" class="btn-sidebar" style="user-select: none;">
+                    <img src="/reportes.png" alt="Reportes Icon" class="img-fluid mb-2 mt-2">
+                    <span class="text-light">Reportes</span>
+                </a>
+            </li>
+            <li>
+                <a @onclick="ToggleSidebar" href="#" class="btn-sidebar" style="user-select: none;">
+                    <img src="/prom.png" alt="Promociones Icon" class="img-fluid mb-2 mt-2">
+                    <span class="text-light">Promociones</span>
+                </a>
+            </li>
+            <li>
+                <a @onclick="ToggleSidebar" href="#" class="btn-sidebar" style="user-select: none;">
+                    <img src="/clientes.png" alt="Logo" class="img-fluid mb-2">
+                    <span class="text-light">Clientes</span>
+                </a>
+            </li>
+            <li>
+                <a @onclick="ToggleSidebar" href="#" class="btn-sidebar" style="user-select: none;">
+                    <img src="/Soporte.png" alt="Soporte Técnico Icon" class="img-fluid mb-2 mt-2">
+                    <span class="text-light">Soporte Técnico</span>
+                </a>
+            </li>
+            <li>
+                 <button class="btn-sidebar" data-bs-toggle="modal" data-bs-target="#CerrarSesion">
+                    <img src="/Logout.png" alt="Logo" class="img-fluid mb-2 mt-2">
+                    <p class="text-light">Cerrar Sesión</p>
+                </button>
+            </li>
+        </ul>
+</nav>
+
+<div class="modal fade" id="CerrarSesion" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Cerrar Sesión</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                ¿Estás seguro de que deseas cerrar sesión?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">
+                    <NavLink class="nav-link" href="">
+                        <span class="oi oi-plus" aria-hidden="true"></span> Cerrar Sesión
+                    </NavLink>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    private bool sidebarVisible = false;
+
+    private void ToggleSidebar()
+    {
+        sidebarVisible = !sidebarVisible;
+    }
+}
