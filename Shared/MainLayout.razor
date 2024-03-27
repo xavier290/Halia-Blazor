@@ -6,9 +6,10 @@
    @if(isAuthenticated)
    {
       <div class="main-cnt" style="height:100vh; width:100%;">
-         <NovaLaundryAppWebAdminBlazor.Pages.Components.menu.SidebarMenu />
+         <NovaLaundryAppWebAdminBlazor.Pages.Components.menu.SidebarMenu ToggleSidebar="@ToggleSidebar" SidebarVisible="@sidebarVisible" />
 
          <div class="main-elements">
+            <NovaLaundryAppWebAdminBlazor.Pages.Components.menu.HamburgerComponent OnClick="@ToggleSidebar" />
             <NovaLaundryAppWebAdminBlazor.Pages.Components.menu.HeaderMenu />
 
             @Body
@@ -23,6 +24,7 @@
 @code 
 {
    private bool isAuthenticated = false;
+   private bool sidebarVisible = false;
 
    protected override async Task OnAfterRenderAsync(bool firstRender)
    {
@@ -33,4 +35,12 @@
          StateHasChanged();
       }
    }
+   private void ToggleSidebar()
+   {
+      sidebarVisible = !sidebarVisible;
+      StateHasChanged();
+   }
+
+   [Parameter]
+   public EventCallback OnClick { get; set; }   
 }

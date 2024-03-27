@@ -1,0 +1,10 @@
+<button class="hamburger-btn" @onclick="OnClick">
+    <span class="hamburger"></span>
+    <span class="hamburger"></span>
+    <span class="hamburger"></span>
+</button>
+
+@code {
+    [Parameter]
+    public EventCallback OnClick { get; set; }
+}

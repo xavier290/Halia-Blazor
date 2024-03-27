@@ -1,61 +1,54 @@
-
-<button class="hamburger-btn @(sidebarVisible ? "active" : "")" @onclick="ToggleSidebar">
-    <span class="hamburger"></span>
-    <span class="hamburger"></span>
-    <span class="hamburger"></span>
-</button>
-
-<nav class="sidebar-menu @(sidebarVisible ? "open" : "")" role="navigation" aria-label="Main Menu">
-        <div @onclick="ToggleSidebar" class="logo-section" style="user-select: none;">
+<nav class="sidebar-menu @(SidebarVisible ? "open" : "")" role="navigation" aria-label="Main Menu">
+        <div @onclick="HandleLinkClick" class="logo-section" style="user-select: none;">
             <a href="/Home">
                 <img src="/Logo103.png" alt="Halia System Logo" class="mb-2 mt-2">
             </a>
         </div>
         <ul>
             <li>
-                <a @onclick="ToggleSidebar" href="/catalog" class="btn-sidebar first" style="user-select: none;">
+                <a @onclick="HandleLinkClick" href="/catalog" class="btn-sidebar first" style="user-select: none;">
                     <img src="/Catalog.png" alt="Catalogo Icon" class="img-fluid mb-2 mt-2">
                     <span class="text-light">Catálogo</span>
                 </a>
             </li>
             <li>
-                <a @onclick="ToggleSidebar" href="/Home" class="btn-sidebar" style="user-select: none;">
+                <a @onclick="HandleLinkClick" href="/Home" class="btn-sidebar" style="user-select: none;">
                     <img src="/inventario.png" alt="Logo" class="img-fluid mb-2">
                     <span class="text-light">Inventario</span>
                 </a>
             </li>
             <li>
-                <a @onclick="ToggleSidebar" href="/tools" class="btn-sidebar" style="user-select: none;">
+                <a @onclick="HandleLinkClick" href="/tools" class="btn-sidebar" style="user-select: none;">
                     <img src="/tools.svg" alt="Logo" class="img-fluid mb-2">
                     <span class="text-light">Herramientas</span>
                 </a>
             </li>
             <li>
-                <a @onclick="ToggleSidebar" href="/Home" class="btn-sidebar" style="user-select: none;">
+                <a @onclick="HandleLinkClick" href="/Home" class="btn-sidebar" style="user-select: none;">
                     <img src="/tarjeta.png" alt="Logo" class="img-fluid mb-2">
                     <span class="text-light">Facturación</span>
                 </a>
             </li>
             <li>
-                <a @onclick="ToggleSidebar" href="/Home" class="btn-sidebar" style="user-select: none;">
+                <a @onclick="HandleLinkClick" href="/Home" class="btn-sidebar" style="user-select: none;">
                     <img src="/reportes.png" alt="Reportes Icon" class="img-fluid mb-2 mt-2">
                     <span class="text-light">Reportes</span>
                 </a>
             </li>
             <li>
-                <a @onclick="ToggleSidebar" href="/Home" class="btn-sidebar" style="user-select: none;">
+                <a @onclick="HandleLinkClick" href="/Home" class="btn-sidebar" style="user-select: none;">
                     <img src="/prom.png" alt="Promociones Icon" class="img-fluid mb-2 mt-2">
                     <span class="text-light">Promociones</span>
                 </a>
             </li>
             <li>
-                <a @onclick="ToggleSidebar" href="/Home" class="btn-sidebar" style="user-select: none;">
+                <a @onclick="HandleLinkClick" href="/Home" class="btn-sidebar" style="user-select: none;">
                     <img src="/clientes.png" alt="Logo" class="img-fluid mb-2">
                     <span class="text-light">Clientes</span>
                 </a>
             </li>
             <li>
-                <a @onclick="ToggleSidebar" href="/Home" class="btn-sidebar" style="user-select: none;">
+                <a @onclick="HandleLinkClick" href="/Home" class="btn-sidebar" style="user-select: none;">
                     <img src="/Soporte.png" alt="Soporte Técnico Icon" class="img-fluid mb-2 mt-2">
                     <span class="text-light">Soporte Técnico</span>
                 </a>
@@ -92,10 +85,14 @@
 </div>
 
 @code {
-    private bool sidebarVisible = false;
+    [Parameter]
+    public bool SidebarVisible { get; set; }
+    
+    [Parameter]
+    public EventCallback<bool> ToggleSidebar { get; set; }
 
-    private void ToggleSidebar()
+    private async Task HandleLinkClick()
     {
-        sidebarVisible = !sidebarVisible;
+        await ToggleSidebar.InvokeAsync(false); // Close the sidebar when a link is clicked
     }
 }
