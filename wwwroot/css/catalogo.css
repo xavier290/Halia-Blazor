@@ -121,3 +121,185 @@
         margin-bottom: 10px; /* Add space between title and description */
     }
 }
+
+/* product poage */
+
+/* Main container */
+.main-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+/* Search container */
+.search-container {
+    margin-bottom: 20px;
+}
+
+/* Search form */
+.search-form {
+    display: flex;
+    align-items: center;
+}
+
+.btn-volver {
+    margin-bottom: 8px;
+}
+
+/* Search input */
+.search-input {
+    flex: 1;
+    margin-right: 10px;
+    padding: 8px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+
+/* Search button */
+.search-button,
+.create-button {
+    padding: 8px 12px;
+    border-radius: 5px;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.3s;
+}
+
+.search-button {
+    background-color: #007bff; /* Green */
+    margin-right: 5px;
+}
+
+.create-button {
+    background-color: #28a745; /* Green */
+}
+
+/* Search icon */
+.search-icon,
+.create-icon {
+    max-width: 20px;
+}
+
+/* Hover effect for search button */
+.search-button:hover,
+.create-button:hover {
+    transform: translateY(-2px);
+}
+
+.search-button:hover {
+    background-color: #0056b3; /* Darker blue */
+}
+
+.create-button:hover {
+    background-color: #218838; /* Darker green */
+}
+
+/* Table */
+.table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+/* Table header */
+.table th {
+    padding: 8px;
+    text-align: left;
+    background-color: #f2f2f2;
+    border-bottom: 2px solid #ccc;
+}
+
+/* Table body */
+.table td {
+    padding: 8px;
+    border-bottom: 1px solid #ccc;
+}
+
+/* Action button */
+.action-button {
+    padding: 5px 10px;
+    border-radius: 5px;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.3s;
+}
+
+.update {
+    background-color: #007bff; /* Blue */
+    margin-bottom: 5px;
+}
+
+.update:hover {
+    background-color: #0056b3; /* Darker blue */
+}
+
+.block {
+    background-color: #ff0000;
+}
+
+.block:hover {
+    background-color: #9f0000;
+}
+
+/* Hover effect for action button */
+.action-button:hover {
+    transform: translateY(-2px);
+}
+
+.providers-act {
+    font-size: 14px;
+}
+
+@media (max-width: 500px) {
+    .actions-row {
+        display: none;
+    }
+    .actions-btns {
+        display: none;
+    }
+    .create-button {
+        display: none;
+    }
+    .btn-volver {
+        padding: 6px 10px;
+    }
+    .providers-act {
+        font-size: 12px;
+    }
+}
+
+@media (max-width: 380px) {
+    .main-container {
+        padding: 10px;
+    }
+    .header-home .title {
+        font-size: 14px;
+    }
+    .hide-text {
+        display: none;
+    }
+    .table th {
+        font-size: 14px;
+    }
+    
+    /* Table body */
+    .table td {
+        font-size: 12px;
+    }
+    .providers-act {
+        font-size: 10px !important;
+    }
+}
+
+@media (max-width: 315px) {
+    .main-container {
+        padding: 4px;
+    }
+    .header-home .title {
+        font-size: 12px;
+    }
+    .table th {
+        font-size: 12px;
+    }
+}

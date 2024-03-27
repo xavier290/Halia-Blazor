@@ -47,12 +47,21 @@
     {
         var sucursal = await _localStorage.GetItemAsync<string>("sucursalId");
 
-        using(SystemAdminContext db = new SystemAdminContext())
+        using (HaliabdContext db = new HaliabdContext())
         {
             Sucursale sucursalBuscada = db.Sucursales.Where(s => s.SucursalId == int.Parse(sucursal)).FirstOrDefault();
-            Empresa empresaBuscada = db.Empresas.Where(s => s.EmpresaId == sucursalBuscada.EmpresaId).FirstOrDefault();
 
-            return empresaBuscada.NombreComercial+", "+sucursalBuscada.NombreSucursal;
+            if (sucursalBuscada != null)
+            {
+                Empresa empresaBuscada = db.Empresas.Where(s => s.EmpresaId == sucursalBuscada.EmpresaId).FirstOrDefault();
+
+                if (empresaBuscada != null)
+                {
+                    return empresaBuscada.NombreComercial + ", " + sucursalBuscada.NombreSucursal;
+                }
+            }
         }
+
+        return string.Empty;
     }
 }
