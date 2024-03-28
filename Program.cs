@@ -39,6 +39,7 @@ builder.Services.AddBlazoredLocalStorage(config => config.JsonSerializerOptions.
 
 builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
 builder.Services.AddScoped<IcatalogService, CatalogService>();
+builder.Services.AddScoped<IToolsService, ToolsService>();
 
 var app = builder.Build();
 

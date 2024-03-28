@@ -221,6 +221,10 @@
     background-color: #218838; /* Darker green */
 }
 
+.thirdparties-cnt {
+    overflow-x: auto;
+}
+
 /* Table */
 .table {
     width: 100%;
