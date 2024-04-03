@@ -1,8 +1,11 @@
 <nav class="sidebar-menu @(SidebarVisible ? "open" : "")" role="navigation" aria-label="Main Menu">
         <div @onclick="HandleLinkClick" class="logo-section" style="user-select: none;">
-            <a href="/Home">
-                <img src="/Logo103.png" alt="Halia System Logo" class="mb-2 mt-2">
+            <a class="logo" href="/Home">
+                <img src="/Logo103.png" alt="Halia System Logo">
             </a>
+            <div class="mobile-view-items">
+                <span class="closing">&times;</span>
+            </div>
         </div>
         <ul>
             <li>

@@ -134,8 +134,12 @@
 
 @media (max-width: 768px) {
     .catalog-cnt {
+        grid-column: span 2;
         flex-direction: column; /* Change to a vertical layout */
         align-items: stretch; /* Stretch items to fill the container */
+    }
+    .main-container {
+        grid-column: span 2;
     }
 
     .section-item {
