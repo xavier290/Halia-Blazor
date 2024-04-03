@@ -1,0 +1,55 @@
+@inject IToolsService ToolsService
+@inject NavigationManager NavigationManager
+
+
+<div class="popup-section">
+    <div class="modal-content">
+        
+        <span class="close" @onclick="ClosePopup">&times;</span>   
+        <h2>Crear Nueva Empresa Tercerizada</h2>
+
+        <form @onsubmit="SaveThirdParty">
+            <label for="name">Nombre</label>
+            <input type="text" id="name" name="name" @bind="Name" required>
+
+            <label for="ComercialName">Nombre Comercial</label>
+            <input type="text" id="ComercialName" name="ComercialName" @bind="ComercialName">
+
+            <label for="Ruc">Ruc</label>
+            <input type="text" id="Ruc" name="Ruc" @bind="Ruc">
+
+            <label for="Direccion">Dirección</label>
+            <input type="text" id="Direccion" name="Direccion" @bind="Direccion">
+
+            <label for="Telefono">Telefono</label>
+            <input type="text" id="Telefeno" name="Telefono" @bind="Telefono">
+
+            <button type="submit">Guardar</button>
+        </form>
+    </div>
+</div>
+
+
+@code 
+{
+    [Parameter]
+    public EventCallback OnSave { get; set; }
+    
+    // Define fields to bind with input elements
+    private string Name;
+    private string ComercialName;
+    private string Ruc;
+    private string Direccion;
+    private string Telefono;
+    public async Task ClosePopup() 
+    {
+        await OnSave.InvokeAsync();
+    }
+    
+    public async Task SaveThirdParty()
+    {
+        await ToolsService.AddThirdPartyAsync(Name, ComercialName, Ruc, Direccion, Telefono);
+        // Optionally, notify parent component that save button is clicked
+        await OnSave.InvokeAsync();
+    }
+}

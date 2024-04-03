@@ -141,6 +141,10 @@
       "PackagePath": "staticwebassets\\inventario.png"
     },
     {
+      "Id": "C:\\Users\\xa25a\\Documents\\Halia-Blazor\\NovaLaundryAppWebAdminBlazor\\wwwroot\\logo105.png",
+      "PackagePath": "staticwebassets\\logo105.png"
+    },
+    {
       "Id": "C:\\Users\\xa25a\\Documents\\Halia-Blazor\\NovaLaundryAppWebAdminBlazor\\wwwroot\\noti.png",
       "PackagePath": "staticwebassets\\noti.png"
     },

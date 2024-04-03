@@ -68,24 +68,24 @@
 }
 
 .popup-section {
-    position: fixed; /* Position the popup relative to the viewport */
+    position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background to dim the background */
+    background-color: rgba(0, 0, 0, 0.5);
     display: flex;
-    justify-content: center; /* Center horizontally */
-    align-items: center; /* Center vertically */
-    z-index: 9999; /* Ensure it appears on top of everything */
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
 }
 
 .modal-content {
     background-color: white;
     padding: 20px;
     border-radius: 5px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3); /* Add shadow effect */
-    max-width: 400px; /* Adjust width as needed */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    max-width: 400px;
     width: 100%;
 }
 
@@ -94,22 +94,52 @@
     top: 10px;
     right: 10px;
     cursor: pointer;
+    font-size: 40px;
 }
 
-/* Optional: Center the form within the modal */
-.popup-section form {
-    display: flex;
-    flex-direction: column;
+.popup-section h2 {
+    font-size: 25px;
+    margin-bottom: 20px;
 }
 
-.popup-section label, .popup-section input, .popup-section button {
+.popup-section label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+.popup-section input[type="text"],
+.popup-section button {
+    width: 100%;
+    padding: 10px;
     margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+}
+
+.popup-section input[type="text"]::placeholder {
+    color: #aaa;
+}
+
+.popup-section button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+.popup-section button:hover {
+    background-color: #0056b3;
 }
 
 @media (max-width: 768px) {
     .catalog-cnt {
+        grid-column: span 2;
         flex-direction: column; /* Change to a vertical layout */
         align-items: stretch; /* Stretch items to fill the container */
+    }
+    .main-container {
+        grid-column: span 2;
     }
 
     .section-item {
@@ -193,6 +223,10 @@
 
 .create-button:hover {
     background-color: #218838; /* Darker green */
+}
+
+.thirdparties-cnt {
+    overflow-x: auto;
 }
 
 /* Table */

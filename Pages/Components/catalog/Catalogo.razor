@@ -30,9 +30,6 @@
 </div>
 
 @code {
-   [Parameter]
-   public string Page { get; set; }
-
    private void NavigateToPage(string page)
    {
       NavigationManager.NavigateTo($"/Catalog/{page}");

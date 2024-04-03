@@ -1,0 +1,85 @@
+@inject IToolsService ToolsService
+
+@using NovaLaundryAppWebAdminBlazor.Server.Services
+@using NovaLaundryAppWebAdminBlazor.Server.ViewModels
+@using NovaLaundryAppWebAdminBlazor.ModelsHalia
+
+<div class="popup-section">
+    <div class="modal-content">
+        <span class="close" @onclick="ClosePopup">&times;</span>
+        <h2>Actualizar Empresa Tercerizada</h2>
+        @if (ThirdParty != null)
+        {
+            <!-- Render the content that depends on Product -->
+            <form @onsubmit="UpdateThirdPartySave">
+                <label for="name">Nombre</label>
+                <input type="text" id="name" name="name" @bind="Name" required>
+
+                <label for="ComercialName">Nombre Comercial</label>
+                <input type="text" id="ComercialName" name="ComercialName" @bind="ComercialName">
+
+                <label for="Ruc">Ruc</label>
+                <input type="text" id="Ruc" name="Ruc" @bind="Ruc">
+
+                <label for="Direccion">Dirección</label>
+                <input type="text" id="Direccion" name="Direccion" @bind="Direccion">
+
+                <label for="Telefono">Telefono</label>
+                <input type="text" id="Telefeno" name="Telefono" @bind="Telefono">
+
+                <button type="submit">Guardar</button>
+            </form>
+        }
+        else
+        {
+            <!-- Render a placeholder or loading message -->
+            <p>Loading...</p>
+        }
+    </div>
+</div>
+
+@code 
+{
+    [Parameter]
+    public EventCallback OnSave { get; set; }
+
+    [Parameter]
+    public int SelectedItemId { get; set; }
+    private EmpresasTercera ThirdParty { get; set; }
+    private string Name;
+    private string ComercialName;
+    private string Ruc;
+    private string Direccion;
+    private string Telefono;
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await LoadData(SelectedItemId);
+        }
+        
+        StateHasChanged();
+    }
+
+    private async Task LoadData(int entryId)
+    {
+        ThirdParty = await ToolsService.GetSingleThirdPartyAsync(entryId);
+
+        Name = ThirdParty.Nombre;
+        ComercialName = ThirdParty.NombreComercial;
+        Ruc = ThirdParty.Ruc;
+        Direccion = ThirdParty.Dirección;
+        Telefono = ThirdParty.Telefono;
+    }
+    public async Task ClosePopup() 
+    {
+        await OnSave.InvokeAsync();
+    }
+
+    public async Task UpdateThirdPartySave()
+    {
+        await ToolsService.UpdateThirdPartyAsync(SelectedItemId, Name, ComercialName, Ruc, Direccion, Telefono);
+        // Optionally, notify parent component that save button is clicked
+        await OnSave.InvokeAsync();
+    }
+}
