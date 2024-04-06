@@ -13,27 +13,27 @@ public class ToolsService : IToolsService
 {
     public async Task<List<List<object>>> GetThirdPartyAsync(string filter)
     {
-            List<List<object>> rows = new List<List<object>>();
+        List<List<object>> rows = new List<List<object>>();
 
-            using(HaliabdContext db = new HaliabdContext())
+        using(HaliabdContext db = new HaliabdContext())
+        {
+            List<EmpresasTercera> empresasTerceraList = db.EmpresasTerceras.Where(e => e.NombreComercial.Contains(filter)).ToList();
+
+            foreach (var item in empresasTerceraList)
             {
-                List<EmpresasTercera> empresasTerceraList = db.EmpresasTerceras.Where(e => e.NombreComercial.Contains(filter)).ToList();
+                List<object> fila = new List<object>();
+                fila.Add(item.EmpresasTercerasId);
+                fila.Add(item.Nombre);
+                fila.Add(item.NombreComercial);
+                fila.Add(item.Ruc);
+                fila.Add(item.Dirección);
+                fila.Add(item.Telefono);
 
-                foreach (var item in empresasTerceraList)
-                {
-                    List<object> fila = new List<object>();
-                    fila.Add(item.EmpresasTercerasId);
-                    fila.Add(item.Nombre);
-                    fila.Add(item.NombreComercial);
-                    fila.Add(item.Ruc);
-                    fila.Add(item.Dirección);
-                    fila.Add(item.Telefono);
-
-                    rows.Add(fila);
-                }
+                rows.Add(fila);
             }
+        }
 
-            return rows;
+        return rows;
     }
 
     public async Task AddThirdPartyAsync(string Name, string ComercialName, string ruc, string direccion, string telefono) 
@@ -78,6 +78,77 @@ public class ToolsService : IToolsService
         {
             EmpresasTercera empresasTercera = await db.EmpresasTerceras.FirstOrDefaultAsync(e => e.EmpresasTercerasId == entryId);
             return empresasTercera;
+        }
+    }
+
+    public async Task<List<List<object>>> GetBranchesAsync(string filter, int empresaId)
+    {
+        List<List<object>> rows = new List<List<object>>();
+
+        using(HaliabdContext db = new HaliabdContext())
+        {
+            List<Sucursale> sucursale = db.Sucursales.Where(e => e.EmpresaId == empresaId && e.NombreSucursal.Contains(filter)).ToList();
+
+            foreach (var item in sucursale)
+            {
+                List<object> fila = new List<object>();
+
+                fila.Add(item.SucursalId);
+                fila.Add(item.NombreSucursal);
+                fila.Add(item.Direccion);
+                fila.Add(item.Telefono);
+                fila.Add(item.Correo);
+
+                rows.Add(fila);
+            }
+        }
+
+        return rows;
+    }
+    public async Task<Sucursale> GetSingleBranchAsync(int entryId)
+    {
+        using (HaliabdContext db = new HaliabdContext())
+        {
+            Sucursale sucursale = await db.Sucursales.FirstOrDefaultAsync(e => e.SucursalId == entryId);
+            return sucursale;
+        }
+    }
+    public async Task AddBranchAsync(string Name, string direccion, string estado, string telefono, string correo, int empresaId)
+    {
+        using(HaliabdContext db = new HaliabdContext())
+        {
+            Sucursale sucursale = new Sucursale()
+            {
+                NombreSucursal = Name.Trim(), 
+                Direccion = direccion.Trim(),
+                Estado = estado.Trim(),
+                Telefono = telefono.Trim(),
+                Correo = correo.Trim(),
+                EmpresaId = empresaId
+            };   
+
+            db.Add(sucursale);
+            db.SaveChanges();
+        }
+    }
+
+    public async Task UpdateBranchAsync(int entryId, string Name, string direccion, string estado, string telefono, string correo, int empresaId)
+    {
+        using(HaliabdContext db = new HaliabdContext())
+        {
+            Sucursale sucursale = db.Sucursales.Find(entryId);
+
+            if (sucursale != null)
+            {
+                sucursale.NombreSucursal = Name.Trim();
+                sucursale.Direccion = direccion.Trim();
+                sucursale.Estado = estado.Trim();
+                sucursale.Telefono = telefono.Trim();
+                sucursale.Correo = correo.Trim();
+                sucursale.EmpresaId = empresaId;
+            }
+
+            db.SaveChanges();
         }
     }
 }

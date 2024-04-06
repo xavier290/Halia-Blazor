@@ -1,0 +1,90 @@
+@inject IToolsService ToolsService
+
+@using Blazored.LocalStorage;
+@using NovaLaundryAppWebAdminBlazor.Server.Services
+@using NovaLaundryAppWebAdminBlazor.Server.ViewModels
+@using NovaLaundryAppWebAdminBlazor.ModelsHalia
+
+<div class="popup-section">
+    <div class="modal-content">
+        <span class="close" @onclick="ClosePopup">&times;</span>
+        <h2>Actualizar Sucursal</h2>
+        @if (Branch != null)
+        {
+            <!-- Render the content that depends on Product -->
+            <form @onsubmit="UpdateBranchSave">
+                <label for="name">Nombre</label>
+                <input type="text" id="name" name="name" @bind="Name" required>
+
+                <label for="Direccion">Dirección</label>
+                <input type="text" id="Direccion" name="Direccion" @bind="Direccion">
+
+                <label for="Telefono">Telefono</label>
+                <input type="text" id="Telefeno" name="Telefono" @bind="Telefono">
+
+                <label for="Correo">Correo</label>
+                <input type="text" id="Correo" name="Correo" @bind="Correo">
+
+                <button type="submit">Guardar</button>
+            </form>
+        }
+        else
+        {
+            <!-- Render a placeholder or loading message -->
+            <p>Loading...</p>
+        }
+    </div>
+</div>
+
+@code 
+{
+    [Parameter]
+    public EventCallback OnSave { get; set; }
+
+    [Parameter]
+    public int SelectedItemId { get; set; }
+    private Sucursale Branch { get; set; }
+    private string Name;
+    private string Direccion;
+    private string Estado = "Activo";
+    private string Telefono;
+    private string Correo;
+    private int EmpresaId;
+
+    [Inject]
+    protected ILocalStorageService _localStorage { get; set; }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await LoadData(SelectedItemId);
+        }
+        
+        StateHasChanged();
+    }
+
+    private async Task LoadData(int entryId)
+    {
+        Branch = await ToolsService.GetSingleBranchAsync(entryId);
+
+        Name = Branch.NombreSucursal;
+        Direccion = Branch.Direccion;
+        Telefono = Branch.Telefono;
+        Correo = Branch.Correo;
+    }
+    public async Task ClosePopup() 
+    {
+        await OnSave.InvokeAsync();
+    }
+
+    public async Task UpdateBranchSave()
+    {
+        var empresa = await _localStorage.GetItemAsync<string>("empresaId");
+        EmpresaId = Int32.Parse(empresa);
+
+        await ToolsService.UpdateBranchAsync(SelectedItemId, Name, Direccion, Estado, Telefono, Correo, EmpresaId);
+        // Optionally, notify parent component that save button is clicked
+        await OnSave.InvokeAsync();
+    }
+}

@@ -1,0 +1,121 @@
+@page "/thirdparties/empresas-terceras";
+
+@inject IToolsService ToolsService;
+@inject NavigationManager NavigationManager;
+
+<PageTitle>Halia || Empresas Tercerizadas</PageTitle>
+
+<!--Buscador-->
+<div class="main-container">
+    <!-- Botón Volver -->
+    <button @onclick="Comeback" class="btn-volver" type="button">Volver</button>
+
+    <!--Search+Button-->
+    <div class="search-container">
+        <form @onsubmit="LoadData" class="search-form">
+            <input @bind="@filter" class="search-input" type="text" name="q" placeholder="Buscar...">
+            <button class="search-button" type="submit"><span class="hide-text">Buscar </span><img src="/Search.png" alt="Logo" class="search-icon"></button>
+            <button @onclick="OpenPopupCreate" class="create-button" type="button">Crear <img src="/Create.png" alt="Logo" class="create-icon"></button>
+        </form>
+    </div>
+
+    <!--Tabla-->
+    <div class="table-container thirdparties-cnt">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th class="actions-row">Acciones</th>
+                    @foreach (var header in headers)
+                    {
+                        <th>@header</th>
+                    }
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var row in rows)
+                {
+                    <tr>
+                        <td class="actions-btns">
+                            <button @onclick="() => OpenPopupEdit(row)" class="action-button update">Actualizar</button>
+                            <button class="action-button block">Bloquear</button>
+                        </td>
+                        @foreach (var cell in row)
+                        {
+                            <td>@cell</td>
+                        }
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+    @if (showPopup && !editMode)
+    {
+        <NovaLaundryAppWebAdminBlazor.Pages.Components.thirdParties.CRUD.CreateThirdParty OnSave="HandleSave" />
+    }
+    else if (showPopup && editMode)
+    {
+        <NovaLaundryAppWebAdminBlazor.Pages.Components.thirdParties.CRUD.UpdateThirdParty OnSave="HandleSave" SelectedItemId="@entryId" />
+    }
+</div>
+
+
+@code {
+    List<string> headers = new List<string>() {"Clave","Nombre","Nombre Comercial","RUC","Dirección","Telefono"};
+    List<List<object>> rows = new List<List<object>>();
+    private bool showPopup = false;
+    private bool editMode = false;
+    private int entryId;
+    string filter = "";
+    private async Task HandleSave()
+    {
+        // Optionally, perform any logic after saving
+        showPopup = false; // Close the popup window
+        LoadData(); // Reload data after saving
+    }
+
+    private void OpenPopupCreate()
+    {
+        showPopup = true;
+        editMode = false;
+    }
+
+    private async Task OpenPopupEdit(List<object> Id)
+    {
+        entryId = Convert.ToInt32(Id[0]);
+        showPopup = true;
+        editMode = true;
+    }
+
+    private void ClosePopup()
+    {
+        showPopup = false;
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            @* LoadTitles(); *@
+            await LoadData();
+        }
+
+        StateHasChanged();
+    }
+
+    private async Task LoadData()
+    {
+        rows.Clear();
+        List<List<object>> dataProducts = await ToolsService.GetThirdPartyAsync(filter);
+
+        foreach (var rowData in dataProducts)
+        {
+            rows.Add(rowData);
+        }
+    }
+
+    private async Task Comeback()
+    {
+        NavigationManager.NavigateTo("/thirdparties");
+    }
+}

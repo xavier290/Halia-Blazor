@@ -20,4 +20,6 @@ public partial class EmpresasTercera
     public string? Telefono { get; set; }
 
     public int? SucursalId { get; set; }
+
+    public string? IsActive { get; set; }
 }

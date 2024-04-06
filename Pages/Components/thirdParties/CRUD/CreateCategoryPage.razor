@@ -1,0 +1,39 @@
+@inject IthirdPartyService ThirdPartyService
+@inject NavigationManager NavigationManager
+
+
+<div class="popup-section">
+    <div class="modal-content">
+        <span class="close" @onclick="ClosePopup">&times;</span>
+        <h2>Crear Nueva Categoría</h2>
+        <form @onsubmit="SaveCategory">
+            <label for="name">Nombre</label>
+            <input type="text" id="name" name="name" @bind="CategoryName" required>
+
+            <button type="submit">Guardar</button>
+        </form>
+    </div>
+</div>
+
+@code 
+{
+    [Parameter]
+    public EventCallback OnSave { get; set; }
+    
+    // Define fields to bind with input elements
+    private string CategoryName;
+    private string isActive;
+    public async Task ClosePopup() 
+    {
+        await OnSave.InvokeAsync();
+    }
+    
+    public async Task SaveCategory()
+    {
+        isActive = "Activo";
+
+        await ThirdPartyService.AddCategoryAsync(CategoryName, isActive);
+        // Optionally, notify parent component that save button is clicked
+        await OnSave.InvokeAsync();
+    }
+}

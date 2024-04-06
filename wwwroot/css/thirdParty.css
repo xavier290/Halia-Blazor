@@ -1,0 +1,45 @@
+.product-selection-section {
+    width: 300px;
+    margin: 0 auto;
+}
+
+.product-selection-section h2,
+.product-selection-section h3 {
+    font-size: 1.2rem;
+    margin-bottom: 10px;
+}
+
+#thirdPartySelect {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.product-list {
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 10px;
+}
+
+#productList {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+#productList li {
+    padding: 8px;
+    border-bottom: 1px solid #ccc;
+}
+
+#productList li:last-child {
+    border-bottom: none;
+}
+
+/* Style for hover effect on product list */
+#productList li:hover {
+    background-color: #f0f0f0;
+    cursor: pointer;
+}
