@@ -1,6 +1,7 @@
 .product-selection-section {
-    width: 300px;
-    margin: 0 auto;
+    width: 100%;
+    min-height: 80vh;
+    padding: 5px 10px;
 }
 
 .product-selection-section h2,
@@ -10,11 +11,10 @@
 }
 
 #thirdPartySelect {
-    width: 100%;
     padding: 8px;
-    margin-bottom: 20px;
     border: 1px solid #ccc;
     border-radius: 5px;
+    margin-right: 8px;
 }
 
 .product-list {
