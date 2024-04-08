@@ -19,6 +19,8 @@ public partial class HaliabdContext : DbContext
 
     public virtual DbSet<Almacene> Almacenes { get; set; }
 
+    public virtual DbSet<CategoriaTercero> CategoriaTerceros { get; set; }
+
     public virtual DbSet<Empresa> Empresas { get; set; }
 
     public virtual DbSet<EmpresasTercera> EmpresasTerceras { get; set; }
@@ -29,11 +31,15 @@ public partial class HaliabdContext : DbContext
 
     public virtual DbSet<Producto> Productos { get; set; }
 
+    public virtual DbSet<ProductosEmpresasTercera> ProductosEmpresasTerceras { get; set; }
+
     public virtual DbSet<Proveedor> Proveedors { get; set; }
 
     public virtual DbSet<RelAlmacenDetalle> RelAlmacenDetalles { get; set; }
 
     public virtual DbSet<RelAlmacenProducto> RelAlmacenProductos { get; set; }
+
+    public virtual DbSet<RelCategoriaProductosTercero> RelCategoriaProductosTerceros { get; set; }
 
     public virtual DbSet<RelProductoSucursale> RelProductoSucursales { get; set; }
 
@@ -45,11 +51,13 @@ public partial class HaliabdContext : DbContext
 
     public virtual DbSet<Sucursale> Sucursales { get; set; }
 
+    public virtual DbSet<TipoServicio> TipoServicios { get; set; }
+
     public virtual DbSet<Usuario> Usuarios { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-        => optionsBuilder.UseSqlServer("Server=haliabd.mssql.somee.com;Database=haliabd;UID=Rolando03_SQLLogin_1;PWD=Facil123$;TrustServerCertificate=True");
+        => optionsBuilder.UseSqlServer("Server=haliabd.mssql.somee.com;Database=haliabd;User Id=Rolando03_SQLLogin_1;Password=Facil123$;TrustServerCertificate=True");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -72,6 +80,16 @@ public partial class HaliabdContext : DbContext
             entity.Property(e => e.Estatus).HasMaxLength(50);
             entity.Property(e => e.NombreAlmacen).HasMaxLength(100);
             entity.Property(e => e.SucursalId).HasColumnName("SucursalID");
+        });
+
+        modelBuilder.Entity<CategoriaTercero>(entity =>
+        {
+            entity.HasKey(e => e.CategoriaId);
+
+            entity.Property(e => e.IsActive)
+                .HasMaxLength(50)
+                .HasColumnName("isActive");
+            entity.Property(e => e.Nombre).HasMaxLength(100);
         });
 
         modelBuilder.Entity<Empresa>(entity =>
@@ -101,6 +119,9 @@ public partial class HaliabdContext : DbContext
 
             entity.Property(e => e.EmpresasTercerasId).HasColumnName("EmpresasTercerasID");
             entity.Property(e => e.Email).HasMaxLength(100);
+            entity.Property(e => e.IsActive)
+                .HasMaxLength(50)
+                .HasColumnName("isActive");
             entity.Property(e => e.Nombre).HasMaxLength(200);
             entity.Property(e => e.NombreComercial).HasMaxLength(200);
             entity.Property(e => e.Ruc).HasMaxLength(50);
@@ -137,6 +158,21 @@ public partial class HaliabdContext : DbContext
             entity.Property(e => e.ProductoServicio).HasMaxLength(50);
         });
 
+        modelBuilder.Entity<ProductosEmpresasTercera>(entity =>
+        {
+            entity.HasKey(e => e.ProductoId);
+
+            entity.Property(e => e.ProductoId).HasColumnName("productoId");
+            entity.Property(e => e.Codigo).HasMaxLength(50);
+            entity.Property(e => e.Descripcion).HasMaxLength(100);
+            entity.Property(e => e.FechaCreacion).HasColumnType("datetime");
+            entity.Property(e => e.IsActive)
+                .HasMaxLength(50)
+                .HasColumnName("isActive");
+            entity.Property(e => e.Nombre).HasMaxLength(100);
+            entity.Property(e => e.Precio).HasColumnType("decimal(18, 2)");
+        });
+
         modelBuilder.Entity<Proveedor>(entity =>
         {
             entity.ToTable("Proveedor");
@@ -166,6 +202,23 @@ public partial class HaliabdContext : DbContext
             entity.ToTable("RelAlmacenProducto");
 
             entity.Property(e => e.RelAlmacenProductoId).HasColumnName("RelAlmacenProductoID");
+        });
+
+        modelBuilder.Entity<RelCategoriaProductosTercero>(entity =>
+        {
+            entity.HasKey(e => new { e.CategoriaProductoId, e.CategoriaId, e.ProductoId });
+
+            entity.Property(e => e.CategoriaProductoId).ValueGeneratedOnAdd();
+
+            entity.HasOne(d => d.Categoria).WithMany(p => p.RelCategoriaProductosTerceros)
+                .HasForeignKey(d => d.CategoriaId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_RelCategoriaProductosTerceros_CategoriaTerceros");
+
+            entity.HasOne(d => d.Producto).WithMany(p => p.RelCategoriaProductosTerceros)
+                .HasForeignKey(d => d.ProductoId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_RelCategoriaProductosTerceros_ProductosEmpresasTerceras");
         });
 
         modelBuilder.Entity<RelProductoSucursale>(entity =>
@@ -308,6 +361,14 @@ public partial class HaliabdContext : DbContext
             entity.Property(e => e.Telefono).HasMaxLength(50);
         });
 
+        modelBuilder.Entity<TipoServicio>(entity =>
+        {
+            entity.HasKey(e => e.TipoServicionId).HasName("PK_OPERATIVOS.TipoServicios");
+
+            entity.Property(e => e.TipoServicionId).HasColumnName("TipoServicionID");
+            entity.Property(e => e.Descripcion).HasMaxLength(100);
+            entity.Property(e => e.Estado).HasMaxLength(50);
+        });
 
         modelBuilder.Entity<Usuario>(entity =>
         {

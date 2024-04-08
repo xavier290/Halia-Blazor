@@ -133,6 +133,10 @@
       "PackagePath": "staticwebassets\\css\\site.css"
     },
     {
+      "Id": "C:\\Users\\xa25a\\Documents\\Halia-Blazor\\NovaLaundryAppWebAdminBlazor\\wwwroot\\css\\thirdParty.css",
+      "PackagePath": "staticwebassets\\css\\thirdParty.css"
+    },
+    {
       "Id": "C:\\Users\\xa25a\\Documents\\Halia-Blazor\\NovaLaundryAppWebAdminBlazor\\wwwroot\\favicon.ico",
       "PackagePath": "staticwebassets\\favicon.ico"
     },

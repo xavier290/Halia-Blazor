@@ -1,9 +1,11 @@
-@page "/tools/empresas-terceras";
+@page "/tools/sucursales";
+
+@using Blazored.LocalStorage;
 
 @inject IToolsService ToolsService;
 @inject NavigationManager NavigationManager;
 
-<PageTitle>Halia || Empresas Tercerizadas</PageTitle>
+<PageTitle>Halia || Sucursales</PageTitle>
 
 <!--Buscador-->
 <div class="main-container">
@@ -51,22 +53,26 @@
 
     @if (showPopup && !editMode)
     {
-        <NovaLaundryAppWebAdminBlazor.Pages.Components.tools.CRUD.CreateThirdParty OnSave="HandleSave" />
+        <NovaLaundryAppWebAdminBlazor.Pages.Components.tools.CRUD.CreateBranch OnSave="HandleSave" />
     }
     else if (showPopup && editMode)
     {
-        <NovaLaundryAppWebAdminBlazor.Pages.Components.tools.CRUD.UpdateThirdParty OnSave="HandleSave" SelectedItemId="@entryId" />
+        <NovaLaundryAppWebAdminBlazor.Pages.Components.tools.CRUD.UpdateBranch OnSave="HandleSave" SelectedItemId="@entryId" />
     }
 </div>
 
 
 @code {
-    List<string> headers = new List<string>() {"Clave","Nombre","Nombre Comercial","RUC","Dirección","Telefono"};
+    List<string> headers = new List<string>() {"Clave","Nombre","Dirección","Telefono","Correo"};
     List<List<object>> rows = new List<List<object>>();
     private bool showPopup = false;
     private bool editMode = false;
     private int entryId;
+    private int EmpresaId;
     string filter = "";
+
+    [Inject]
+    protected ILocalStorageService _localStorage { get; set; }
     private async Task HandleSave()
     {
         // Optionally, perform any logic after saving
@@ -106,7 +112,10 @@
     private async Task LoadData()
     {
         rows.Clear();
-        List<List<object>> dataProducts = await ToolsService.GetThirdPartyAsync(filter);
+        var empresa = await _localStorage.GetItemAsync<string>("empresaId");
+        EmpresaId = Int32.Parse(empresa);
+
+        List<List<object>> dataProducts = await ToolsService.GetBranchesAsync(filter, EmpresaId);
 
         foreach (var rowData in dataProducts)
         {

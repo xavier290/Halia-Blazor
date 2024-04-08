@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "4C+iCH3B+thge70Cn99QBnLXRH7aHlGWzddcggmEqf4=",
+  "Hash": "DIKiOf+6H6cUVEcK5i6htFR1+0jGSXO1SMlNeqKVOSs=",
   "Source": "NovaLaundryAppWebAdminBlazor",
   "BasePath": "_content/NovaLaundryAppWebAdminBlazor",
   "Mode": "Default",
@@ -1136,6 +1136,25 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\css\\site.css"
+    },
+    {
+      "Identity": "C:\\Users\\xa25a\\Documents\\Halia-Blazor\\NovaLaundryAppWebAdminBlazor\\wwwroot\\css\\thirdParty.css",
+      "SourceId": "NovaLaundryAppWebAdminBlazor",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\xa25a\\Documents\\Halia-Blazor\\NovaLaundryAppWebAdminBlazor\\wwwroot\\",
+      "BasePath": "_content/NovaLaundryAppWebAdminBlazor",
+      "RelativePath": "css/thirdParty.css",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\css\\thirdParty.css"
     },
     {
       "Identity": "C:\\Users\\xa25a\\Documents\\Halia-Blazor\\NovaLaundryAppWebAdminBlazor\\wwwroot\\favicon.ico",

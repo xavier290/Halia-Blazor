@@ -1,0 +1,137 @@
+@page "/thirdparties/productos-terceros";
+
+@inject IToolsService ToolsService;
+@inject IthirdPartyService ThirdPartyService;
+
+<PageTitle>Productos de terceros</PageTitle>
+
+<div class="product-selection-section">
+    <h2>Productos:</h2>
+    <div class="search-container">
+        <form @onsubmit="HandleSearch" class="search-form">
+            <select id="thirdPartySelect" @onchange="HandleSelectionThirdPartyChange">
+                <option value="">Seleccciona Empresa</option>
+                @foreach (var Item in thirdPartyItem)
+                {
+                    <option value="@Item[0]">@Item[1]</option>
+                }
+            </select>
+            <input @bind="@filter" class="search-input" type="text" name="q" placeholder="Buscar...">
+            <button class="search-button" type="submit"><span class="hide-text">Buscar </span><img src="/Search.png" alt="Logo" class="search-icon"></button>
+            <button @onclick="OpenCreateSection" class="create-button" type="button">Crear <img src="/Create.png" alt="Logo" class="create-icon"></button>
+        </form>
+    </div>
+    <div class="product-list">
+        <div class="table-container">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th class="actions-row">Acciones</th>
+                        @foreach (var header in headers)
+                        {
+                            <th>@header</th>
+                        }
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var row in rows)
+                    {
+                        <tr>
+                            <td class="actions-btns">
+                                <button class="action-button update">Actualizar</button>
+                                <button class="action-button block">Bloquear</button>
+                            </td>
+                            @foreach (var cell in row)
+                            {
+                                <td>@cell</td>
+                            }
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    @if(createSectionOpened) 
+    {
+        <NovaLaundryAppWebAdminBlazor.Pages.Components.thirdParties.CRUD.CreateProductPage OnSave="HandleSave" />
+    }
+</div>
+
+@code {
+    private string selectedThirdPartyId;
+    private string filter = "";
+    private string filterthirdPrty = "";
+    private bool createSectionOpened = false;
+    List<List<object>> thirdPartyItem = new List<List<object>>();
+    List<string> headers = new List<string>() {"Clave","Nombre","Descripción","Precio", "Cantidad"};
+    List<List<object>> rows = new List<List<object>>();
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            @* LoadTitles(); *@
+            await LoadThirdParty();
+            await LoadData(selectedThirdPartyId);
+        }
+
+        StateHasChanged();
+    }
+
+    private async Task HandleSave()
+    {
+        // Optionally, perform any logic after saving
+        createSectionOpened = false; // Close the popup window
+        LoadData(selectedThirdPartyId); // Reload data after saving
+    }
+
+    private async Task LoadThirdParty()
+    {
+        thirdPartyItem.Clear();
+        List<List<object>> dataThirdParties = await ToolsService.GetThirdPartyAsync(filterthirdPrty);
+
+        foreach (var ThirdPartyData in dataThirdParties)
+        {
+            thirdPartyItem.Add(ThirdPartyData);
+        }
+    }
+
+    private async void HandleSelectionThirdPartyChange(ChangeEventArgs e)
+    {
+        selectedThirdPartyId = e.Value.ToString();
+        await LoadData(selectedThirdPartyId);
+    }
+
+    private async void HandleSearch()
+    {
+        await LoadData(selectedThirdPartyId);
+    }
+
+    private async void OpenCreateSection()
+    {
+        createSectionOpened = true;
+    }
+
+    private async Task LoadData(string selectedItem)
+    {
+        rows.Clear();
+        List<List<object>> dataProducts;
+        
+        if(!string.IsNullOrEmpty(selectedItem))
+        {
+            int Item = Int32.Parse(selectedItem);
+            dataProducts = await ThirdPartyService.GetProductsTercerosAsync(filter, Item);
+        }
+        else {
+            int defaultData = 0;
+            dataProducts = await ThirdPartyService.GetProductsTercerosAsync(filter, defaultData);
+        }
+
+        foreach (var rowData in dataProducts)
+        {
+            rows.Add(rowData);
+        }
+    }
+
+}

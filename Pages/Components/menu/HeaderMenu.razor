@@ -1,4 +1,6 @@
 @using Blazored.LocalStorage;
+@using NovaLaundryAppWebAdminBlazor.Server.ViewModels;
+@using NovaLaundryAppWebAdminBlazor.ModelsHalia;
 
 <div class="header-home">
     <!--Division de Menu Superior-->
@@ -57,6 +59,8 @@
 
                 if (empresaBuscada != null)
                 {
+                    await _localStorage.SetItemAsync("empresaId", empresaBuscada.EmpresaId.ToString());
+                    
                     return empresaBuscada.NombreComercial + ", " + sucursalBuscada.NombreSucursal;
                 }
             }

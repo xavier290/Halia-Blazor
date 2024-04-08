@@ -1,0 +1,62 @@
+@using Blazored.LocalStorage;
+
+@inject IToolsService ToolsService
+@inject NavigationManager NavigationManager
+
+
+<div class="popup-section">
+    <div class="modal-content">
+        
+        <span class="close" @onclick="ClosePopup">&times;</span>   
+        <h2>Crear Nueva Sucursal</h2>
+
+        <form @onsubmit="SaveBranch">
+            <label for="name">Nombre</label>
+            <input type="text" id="name" name="name" @bind="Name" required>
+
+            <label for="Direccion">Dirección</label>
+            <input type="text" id="Direccion" name="Direccion" @bind="Direccion">
+
+            <label for="Telefono">Telefono</label>
+            <input type="text" id="Telefeno" name="Telefono" @bind="Telefono">
+
+            <label for="Correo">Correo</label>
+            <input type="text" id="Correo" name="Correo" @bind="Correo">
+
+            <button type="submit">Guardar</button>
+        </form>
+    </div>
+</div>
+
+
+@code 
+{
+    [Parameter]
+    public EventCallback OnSave { get; set; }
+    
+    // Define fields to bind with input elements
+    private string Name;
+    private string Direccion;
+    private string Estado = "Activo";
+    private string Telefono;
+    private string Correo;
+    private int EmpresaId;
+
+    [Inject]
+    protected ILocalStorageService _localStorage { get; set; }
+
+    public async Task ClosePopup() 
+    {
+        await OnSave.InvokeAsync();
+    }
+    
+    public async Task SaveBranch()
+    {
+        var empresa = await _localStorage.GetItemAsync<string>("empresaId");
+        EmpresaId = Int32.Parse(empresa);
+
+        await ToolsService.AddBranchAsync(Name, Direccion, Estado, Telefono, Correo, EmpresaId);
+        // Optionally, notify parent component that save button is clicked
+        await OnSave.InvokeAsync();
+    }
+}

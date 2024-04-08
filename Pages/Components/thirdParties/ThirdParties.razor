@@ -1,0 +1,37 @@
+@page "/thirdparties";
+
+@inject NavigationManager NavigationManager
+
+<PageTitle>Halia || Empresas Tercerizadas</PageTitle>
+
+<div class="catalog-cnt tools">
+   <!-- Display main catalog section -->
+   <div class="section-item tools">
+      <div class="section-content">
+            <h2>Empresas Tercerizadas</h2>
+            <p>Explora Empresas. Crea, Edita, y Bloquea empresas.</p>
+      </div>
+      <button class="btn-cat" @onclick="@(e => NavigateToPage("empresas-terceras"))">Ingresar</button>
+   </div>
+   <div class="section-item tools">
+      <div class="section-content">
+            <h2>Productos</h2>
+            <p>Explora, Crea, Edita y Bloquea productos tercerizados.</p>
+      </div>
+      <button class="btn-cat" @onclick="@(e => NavigateToPage("productos-terceros"))">Ingresar</button>
+   </div>
+   <div class="section-item tools">
+      <div class="section-content">
+            <h2>Categorias</h2>
+            <p>Explora, Crea, Edita las categorias de productos tercerizados.</p>
+      </div>
+      <button class="btn-cat" @onclick="@(e => NavigateToPage("categorias-terceros"))">Ingresar</button>
+   </div>
+</div>
+
+@code {
+   private void NavigateToPage(string page)
+   {
+      NavigationManager.NavigateTo($"/thirdparties/{page}");
+   }
+}

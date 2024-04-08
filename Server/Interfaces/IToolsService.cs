@@ -12,4 +12,11 @@ public interface IToolsService
     Task<EmpresasTercera> GetSingleThirdPartyAsync(int entryId);
     Task AddThirdPartyAsync(string Name, string ComercialName, string ruc, string direccion, string telefono);
     Task UpdateThirdPartyAsync(int entryId, string Name, string ComercialName, string ruc, string direccion, string telefono);
+
+
+    Task<List<List<object>>> GetBranchesAsync(string filter, int empresaId);
+    Task<Sucursale> GetSingleBranchAsync(int entryId);
+    Task AddBranchAsync(string Name, string direccion, string estado, string telefono, string correo, int empresaId);
+    Task UpdateBranchAsync(int entryId, string Name, string direccion, string estado, string telefono, string correo, int empresaId);
+
 }
