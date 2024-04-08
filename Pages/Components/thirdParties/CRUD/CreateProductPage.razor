@@ -171,10 +171,13 @@
 
         int productId = newProduct.ProductoId;
 
-        foreach (string categoryId in selectedCategoryIds)
+        if (selectedCategoryIds.Count > 0)
         {
-            int categoryIdInt = Convert.ToInt32(categoryId);
-            await ThirdPartyService.AddProductCategoryAsync(productId, categoryIdInt);
+            foreach (string categoryId in selectedCategoryIds)
+            {
+                int categoryIdInt = Convert.ToInt32(categoryId);
+                await ThirdPartyService.AddProductCategoryAsync(productId, categoryIdInt);
+            }
         }
 
         await OnSave.InvokeAsync();
