@@ -18,4 +18,7 @@ public interface IthirdPartyService
     Task UpdateCategoryAsync(int entryId, string name);
     Task<CategoriaTercero> GetSingleCategoryAsync(int entryId);
 
+
+    Task<List<List<object>>> GetProductsTercerosAsync(string filter, int empresaId);
+
 }

@@ -71,4 +71,41 @@ public class ThirdPartyService : IthirdPartyService
             return categoriaTercero;
         }
     }
+
+    public async Task<List<List<object>>> GetProductsTercerosAsync(string filter, int empresaId)
+    {
+        List<List<object>> rows = new List<List<object>>();
+
+        using (HaliabdContext db = new HaliabdContext())
+        {
+            IQueryable<ProductosEmpresasTercera> query = db.ProductosEmpresasTerceras.Where(e => e.IsActive == "Activo");
+
+            if (empresaId != 0) // Assuming 0 is the default value when no empresaId is selected
+            {
+                query = query.Where(e => e.EmpresaTercerizadaId == empresaId);
+            }
+
+            if (!string.IsNullOrWhiteSpace(filter))
+            {
+                query = query.Where(e => e.Nombre.Contains(filter));
+            }
+
+            List<ProductosEmpresasTercera> productosEmpresasTercera = await query.ToListAsync();
+
+            foreach (var item in productosEmpresasTercera)
+            {
+                List<object> fila = new List<object>();
+                fila.Add(item.ProductoId);
+                fila.Add(item.Nombre);
+                fila.Add(item.Descripcion);
+                fila.Add(item.Precio);
+                fila.Add(item.Cantidad);
+
+                rows.Add(fila);
+            }
+        }
+
+        return rows;
+    }
+
 }

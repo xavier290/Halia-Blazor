@@ -85,7 +85,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    z-index: 9999;
+    z-index: 20;
 }
 
 .modal-content {
@@ -116,16 +116,19 @@
 }
 
 .popup-section input[type="text"],
-.popup-section button {
+.popup-section button,
+.popup-section input[type="number"],
+.popup-section select {
     width: 100%;
-    padding: 10px;
-    margin-bottom: 10px;
+    padding: 6px;
+    margin-bottom: 8px;
     border: 1px solid #ccc;
     border-radius: 5px;
     box-sizing: border-box;
 }
 
-.popup-section input[type="text"]::placeholder {
+.popup-section input[type="text"]::placeholder,
+.popup-section input[type="number"]::placeholder {
     color: #aaa;
 }
 

@@ -43,3 +43,67 @@
     background-color: #f0f0f0;
     cursor: pointer;
 }
+
+
+form .btns-section {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+form .btns-section button {
+    width: 49%;
+}
+
+form .btns-section .saveProductoTercero {
+    background: #008000;
+}
+
+form .btns-section .saveProductoTercero:hover {
+    background: #006500;
+}
+
+.category-selection {
+    margin-bottom: 20px;
+}
+
+.category-selection .form-control {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    margin-bottom: 10px;
+}
+
+.add-button {
+    background-color: #4CAF50; /* Green */
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+    border-radius: 4px;
+}
+
+.add-button:hover {
+    background-color: #45a049;
+}
+
+.category-selection {
+    height: 95px;
+    overflow-y: auto;
+}
+
+.category-item {
+    display: flex;
+    flex-direction: row;
+}
+
+.category-item input {
+    margin-right: 5px;
+}
