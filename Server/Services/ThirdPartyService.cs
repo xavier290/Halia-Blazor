@@ -108,4 +108,37 @@ public class ThirdPartyService : IthirdPartyService
         return rows;
     }
 
+    public async Task AddProductAsync(ProductosEmpresasTercera product)
+    {
+        using(HaliabdContext db = new HaliabdContext())
+        {
+            // Set the IsActive property to "Activo" by default
+            product.IsActive = "Activo";
+            
+            // Set the creation date
+            product.FechaCreacion = DateTime.Now;
+
+            // Add the product to the database
+            db.Add(product);
+            
+            // Save changes to the database
+            await db.SaveChangesAsync();
+        }
+    }
+
+    public async Task AddProductCategoryAsync(int productId, int categoryId)
+    {
+        using (HaliabdContext db = new HaliabdContext())
+        {
+            RelCategoriaProductosTercero rel = new RelCategoriaProductosTercero
+            {
+                ProductoId = productId,
+                CategoriaId = categoryId
+            };
+
+            db.Add(rel);
+            await db.SaveChangesAsync();
+        }
+    }
+
 }

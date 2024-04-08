@@ -20,5 +20,6 @@ public interface IthirdPartyService
 
 
     Task<List<List<object>>> GetProductsTercerosAsync(string filter, int empresaId);
-
+    Task AddProductAsync(ProductosEmpresasTercera product);
+    Task AddProductCategoryAsync(int productId, int categoryId);
 }

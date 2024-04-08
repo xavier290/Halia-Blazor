@@ -27,7 +27,7 @@
                 <input id="productQuantity" @bind="@productQuantity" type="number" class="form-control" />
                 
                 <label for="thirdParty">Empresas Tercerizadas</label>
-                <select id="thirdParty" class="form-control">
+                <select id="thirdParty" class="form-control" @onchange="HandleSelectionThirdPartyChange">
                     <option value="">Selecciona Empresa</option>
                     @foreach (var thirdParty in DataThirdParties)
                     {
@@ -40,7 +40,7 @@
         }
         else if (currentPage == 2)
         {
-            <form>
+            <form @onsubmit="SaveProductoTercero">
                 <!-- Add additional fields for the second page -->
                 <label for="Code">Codigo</label>
                 <input id="Code" @bind="Code" type="text" class="form-control" />
@@ -84,6 +84,7 @@
     private int productQuantity;
     private int productQuantityMax;
     private int productQuantityMin;
+    private int selectedThirdPartyId;
     private List<List<object>> DataCategories = new List<List<object>>();
     private List<List<object>> DataThirdParties = new List<List<object>>();
     private List<string> selectedCategoryIds = new List<string>();
@@ -149,5 +150,39 @@
     private void GoToPreviousPage()
     {
         currentPage = 1;
+    }
+
+    private async Task SaveProductoTercero()
+    {
+        // Create a new instance of ProductosEmpresasTercera
+        ProductosEmpresasTercera newProduct = new ProductosEmpresasTercera
+        {
+            Nombre = productName,
+            Precio = productPrice,
+            Codigo = Code,
+            Descripcion = productDescription,
+            EmpresaTercerizadaId = selectedThirdPartyId,
+            Cantidad = productQuantity,
+            CantidadMaxima = productQuantityMax,
+            CantidadMinima = productQuantityMin
+        };
+
+        await ThirdPartyService.AddProductAsync(newProduct);
+
+        int productId = newProduct.ProductoId;
+
+        foreach (string categoryId in selectedCategoryIds)
+        {
+            int categoryIdInt = Convert.ToInt32(categoryId);
+            await ThirdPartyService.AddProductCategoryAsync(productId, categoryIdInt);
+        }
+
+        await OnSave.InvokeAsync();
+    }
+
+    private async void HandleSelectionThirdPartyChange(ChangeEventArgs e)
+    {
+        string itemSelected = e.Value.ToString();
+        selectedThirdPartyId = Int32.Parse(itemSelected);
     }
 }
