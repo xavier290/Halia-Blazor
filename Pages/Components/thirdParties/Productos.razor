@@ -38,7 +38,7 @@
                     {
                         <tr>
                             <td class="actions-btns">
-                                <button class="action-button update">Actualizar</button>
+                                <button @onclick="() => OpenEditSection(row)" class="action-button update">Actualizar</button>
                                 <button class="action-button block">Bloquear</button>
                             </td>
                             @foreach (var cell in row)
@@ -56,6 +56,10 @@
     {
         <NovaLaundryAppWebAdminBlazor.Pages.Components.thirdParties.CRUD.CreateProductPage OnSave="HandleSave" />
     }
+    else if(editSectionOpened)
+    {
+        <NovaLaundryAppWebAdminBlazor.Pages.Components.thirdParties.CRUD.UpdateProductPage OnSave="HandleSave" SelectedItemId="@entryId" />
+    }
 </div>
 
 @code {
@@ -63,6 +67,8 @@
     private string filter = "";
     private string filterthirdPrty = "";
     private bool createSectionOpened = false;
+    private bool editSectionOpened = false;
+    private int entryId;
     List<List<object>> thirdPartyItem = new List<List<object>>();
     List<string> headers = new List<string>() {"Clave","Nombre","Descripción","Precio", "Cantidad"};
     List<List<object>> rows = new List<List<object>>();
@@ -83,6 +89,7 @@
     {
         // Optionally, perform any logic after saving
         createSectionOpened = false; // Close the popup window
+        editSectionOpened = false;
         LoadData(selectedThirdPartyId); // Reload data after saving
     }
 
@@ -106,6 +113,12 @@
     private async void HandleSearch()
     {
         await LoadData(selectedThirdPartyId);
+    }
+
+    private async void OpenEditSection(List<object> Id)
+    {
+        entryId = Convert.ToInt32(Id[0]);
+        editSectionOpened = true;
     }
 
     private async void OpenCreateSection()

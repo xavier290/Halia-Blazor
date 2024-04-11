@@ -141,4 +141,70 @@ public class ThirdPartyService : IthirdPartyService
         }
     }
 
+    public async Task UpdateProductAsync(int entryId, List<string> selectedCategoryIds, ProductosEmpresasTercera product)
+    {
+        using(HaliabdContext db = new HaliabdContext())
+        {
+            ProductosEmpresasTercera existingProduct = await db.ProductosEmpresasTerceras.FindAsync(entryId);
+        
+            if (existingProduct != null)
+            {
+                // Update the properties of the existing product with the values from the updated product
+                existingProduct.Nombre = product.Nombre;
+                existingProduct.Precio = product.Precio;
+                existingProduct.Codigo = product.Codigo;
+                existingProduct.Descripcion = product.Descripcion;
+                existingProduct.EmpresaTercerizadaId = product.EmpresaTercerizadaId;
+                existingProduct.Cantidad = product.Cantidad;
+                existingProduct.CantidadMaxima = product.CantidadMaxima;
+                existingProduct.CantidadMinima = product.CantidadMinima;
+
+                // Remove existing associations not present in the updated list
+                db.RelCategoriaProductosTerceros.RemoveRange(
+                    db.RelCategoriaProductosTerceros
+                        .Where(rel => rel.ProductoId == entryId && !selectedCategoryIds.Contains(rel.CategoriaId.ToString()))
+                );
+
+                // Add new associations
+                foreach (string categoryId in selectedCategoryIds)
+                {
+                    if (!await db.RelCategoriaProductosTerceros.AnyAsync(rel => rel.ProductoId == entryId && rel.CategoriaId.ToString() == categoryId))
+                    {
+                        db.RelCategoriaProductosTerceros.Add(new RelCategoriaProductosTercero
+                        {
+                            ProductoId = entryId,
+                            CategoriaId = int.Parse(categoryId)
+                        });
+                    }
+                }
+
+
+                // Save changes to the database
+                await db.SaveChangesAsync();
+            }
+        }
+    }
+
+    public async Task<ProductosEmpresasTercera> GetSingleProductThirdPartyAsync(int entryId)
+    {
+        using (HaliabdContext db = new HaliabdContext())
+        {
+            ProductosEmpresasTercera productosEmpresasTercera = await db.ProductosEmpresasTerceras.FirstOrDefaultAsync(e => e.ProductoId == entryId);
+            return productosEmpresasTercera;
+        }
+    }
+
+    public async Task<List<string>> GetAssociatedCategoriesAsync(int productId)
+    {
+        using (HaliabdContext db = new HaliabdContext())
+        {
+            // Query the relational table to get the associated category IDs for the given product ID
+            List<string> associatedCategoryIds = await db.RelCategoriaProductosTerceros
+                .Where(rel => rel.ProductoId == productId)
+                .Select(rel => rel.CategoriaId.ToString())
+                .ToListAsync();
+
+            return associatedCategoryIds;
+        }
+    }
 }

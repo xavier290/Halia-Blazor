@@ -21,5 +21,8 @@ public interface IthirdPartyService
 
     Task<List<List<object>>> GetProductsTercerosAsync(string filter, int empresaId);
     Task AddProductAsync(ProductosEmpresasTercera product);
+    Task UpdateProductAsync(int entryId, List<string> selectedCategoryIds, ProductosEmpresasTercera producto);
     Task AddProductCategoryAsync(int productId, int categoryId);
+    Task<ProductosEmpresasTercera> GetSingleProductThirdPartyAsync(int entryId);
+    Task<List<string>> GetAssociatedCategoriesAsync(int productId);
 }
