@@ -1,0 +1,197 @@
+@inject IthirdPartyService ThirdPartyService
+@inject IToolsService ToolsService
+
+@using NovaLaundryAppWebAdminBlazor.Server.Services
+@using NovaLaundryAppWebAdminBlazor.Server.ViewModels
+@using NovaLaundryAppWebAdminBlazor.ModelsHalia
+
+<div class="popup-section">
+    <div class="modal-content">
+        <span class="close" @onclick="ClosePopup">&times;</span>
+        <h2>Actualizar Producto</h2>
+
+        @if (Product != null)
+        {
+            <!-- Render the content that depends on Product -->
+            @if (currentPage == 1)
+            {
+                <form>
+                    <label for="productName">Nombre</label>
+                    <input type="text" id="productName" @bind="@productName" class="form-control" />
+                    
+                    <label for="productPrice">Precio</label>
+                    <input id="productPrice" @bind="@productPrice" type="number" class="form-control" />
+
+                    <label for="productDescription">Descripción</label>
+                    <input id="productDescription" @bind="@productDescription" class="form-control" />
+
+                    <label for="productQuantity">Cantidad</label>
+                    <input id="productQuantity" @bind="@productQuantity" type="number" class="form-control" />
+                    
+                    <label for="thirdParty">Empresas Tercerizadas</label>
+                    <select id="thirdParty" class="form-control" @bind="selectedThirdPartyId">
+                        <option value="">Selecciona Empresa</option>
+                        @foreach (var thirdParty in DataThirdParties)
+                        {
+                            var id = thirdParty[0].ToString();
+                            var name = thirdParty[1].ToString();
+                            <option value="@id">@name</option>
+                        }
+                    </select>
+
+                    <button type="button" @onclick="GoToNextPage">Siguiente</button>
+                </form>
+            }
+            else if (currentPage == 2)
+            {
+                <form @onsubmit="UpdateProductThirdParty">
+                    <!-- Add additional fields for the second page -->
+                    <label for="Code">Codigo</label>
+                    <input id="Code" @bind="Code" type="text" class="form-control" />
+
+                    <label for="productQuantityMax">Cantidad Maxima</label>
+                    <input id="productQuantityMax" @bind="@productQuantityMax" type="number" class="form-control" />
+                    
+                    <label for="productQuantityMin">Cantidad Minima</label>
+                    <input id="productQuantityMin" @bind="@productQuantityMin" type="number" class="form-control" />
+
+                   <div class="category-selection">
+                        <h3>Agregar Categorías</h3>
+                        @foreach (var category in DataCategories)
+                        {
+                            // Check if the category is already associated with the product
+                            bool isChecked = selectedCategoryIds.Contains(category[0].ToString());
+
+                            <div class="category-item">
+                                <input type="checkbox" id="category_@category[0]" @bind="isChecked" @onclick="() => ToggleCategorySelection(category[0].ToString())"/>
+                                <label for="category_@category[0]">@category[1]</label>
+                            </div>
+                        }
+                    </div>
+
+                    <div class="btns-section">
+                        <button type="button" @onclick="GoToPreviousPage">Atrás</button>
+                        <button type="submit">Guardar</button>
+                    </div>
+                </form>
+            }
+        }
+        else
+        {
+            <!-- Render a placeholder or loading message -->
+            <p>Cargando...</p>
+        }
+    </div>
+</div>
+
+@code 
+{
+    [Parameter]
+    public EventCallback OnSave { get; set; }
+
+    [Parameter]
+    public int SelectedItemId { get; set; }
+    private ProductosEmpresasTercera Product { get; set; }
+    private int currentPage = 1;
+    private string filter = "";
+    private string productName;
+    private string Code;
+    private string productDescription;
+    private decimal productPrice;
+    private int productQuantity;
+    private int productQuantityMax;
+    private int productQuantityMin;
+    private int selectedThirdPartyId;
+    private List<List<object>> DataCategories = new List<List<object>>();
+    private List<List<object>> DataThirdParties = new List<List<object>>();
+    private List<string> selectedCategoryIds = new List<string>();
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await LoadData(SelectedItemId);
+        }
+        
+        StateHasChanged();
+    }
+
+    private async Task LoadData(int entryId)
+    {
+        DataThirdParties.Clear();
+        DataThirdParties.Clear();
+        Product = await ThirdPartyService.GetSingleProductThirdPartyAsync(entryId);
+        
+        productName = Product.Nombre ?? "";
+        Code = Product.Codigo;
+        productDescription = Product.Descripcion ?? "";
+        productPrice = Product.Precio ?? 0;
+        productQuantity = Product.Cantidad ?? 0;
+        productQuantityMax = Product.CantidadMaxima ?? 0;
+        productQuantityMin = Product.CantidadMinima ?? 0;
+
+        selectedThirdPartyId = Product.EmpresaTercerizadaId ?? 0;
+
+        List<List<object>> dataThp = await ToolsService.GetThirdPartyAsync(filter);
+        
+        foreach (var rowData in dataThp)
+        {
+            DataThirdParties.Add(rowData);
+        }
+
+        List<List<object>> dataCat = await ThirdPartyService.GetCategoriesAsync(filter);
+
+        foreach (var rowData in dataCat)
+        {
+            DataCategories.Add(rowData);
+        }
+
+        selectedCategoryIds = await ThirdPartyService.GetAssociatedCategoriesAsync(entryId);
+    }
+    public async Task ClosePopup() 
+    {
+        await OnSave.InvokeAsync();
+    }
+
+    public async Task UpdateProductThirdParty()
+    {
+        @* await ThirdPartyService.UpdateCategoryAsync(SelectedItemId, CategoryName); *@
+        // Optionally, notify parent component that save button is clicked
+
+        await ThirdPartyService.UpdateProductAsync(SelectedItemId, selectedCategoryIds, new ProductosEmpresasTercera
+        {
+            Nombre = productName,
+            Precio = productPrice,
+            Codigo = Code,
+            Descripcion = productDescription,
+            EmpresaTercerizadaId = selectedThirdPartyId,
+            Cantidad = productQuantity,
+            CantidadMaxima = productQuantityMax,
+            CantidadMinima = productQuantityMin
+        });
+
+        await OnSave.InvokeAsync();
+    }
+
+    private async void ToggleCategorySelection(string categoryId)
+    {
+        if (selectedCategoryIds.Contains(categoryId))
+        {
+            selectedCategoryIds.Remove(categoryId);
+        }
+        else
+        {
+            selectedCategoryIds.Add(categoryId);
+        }
+    }
+
+    private void GoToNextPage()
+    {
+        currentPage = 2;
+    }
+
+    private void GoToPreviousPage()
+    {
+        currentPage = 1;
+    }
+}
