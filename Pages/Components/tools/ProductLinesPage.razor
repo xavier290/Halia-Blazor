@@ -1,13 +1,12 @@
-@page "/Catalog/Products"
-
+@page "/tools/ProductLines"
 @inject IcatalogService CatalogService;
 @inject NavigationManager NavigationManager;
 
-<PageTitle>Halia || Productos</PageTitle>
+<PageTitle>Halia || Lineas de Productos</PageTitle>
+
 
 <!--Buscador-->
 <div class="main-container">
-    <!-- Botón Volver -->
     <button @onclick="Comeback" class="btn-volver" type="button">Volver</button>
 
     <!--Search+Button-->
@@ -51,17 +50,17 @@
 
     @if (showPopup && !editMode)
     {
-        <NovaLaundryAppWebAdminBlazor.Pages.Components.catalog.CRUD.CreateProductPage OnSave="HandleSave" />
+        <NovaLaundryAppWebAdminBlazor.Pages.Components.tools.CRUD.CreateLinePage OnSave="HandleSave" />
     }
     else if (showPopup && editMode)
     {
-        <NovaLaundryAppWebAdminBlazor.Pages.Components.catalog.CRUD.UpdateProductPage OnSave="HandleSave" SelectedItemId="@entryId" />
+        <NovaLaundryAppWebAdminBlazor.Pages.Components.tools.CRUD.UpdateLinePage OnSave="HandleSave" SelectedItemId="@entryId" />
     }
 </div>
 
 
 @code {
-    List<string> headers = new List<string>() {"Clave","Nombre","Descripción","Precio"};
+    List<string> headers = new List<string>() {"Clave","Nombre",};
     List<List<object>> rows = new List<List<object>>();
     private bool showPopup = false;
     private bool editMode = false;
@@ -69,7 +68,6 @@
     string filter = "";
     private async Task HandleSave()
     {
-        // Optionally, perform any logic after saving
         showPopup = false; // Close the popup window
         LoadData(); // Reload data after saving
     }
@@ -106,7 +104,7 @@
     private async Task LoadData()
     {
         rows.Clear();
-        List<List<object>> dataProducts = await CatalogService.GetProductAsync(filter);
+        List<List<object>> dataProducts = await CatalogService.GetProductLineAsync(filter);
 
         foreach (var rowData in dataProducts)
         {
@@ -116,6 +114,6 @@
 
     private async Task Comeback()
     {
-        NavigationManager.NavigateTo("/Catalog");
+        NavigationManager.NavigateTo("/tools");
     }
 }
