@@ -6,12 +6,40 @@
 
 <div class="catalog-cnt tools">
    <!-- Display main catalog section -->
-   <div class="section-item tools">
+   <div class="section-item">
       <div class="section-content">
             <h2>Sucursales Halia</h2>
-            <p>Explora, Crea, Edita, Y Bloquea Sucursales.</p>
+            <p>Explora, Crea, Edita, Y Bloquea Sucursales Halia.</p>
       </div>
       <button class="btn-cat" @onclick="@(e => NavigateToPage("sucursales"))">Ingresar</button>
+   </div>
+   <div class="section-item">
+      <div class="section-content">
+            <h2>Productos</h2>
+            <p>Explora los productos Halia. Edita, Agrega, Bloquea Productos.</p>
+      </div>
+      <button class="btn-cat" @onclick="@(e => NavigateToPage("Products"))">Ingresar</button>
+   </div>
+   <div class="section-item">
+      <div class="section-content">
+            <h2>Lineas de Productos</h2>
+            <p>Explora Lineas de Productos. Edita, Agrega, Bloquea Lineas.</p>
+      </div>
+      <button class="btn-cat" @onclick="@(e => NavigateToPage("ProductLines"))">Ingresar</button>
+   </div>
+   <div class="section-item">
+      <div class="section-content">
+            <h2>Proveedores</h2>
+            <p>Explora los Proveedores. Edita, Agrega, Bloquea Proveedores</p>
+      </div>
+      <button class="btn-cat" @onclick="@(e => NavigateToPage("Providers"))">Ingresar</button>
+   </div>
+   <div class="section-item">
+      <div class="section-content">
+            <h2>Categorias</h2>
+            <p>Explora las Categorias. Edita, Agrega, Bloquea Categorias</p>
+      </div>
+      <button class="btn-cat" @onclick="@(e => NavigateToPage("Categorias"))">Ingresar</button>
    </div>
 </div>
 

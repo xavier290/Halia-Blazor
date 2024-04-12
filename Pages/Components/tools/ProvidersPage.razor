@@ -1,4 +1,4 @@
-@page "/Catalog/Providers"
+@page "/tools/Providers"
 @inject IcatalogService CatalogService;
 @inject NavigationManager NavigationManager;
 
@@ -50,11 +50,11 @@
 
     @if (showPopup && !editMode)
     {
-        <NovaLaundryAppWebAdminBlazor.Pages.Components.catalog.CRUD.CreateProviderPage OnSave="HandleSave" />
+        <NovaLaundryAppWebAdminBlazor.Pages.Components.tools.CRUD.CreateProviderPage OnSave="HandleSave" />
     }
     else if (showPopup && editMode)
     {
-        <NovaLaundryAppWebAdminBlazor.Pages.Components.catalog.CRUD.UpdateProviderPage OnSave="HandleSave" SelectedItemId="@entryId" />
+        <NovaLaundryAppWebAdminBlazor.Pages.Components.tools.CRUD.UpdateProviderPage OnSave="HandleSave" SelectedItemId="@entryId" />
     }
 </div>
 
@@ -114,6 +114,6 @@
 
     private async Task Comeback()
     {
-        NavigationManager.NavigateTo("/Catalog");
+        NavigationManager.NavigateTo("/tools");
     }
 }

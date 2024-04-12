@@ -16,4 +16,6 @@ public partial class Proveedor
     public string? Pais { get; set; }
 
     public string? DepartamentoEstado { get; set; }
+
+    public string? IsActive { get; set; }
 }
