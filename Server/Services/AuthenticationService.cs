@@ -63,6 +63,9 @@ public class AuthenticationService : IAuthenticationService
         {
             // Clear authentication status from local storage
             await _localStorage.RemoveItemAsync("IsAuthenticated");
+            await _localStorage.RemoveItemAsync("user");
+            await _localStorage.RemoveItemAsync("userId");
+            await _localStorage.RemoveItemAsync("sucursalId");
             return true;
         }
         catch (Exception ex)

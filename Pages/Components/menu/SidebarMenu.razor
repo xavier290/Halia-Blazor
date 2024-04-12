@@ -1,3 +1,6 @@
+@inject IAuthenticationService AuthenticationService
+@inject NavigationManager NavigationManager
+
 <nav class="sidebar-menu @(SidebarVisible ? "open" : "")" role="navigation" aria-label="Main Menu">
         <div @onclick="HandleLinkClick" class="logo-section" style="user-select: none;">
             <a class="logo" href="/Home">
@@ -45,12 +48,6 @@
                 </a>
             </li>
             <li>
-                <a @onclick="HandleLinkClick" href="/Home" class="btn-sidebar" style="user-select: none;">
-                    <img src="/clientes.png" alt="Logo" class="img-fluid mb-2">
-                    <span class="text-light">Clientes</span>
-                </a>
-            </li>
-            <li>
                 <a @onclick="HandleLinkClick" href="/tools" class="btn-sidebar" style="user-select: none;">
                     <img src="/Soporte.png" alt="Soporte Técnico Icon" class="img-fluid mb-2 mt-2">
                     <span class="text-light">Herramientas</span>
@@ -77,7 +74,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">
+                <button @onclick="SignOut" type="button" class="btn btn-danger" data-bs-dismiss="modal">
                     <NavLink class="nav-link" href="">
                         <span class="oi oi-plus" aria-hidden="true"></span> Cerrar Sesión
                     </NavLink>
@@ -97,5 +94,11 @@
     private async Task HandleLinkClick()
     {
         await ToggleSidebar.InvokeAsync(false); // Close the sidebar when a link is clicked
+    }
+
+    private async Task SignOut()
+    {
+        await AuthenticationService.LogoutAsync();
+        NavigationManager.NavigateTo("/", forceLoad: true);
     }
 }
