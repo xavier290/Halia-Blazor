@@ -29,7 +29,7 @@
 .catalog-cnt {
     display: flex;
     flex-wrap: wrap; /* Allow items to wrap to the next row */
-    justify-content: normal; /* Distribute items evenly */
+    justify-content: space-between; /* Distribute items evenly */
     align-items: flex-start; /* Align items at the start of the cross axis */
     padding: 10px 10px;
 }
@@ -60,10 +60,6 @@
 
 .btn-cat:hover {
     background-color: #B66667;
-}
-
-.catalog-cnt.tools {
-    justify-content: normal;
 }
 
 .section-item.tools {

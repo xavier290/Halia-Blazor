@@ -21,6 +21,8 @@ public partial class HaliabdContext : DbContext
 
     public virtual DbSet<CategoriaTercero> CategoriaTerceros { get; set; }
 
+    public virtual DbSet<Categorium> Categoria { get; set; }
+
     public virtual DbSet<Empresa> Empresas { get; set; }
 
     public virtual DbSet<EmpresasTercera> EmpresasTerceras { get; set; }
@@ -92,6 +94,16 @@ public partial class HaliabdContext : DbContext
             entity.Property(e => e.Nombre).HasMaxLength(100);
         });
 
+        modelBuilder.Entity<Categorium>(entity =>
+        {
+            entity.HasKey(e => e.CategoriaId);
+
+            entity.Property(e => e.IsActive)
+                .HasMaxLength(50)
+                .HasColumnName("isActive");
+            entity.Property(e => e.Nombre).HasMaxLength(50);
+        });
+
         modelBuilder.Entity<Empresa>(entity =>
         {
             entity.HasKey(e => e.EmpresaId).HasName("PK_Empresa");
@@ -143,6 +155,7 @@ public partial class HaliabdContext : DbContext
 
             entity.ToTable("Linea");
 
+            entity.Property(e => e.IsActive).HasMaxLength(50);
             entity.Property(e => e.Nombre).HasMaxLength(50);
         });
 
@@ -153,6 +166,7 @@ public partial class HaliabdContext : DbContext
             entity.Property(e => e.CodigoProducto).HasMaxLength(50);
             entity.Property(e => e.Descripcion).HasMaxLength(100);
             entity.Property(e => e.FechaCreacion).HasColumnType("datetime");
+            entity.Property(e => e.IsActive).HasMaxLength(50);
             entity.Property(e => e.NombreProducto).HasMaxLength(100);
             entity.Property(e => e.Precio).HasColumnType("decimal(18, 2)");
             entity.Property(e => e.ProductoServicio).HasMaxLength(50);
@@ -179,6 +193,7 @@ public partial class HaliabdContext : DbContext
 
             entity.Property(e => e.DepartamentoEstado).HasMaxLength(50);
             entity.Property(e => e.Direccion).HasMaxLength(200);
+            entity.Property(e => e.IsActive).HasMaxLength(50);
             entity.Property(e => e.NombreProveedor).HasMaxLength(50);
             entity.Property(e => e.NumeroTelefono).HasMaxLength(50);
             entity.Property(e => e.Pais).HasMaxLength(50);

@@ -18,4 +18,6 @@ public partial class Producto
     public DateTime? FechaCreacion { get; set; }
 
     public string? Descripcion { get; set; }
+
+    public string? IsActive { get; set; }
 }

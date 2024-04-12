@@ -17,7 +17,7 @@ public class ToolsService : IToolsService
 
         using(HaliabdContext db = new HaliabdContext())
         {
-            List<EmpresasTercera> empresasTerceraList = db.EmpresasTerceras.Where(e => e.NombreComercial.Contains(filter)).ToList();
+            List<EmpresasTercera> empresasTerceraList = db.EmpresasTerceras.Where(e => e.IsActive == "Activo" && e.NombreComercial.Contains(filter)).ToList();
 
             foreach (var item in empresasTerceraList)
             {
@@ -46,7 +46,8 @@ public class ToolsService : IToolsService
                 NombreComercial = ComercialName.Trim(),
                 Ruc = ruc.Trim(),
                 Dirección = direccion.Trim(),
-                Telefono = telefono.Trim()
+                Telefono = telefono.Trim(),
+                IsActive = "Activo"
             };   
 
             db.Add(empresasTercera);
@@ -81,13 +82,28 @@ public class ToolsService : IToolsService
         }
     }
 
+    public async Task BlockThirdPartyAsync(int entryId)
+    {
+        using (HaliabdContext db = new HaliabdContext())
+        {
+            EmpresasTercera empresasTercera = await db.EmpresasTerceras.FirstOrDefaultAsync(e => e.EmpresasTercerasId == entryId);
+
+            if (empresasTercera != null)
+            {
+                empresasTercera.IsActive = "No";
+            }
+
+            db.SaveChanges();
+        }
+    }
+
     public async Task<List<List<object>>> GetBranchesAsync(string filter, int empresaId)
     {
         List<List<object>> rows = new List<List<object>>();
 
         using(HaliabdContext db = new HaliabdContext())
         {
-            List<Sucursale> sucursale = db.Sucursales.Where(e => e.EmpresaId == empresaId && e.NombreSucursal.Contains(filter)).ToList();
+            List<Sucursale> sucursale = db.Sucursales.Where(e => e.EmpresaId == empresaId && e.Estado == "Activo" && e.NombreSucursal.Contains(filter)).ToList();
 
             foreach (var item in sucursale)
             {
