@@ -17,7 +17,7 @@ public interface IcatalogService
     Task AddProductProviderAsync(int productId, int providerId);
     
     
-    Task UpdateProductAsync(int entryId, string name, decimal price, string code, string description);
+    Task UpdateProductAsync(int entryId, string name, decimal price, string code, string description, List<string> selectedCategoryIds, List<string> selectedLineIds, List<string> selectedProviderIds);
     Task UpdateProductLineAsync(int entryId, string name);
     Task UpdateProviderAsync(int entryId, string name, string telefono, string direccion, string pais);
     Task UpdateCategoryAsync(int entryId, string name);

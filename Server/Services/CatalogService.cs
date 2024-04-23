@@ -150,7 +150,7 @@ public class CatalogService : IcatalogService
         }
     }
 
-    public async Task UpdateProductAsync(int entryId, string name, decimal price, string code, string description) 
+    public async Task UpdateProductAsync(int entryId, string name, decimal price, string code, string description, List<string> selectedCategoryIds, List<string> selectedLineIds, List<string> selectedProviderIds) 
     {
         using(HaliabdContext db = new HaliabdContext())
         {
@@ -162,6 +162,63 @@ public class CatalogService : IcatalogService
                 producto.Precio = price;
                 producto.CodigoProducto = code.Trim();
                 producto.Descripcion = description.Trim();    
+
+                // Remove associations for categories that are no longer linked to the product
+                db.RelCategoriaProductos.RemoveRange(
+                    db.RelCategoriaProductos
+                        .Where(rel => rel.ProductoId == entryId && !selectedCategoryIds.Contains(rel.CategoriaId.ToString()))
+                );
+
+                // Add new associations
+                foreach (string categoryId in selectedCategoryIds)
+                {
+                    if (!await db.RelCategoriaProductos.AnyAsync(rel => rel.ProductoId == entryId && rel.CategoriaId.ToString() == categoryId))
+                    {
+                        db.RelCategoriaProductos.Add(new RelCategoriaProducto
+                        {
+                            ProductoId = entryId,
+                            CategoriaId = int.Parse(categoryId)
+                        });
+                    }
+                }
+
+                // Remove associations for providers that are no longer linked to the product
+                db.RelProveedorProductos.RemoveRange(
+                    db.RelProveedorProductos
+                        .Where(rel => rel.ProductoId == entryId && !selectedProviderIds.Contains(rel.ProveedorId.ToString()))
+                );
+
+                // Add new associations
+                foreach (string providerId in selectedProviderIds)
+                {
+                    if (!await db.RelProveedorProductos.AnyAsync(rel => rel.ProductoId == entryId && rel.ProveedorId.ToString() == providerId))
+                    {
+                        db.RelProveedorProductos.Add(new RelProveedorProducto
+                        {
+                            ProductoId = entryId,
+                            ProveedorId = int.Parse(providerId)
+                        });
+                    }
+                }
+
+                // Remove associations for product lines that are no longer linked to the product
+                db.RelLineaProductos.RemoveRange(
+                    db.RelLineaProductos
+                        .Where(rel => rel.ProductoId == entryId && !selectedLineIds.Contains(rel.LineaId.ToString()))
+                );
+
+                // Add new associations
+                foreach (string LineId in selectedLineIds)
+                {
+                    if (!await db.RelLineaProductos.AnyAsync(rel => rel.ProductoId == entryId && rel.LineaId.ToString() == LineId))
+                    {
+                        db.RelLineaProductos.Add(new RelLineaProducto
+                        {
+                            ProductoId = entryId,
+                            LineaId = int.Parse(LineId)
+                        });
+                    }
+                }
             }
 
             db.SaveChanges();
