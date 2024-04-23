@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using NovaLaundryAppWebAdminBlazor.ModelsHalia;
 
-
+ 
 public interface IcatalogService
 {
     // funcitions for CRUD products
@@ -37,4 +37,10 @@ public interface IcatalogService
     Task<List<string>> GetAssociatedCategoriesAsync(int productId);
     Task<List<string>> GetAssociatedLinesAsync(int productId);
     Task<List<string>> GetAssociatedProvidersAsync(int productId);
+
+    
+    Task BlockCategoryAsync(int entryId);
+    Task BlockProductLineAsync(int entryId);
+    Task BlockProviderAsync(int entryId);
+    Task BlockProductAsync(int entryId);
 }

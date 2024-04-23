@@ -1,7 +1,7 @@
 @page "/tools/Categories";
 
 
-@inject IcatalogService catalogService
+@inject IcatalogService CatalogService
 @inject NavigationManager NavigationManager
 
 
@@ -116,7 +116,7 @@
 
     private async Task BlockItemFunction()
     {
-        @* await ThirdPartyService.BlockCategoryAsync(entryId); *@
+        await CatalogService.BlockCategoryAsync(entryId);
         await LoadData();
     }
 
@@ -138,7 +138,7 @@
     private async Task LoadData()
     {
         rows.Clear();
-        List<List<object>> dataProducts = await catalogService.GetCategoryAsync(filter);
+        List<List<object>> dataProducts = await CatalogService.GetCategoryAsync(filter);
 
         foreach (var rowData in dataProducts)
         {

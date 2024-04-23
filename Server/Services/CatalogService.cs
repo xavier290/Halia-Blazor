@@ -413,4 +413,64 @@ public class CatalogService : IcatalogService
             return categoria;
         }
     }
-}
+
+    public async Task BlockCategoryAsync(int entryId)
+    {
+        using(HaliabdContext db = new HaliabdContext())
+        {
+            Categorium category = db.Categoria.Find(entryId);
+
+            if (category != null)
+            {
+                category.IsActive = "No";
+            }
+
+            db.SaveChanges();
+        }
+    }
+
+    public async Task BlockProductLineAsync(int entryId)
+    {
+        using(HaliabdContext db = new HaliabdContext())
+        {
+            Linea line = db.Lineas.Find(entryId);
+
+            if (line != null)
+            {
+                line.IsActive = "No";
+            }
+
+            db.SaveChanges();
+        }
+    }
+
+    public async Task BlockProviderAsync(int entryId)
+    {
+        using(HaliabdContext db = new HaliabdContext())
+        {
+            Proveedor provider = db.Proveedors.Find(entryId);
+
+            if (provider != null)
+            {
+                provider.IsActive = "No";
+            }
+
+            db.SaveChanges();
+        }
+    }
+
+    public async Task BlockProductAsync(int entryId)
+    {
+        using(HaliabdContext db = new HaliabdContext())
+        {
+            Producto product = db.Productos.Find(entryId);
+
+            if (product != null)
+            {
+                product.IsActive = "No";
+            }
+
+            db.SaveChanges();
+        }
+    }
+} 
