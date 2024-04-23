@@ -31,8 +31,8 @@
                 <div class="category-selection form">
                     <p>Asociar Categorías</p>
                     <div class="search-container form">
-                        <form class="search-form">
-                            <input @bind="@filter" class="search-input" type="text" name="q" placeholder="Buscar Categorias...">
+                        <form class="search-form" @onsubmit=searchCategories>
+                            <input @bind="@filterCat" class="search-input" type="text" name="q" placeholder="Buscar Categorias...">
                             <button class="search-button" type="submit"><span class="hide-text"></span><img src="/Search.png" alt="Logo" class="search-icon"></button>
                         </form>
                     </div>
@@ -48,8 +48,8 @@
                 <div class="category-selection form">
                     <p>Asociar Proveedores</p>
                     <div class="search-container form">
-                        <form class="search-form">
-                            <input @bind="@filter" class="search-input" type="text" name="q" placeholder="Buscar Proveedores...">
+                        <form class="search-form" @onsubmit="searchProviders">
+                            <input @bind="@filterPro" class="search-input" type="text" name="q" placeholder="Buscar Proveedores...">
                             <button class="search-button" type="submit"><span class="hide-text"></span><img src="/Search.png" alt="Logo" class="search-icon"></button>
                         </form>
                     </div>
@@ -65,8 +65,8 @@
                 <div class="category-selection form">
                     <p>Asociar a Lineas de Productos</p>
                     <div class="search-container form">
-                        <form class="search-form">
-                            <input @bind="@filter" class="search-input" type="text" name="q" placeholder="Buscar Lineas...">
+                        <form class="search-form" @onsubmit="searchLines">
+                            <input @bind="@filterLin" class="search-input" type="text" name="q" placeholder="Buscar Lineas...">
                             <button class="search-button" type="submit"><span class="hide-text"></span><img src="/Search.png" alt="Logo" class="search-icon"></button>
                         </form>
                     </div>
@@ -100,6 +100,9 @@
     private string code;
     private string description;
     private string filter = "";
+    private string filterCat = "";
+    private string filterLin = "";
+    private string filterPro = "";
     private List<List<object>> DataCategories = new List<List<object>>();
     private List<List<object>> DataProviders = new List<List<object>>();
     private List<List<object>> DataLines = new List<List<object>>();
@@ -123,7 +126,7 @@
     {
         DataCategories.Clear();
 
-        List<List<object>> data = await catalogService.GetCategoryAsync(filter);
+        List<List<object>> data = await catalogService.GetCategoryAsync(filterCat);
         
         foreach (var rowData in data)
         {
@@ -135,7 +138,7 @@
     {
         DataLines.Clear();
 
-        List<List<object>> data = await catalogService.GetProductLineAsync(filter);
+        List<List<object>> data = await catalogService.GetProductLineAsync(filterLin);
         
         foreach (var rowData in data)
         {
@@ -147,7 +150,7 @@
     {
         DataProviders.Clear();
 
-        List<List<object>> data = await catalogService.GetProviderAsync(filter);
+        List<List<object>> data = await catalogService.GetProviderAsync(filterPro);
 
         foreach (var rowData in data)
         {
@@ -222,5 +225,20 @@
     private void GoToPreviousPage()
     {
         currentPage = 1;
+    }
+
+    private void searchCategories()
+    {
+        LoadCategoriesData();
+    }
+
+    private void searchLines()
+    {
+        LoadLinesData();
+    }
+
+    private void searchProviders()
+    {
+        LoadProvidersData();
     }
 }
