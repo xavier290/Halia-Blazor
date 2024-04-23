@@ -1,0 +1,66 @@
+@inject IcatalogService catalogService
+
+@using NovaLaundryAppWebAdminBlazor.Server.Services
+@using NovaLaundryAppWebAdminBlazor.Server.ViewModels
+@using NovaLaundryAppWebAdminBlazor.ModelsHalia
+
+<div class="popup-section">
+    <div class="modal-content">
+        <span class="close" @onclick="ClosePopup">&times;</span>
+        <h2>Actualizar Categoría</h2>
+        @if (Category != null)
+        {
+            <!-- Render the content that depends on Product -->
+            <form @onsubmit="UpdateCategory">
+                <label for="name">Nombre</label>
+                <input type="text" id="name" name="name" @bind="CategoryName" required>
+
+                <button type="submit">Guardar</button>
+            </form>
+        }
+        else
+        {
+            <!-- Render a placeholder or loading message -->
+            <p>Loading...</p>
+        }
+    </div>
+</div>
+
+@code 
+{
+    [Parameter]
+    public EventCallback OnSave { get; set; }
+
+    [Parameter]
+    public int SelectedItemId { get; set; }
+    private Categorium Category { get; set; }
+    private string CategoryName;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await LoadData(SelectedItemId);
+        }
+        
+        StateHasChanged();
+    }
+
+    private async Task LoadData(int entryId)
+    {
+        Category = await catalogService.GetSingleCategoryAsync(entryId);
+        
+        CategoryName = Category.Nombre;
+    }
+    public async Task ClosePopup() 
+    {
+        await OnSave.InvokeAsync();
+    }
+
+    public async Task UpdateCategory()
+    {
+        await catalogService.UpdateCategoryAsync(SelectedItemId, CategoryName);
+        // Optionally, notify parent component that save button is clicked
+        await OnSave.InvokeAsync();
+    }
+}

@@ -76,12 +76,11 @@
 }
 
 .category-selection.form {
-    height: 120px;
+    height: 125px;
 }
 
 .category-selection.form::-webkit-scrollbar {
-    width: 10px;
-    height: auto;
+    width: 6px;
     background: #f1f1f1;
     scroll-behavior: smooth;    
 }
@@ -91,8 +90,8 @@
 }
   
 .category-selection.form::-webkit-scrollbar-thumb {
-    background: #888;
-    border-radius: 8px;
+    background: #b8b8b8;
+    border-radius: 3px;
 }
 
 .category-selection.form p {
