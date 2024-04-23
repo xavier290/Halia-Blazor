@@ -15,9 +15,6 @@
                 <label for="name">Nombre</label>
                 <input type="text" id="name" name="name" @bind="productName" required>
 
-                <label for="productService">Producto o Servicio?</label>
-                <input type="text" id="productService" name="productService" @bind="productService">
-
                 <label for="code">Codigo</label>
                 <input type="text" id="code" name="code" @bind="code">
 
@@ -48,7 +45,6 @@
     private Producto Product { get; set; }
     private string productName;
     private decimal productPrice;
-    private string productService;
     private string code;
     private string description;
 
@@ -68,7 +64,6 @@
         
         productName = Product.NombreProducto;
         productPrice = Product.Precio ?? 0;
-        productService = Product.ProductoServicio;
         code = Product.CodigoProducto;
         description = Product.Descripcion;
     }
@@ -79,7 +74,7 @@
 
     public async Task UpdateProduct()
     {
-        await catalogService.UpdateProductAsync(SelectedItemId, productName, productPrice, productService, code, description);
+        await catalogService.UpdateProductAsync(SelectedItemId, productName, productPrice, code, description);
         // Optionally, notify parent component that save button is clicked
         await OnSave.InvokeAsync();
     }

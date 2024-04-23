@@ -39,7 +39,7 @@
                         <tr>
                             <td class="actions-btns">
                                 <button @onclick="() => OpenEditSection(row)" class="action-button update">Actualizar</button>
-                                <button class="action-button block">Bloquear</button>
+                                <button @onclick="() => BlockItem(row)" data-bs-toggle="modal" data-bs-target="#BloquearElementoProducto" class="action-button block">Bloquear</button>
                             </td>
                             @foreach (var cell in row)
                             {
@@ -60,6 +60,26 @@
     {
         <NovaLaundryAppWebAdminBlazor.Pages.Components.thirdParties.CRUD.UpdateProductPage OnSave="HandleSave" SelectedItemId="@entryId" />
     }
+
+    <div class="modal fade" id="BloquearElementoProducto" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Bloquear Elemento</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    ¿Estás seguro de que deseas bloquear el elemento seleccionado?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button @onclick="BlockItemFunction" type="button" class="btn btn-danger" data-bs-dismiss="modal">
+                        <span aria-hidden="true"></span> Bloquear
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
 @code {
@@ -124,6 +144,17 @@
     private async void OpenCreateSection()
     {
         createSectionOpened = true;
+    }
+
+    private async Task BlockItem(List<object> Id)
+    {
+        entryId = Convert.ToInt32(Id[0]);
+    }
+
+    private async Task BlockItemFunction()
+    {
+        await ThirdPartyService.BlockProductAsync(entryId);
+        await LoadData(selectedThirdPartyId);
     }
 
     private async Task LoadData(string selectedItem)
