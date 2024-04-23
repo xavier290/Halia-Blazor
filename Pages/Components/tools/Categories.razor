@@ -1,9 +1,11 @@
-@page "/thirdparties/categorias-terceros"
+@page "/tools/Categories";
 
-@inject IthirdPartyService ThirdPartyService;
-@inject NavigationManager NavigationManager;
 
-<PageTitle>Halia || Categorias Terceros</PageTitle>
+@inject IcatalogService CatalogService
+@inject NavigationManager NavigationManager
+
+
+<PageTitle>Halia || Categorias</PageTitle>
 
 <!--Buscador-->
 <div class="main-container">
@@ -51,11 +53,11 @@
 
     @if (showPopup && !editMode)
     {
-        <NovaLaundryAppWebAdminBlazor.Pages.Components.thirdParties.CRUD.CreateCategoryPage OnSave="HandleSave" />
+        <NovaLaundryAppWebAdminBlazor.Pages.Components.tools.CRUD.CreateCategoryPage OnSave="HandleSave" />
     }
     else if (showPopup && editMode)
     {
-        <NovaLaundryAppWebAdminBlazor.Pages.Components.thirdParties.CRUD.UpdateCategoryPage OnSave="HandleSave" SelectedItemId="@entryId" />
+        <NovaLaundryAppWebAdminBlazor.Pages.Components.tools.CRUD.UpdateCategoryPage OnSave="HandleSave" SelectedItemId="@entryId" />
     }
 
     <div class="modal fade" id="BloquearElementoCategoria" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -114,7 +116,7 @@
 
     private async Task BlockItemFunction()
     {
-        await ThirdPartyService.BlockCategoryAsync(entryId);
+        await CatalogService.BlockCategoryAsync(entryId);
         await LoadData();
     }
 
@@ -127,7 +129,6 @@
     {
         if (firstRender)
         {
-            @* LoadTitles(); *@
             await LoadData();
         }
 
@@ -137,7 +138,7 @@
     private async Task LoadData()
     {
         rows.Clear();
-        List<List<object>> dataProducts = await ThirdPartyService.GetCategoriesAsync(filter);
+        List<List<object>> dataProducts = await CatalogService.GetCategoryAsync(filter);
 
         foreach (var rowData in dataProducts)
         {
@@ -147,6 +148,6 @@
 
     private async Task Comeback()
     {
-        NavigationManager.NavigateTo("/thirdparties");
+        NavigationManager.NavigateTo("/tools"); 
     }
 }

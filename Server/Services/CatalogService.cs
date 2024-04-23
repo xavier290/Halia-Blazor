@@ -19,7 +19,7 @@ public class CatalogService : IcatalogService
 
         using(HaliabdContext db = new HaliabdContext())
         {
-            List<Producto> productoList = db.Productos.Where(e => e.NombreProducto.Contains(filter)).ToList();
+            List<Producto> productoList = db.Productos.Where(e => e.NombreProducto.Contains(filter) && e.IsActive == "Activo").ToList();
 
             foreach (var item in productoList)
             {
@@ -45,26 +45,112 @@ public class CatalogService : IcatalogService
         }
     }
 
-    public async Task AddProductAsync(string name, decimal price, string productService, string code, string description) 
+    public async Task AddProductAsync(Producto product)
     {
         using(HaliabdContext db = new HaliabdContext())
         {
-            Producto producto = new Producto()
-            {
-                NombreProducto = name.Trim(), 
-                Precio = price,
-                ProductoServicio = productService.Trim(),
-                CodigoProducto = code.Trim(),
-                FechaCreacion = DateTime.Now,
-                Descripcion = description.Trim()
-            };   
+            // Set the IsActive property to "Activo" by default
+            product.IsActive = "Activo";
+            
+            // Set the creation date
+            product.FechaCreacion = DateTime.Now;
 
-            db.Add(producto);
-            db.SaveChanges();
+            // Add the product to the database
+            db.Add(product);
+            
+            // Save changes to the database
+            await db.SaveChangesAsync();
         }
     }
 
-    public async Task UpdateProductAsync(int entryId, string name, decimal price, string productService, string code, string description) 
+    public async Task AddProductCategoryAsync(int productId, int categoryId)
+    {
+        using (HaliabdContext db = new HaliabdContext())
+        {
+            RelCategoriaProducto rel = new RelCategoriaProducto
+            {
+                ProductoId = productId,
+                CategoriaId = categoryId
+            };
+
+            db.Add(rel);
+            await db.SaveChangesAsync();
+        }
+    }
+
+    public async Task AddProductProductLineAsync(int productId, int lineId)
+    {
+        using (HaliabdContext db = new HaliabdContext())
+        {
+            RelLineaProducto rel = new RelLineaProducto
+            {
+                ProductoId = productId,
+                LineaId = lineId
+            };
+
+            db.Add(rel);
+            await db.SaveChangesAsync();
+        }
+    }
+
+    public async Task AddProductProviderAsync(int productId, int providerId)
+    {
+        using (HaliabdContext db = new HaliabdContext())
+        {
+            RelProveedorProducto rel = new RelProveedorProducto
+            {
+                ProductoId = productId,
+                ProveedorId = providerId
+            };
+
+            db.Add(rel);
+            await db.SaveChangesAsync();
+        }
+    }
+
+    public async Task<List<string>> GetAssociatedCategoriesAsync(int productId)
+    {
+        using (HaliabdContext db = new HaliabdContext())
+        {
+            // Query the relational table to get the associated category IDs for the given product ID
+            List<string> associatedCategoryIds = await db.RelCategoriaProductos
+                .Where(rel => rel.ProductoId == productId)
+                .Select(rel => rel.CategoriaId.ToString())
+                .ToListAsync();
+
+            return associatedCategoryIds;
+        }
+    }
+    
+    public async Task<List<string>> GetAssociatedLinesAsync(int productId)
+    {
+        using (HaliabdContext db = new HaliabdContext())
+        {
+            // Query the relational table to get the associated category IDs for the given product ID
+            List<string> associatedLineIds = await db.RelLineaProductos
+                .Where(rel => rel.ProductoId == productId)
+                .Select(rel => rel.LineaId.ToString())
+                .ToListAsync();
+
+            return associatedLineIds;
+        }
+    }
+
+    public async Task<List<string>> GetAssociatedProvidersAsync(int productId)
+    {
+        using (HaliabdContext db = new HaliabdContext())
+        {
+            // Query the relational table to get the associated category IDs for the given product ID
+            List<string> associatedProviderIds = await db.RelProveedorProductos
+                .Where(rel => rel.ProductoId == productId)
+                .Select(rel => rel.ProveedorId.ToString())
+                .ToListAsync();
+
+            return associatedProviderIds;
+        }
+    }
+
+    public async Task UpdateProductAsync(int entryId, string name, decimal price, string code, string description, List<string> selectedCategoryIds, List<string> selectedLineIds, List<string> selectedProviderIds) 
     {
         using(HaliabdContext db = new HaliabdContext())
         {
@@ -74,9 +160,65 @@ public class CatalogService : IcatalogService
             {
                 producto.NombreProducto = name.Trim();
                 producto.Precio = price;
-                producto.ProductoServicio = productService.Trim();
                 producto.CodigoProducto = code.Trim();
                 producto.Descripcion = description.Trim();    
+
+                // Remove associations for categories that are no longer linked to the product
+                db.RelCategoriaProductos.RemoveRange(
+                    db.RelCategoriaProductos
+                        .Where(rel => rel.ProductoId == entryId && !selectedCategoryIds.Contains(rel.CategoriaId.ToString()))
+                );
+
+                // Add new associations
+                foreach (string categoryId in selectedCategoryIds)
+                {
+                    if (!await db.RelCategoriaProductos.AnyAsync(rel => rel.ProductoId == entryId && rel.CategoriaId.ToString() == categoryId))
+                    {
+                        db.RelCategoriaProductos.Add(new RelCategoriaProducto
+                        {
+                            ProductoId = entryId,
+                            CategoriaId = int.Parse(categoryId)
+                        });
+                    }
+                }
+
+                // Remove associations for providers that are no longer linked to the product
+                db.RelProveedorProductos.RemoveRange(
+                    db.RelProveedorProductos
+                        .Where(rel => rel.ProductoId == entryId && !selectedProviderIds.Contains(rel.ProveedorId.ToString()))
+                );
+
+                // Add new associations
+                foreach (string providerId in selectedProviderIds)
+                {
+                    if (!await db.RelProveedorProductos.AnyAsync(rel => rel.ProductoId == entryId && rel.ProveedorId.ToString() == providerId))
+                    {
+                        db.RelProveedorProductos.Add(new RelProveedorProducto
+                        {
+                            ProductoId = entryId,
+                            ProveedorId = int.Parse(providerId)
+                        });
+                    }
+                }
+
+                // Remove associations for product lines that are no longer linked to the product
+                db.RelLineaProductos.RemoveRange(
+                    db.RelLineaProductos
+                        .Where(rel => rel.ProductoId == entryId && !selectedLineIds.Contains(rel.LineaId.ToString()))
+                );
+
+                // Add new associations
+                foreach (string LineId in selectedLineIds)
+                {
+                    if (!await db.RelLineaProductos.AnyAsync(rel => rel.ProductoId == entryId && rel.LineaId.ToString() == LineId))
+                    {
+                        db.RelLineaProductos.Add(new RelLineaProducto
+                        {
+                            ProductoId = entryId,
+                            LineaId = int.Parse(LineId)
+                        });
+                    }
+                }
             }
 
             db.SaveChanges();
@@ -89,7 +231,7 @@ public class CatalogService : IcatalogService
 
         using(HaliabdContext db = new HaliabdContext())
         {
-            List<Linea> lineaList = db.Lineas.Where(e => e.Nombre.Contains(filter)).ToList();
+            List<Linea> lineaList = db.Lineas.Where(e => e.Nombre.Contains(filter) && e.IsActive == "Activo").ToList();
 
             foreach (var item in lineaList)
             {
@@ -120,6 +262,7 @@ public class CatalogService : IcatalogService
             Linea linea = new Linea()
             {
                 Nombre = name.Trim(), 
+                IsActive = "Activo"
             };   
 
             db.Add(linea);
@@ -148,7 +291,7 @@ public class CatalogService : IcatalogService
 
         using(HaliabdContext db = new HaliabdContext())
         {
-            List<Proveedor> proveedorList = db.Proveedors.Where(e => e.NombreProveedor.Contains(filter)).ToList();
+            List<Proveedor> proveedorList = db.Proveedors.Where(e => e.NombreProveedor.Contains(filter) && e.IsActive == "Activo").ToList();
 
             foreach (var item in proveedorList)
             {
@@ -184,8 +327,9 @@ public class CatalogService : IcatalogService
                 NombreProveedor = name.Trim(), 
                 NumeroTelefono = telefono.Trim(),
                 Direccion = direccion.Trim(),
-                Pais = pais.Trim()
-            };   
+                Pais = pais.Trim(),
+                IsActive = "Activo"
+            };
 
             db.Add(proveedor);
             db.SaveChanges();
@@ -209,4 +353,124 @@ public class CatalogService : IcatalogService
             db.SaveChanges();
         }
     }
-}
+
+    public async Task AddCategoryAsync (string name)
+    {
+        using(HaliabdContext db = new HaliabdContext())
+        {
+            Categorium categoria = new Categorium()
+            {
+                Nombre = name.Trim(),
+                IsActive = "Activo" 
+            };   
+
+            db.Add(categoria);
+            db.SaveChanges();
+        }
+    }
+
+    public async Task UpdateCategoryAsync(int entryId, string name)
+    {
+        using(HaliabdContext db = new HaliabdContext())
+        {
+            Categorium categoria = db.Categoria.Find(entryId);
+
+            if (categoria != null)
+            {
+                categoria.Nombre = name.Trim();    
+            }
+
+            db.SaveChanges();
+        }
+    }
+
+    public async Task<List<List<object>>> GetCategoryAsync(string filter)
+    {
+        List<List<object>> rows = new List<List<object>>();
+
+        using(HaliabdContext db = new HaliabdContext())
+        {
+            List<Categorium> categoria = db.Categoria.Where(e => e.Nombre.Contains(filter) && e.IsActive == "Activo").ToList();
+
+            foreach (var item in categoria)
+            {
+                List<object> fila = new List<object>();
+                fila.Add(item.CategoriaId);
+                fila.Add(item.Nombre);
+
+                rows.Add(fila);
+            }
+        }
+
+        return rows;
+    }
+
+    public async Task<Categorium> GetSingleCategoryAsync(int entryId)
+    {
+        using (HaliabdContext db = new HaliabdContext())
+        {
+            Categorium categoria = await db.Categoria.FirstOrDefaultAsync(e => e.CategoriaId == entryId);
+            return categoria;
+        }
+    }
+
+    public async Task BlockCategoryAsync(int entryId)
+    {
+        using(HaliabdContext db = new HaliabdContext())
+        {
+            Categorium category = db.Categoria.Find(entryId);
+
+            if (category != null)
+            {
+                category.IsActive = "No";
+            }
+
+            db.SaveChanges();
+        }
+    }
+
+    public async Task BlockProductLineAsync(int entryId)
+    {
+        using(HaliabdContext db = new HaliabdContext())
+        {
+            Linea line = db.Lineas.Find(entryId);
+
+            if (line != null)
+            {
+                line.IsActive = "No";
+            }
+
+            db.SaveChanges();
+        }
+    }
+
+    public async Task BlockProviderAsync(int entryId)
+    {
+        using(HaliabdContext db = new HaliabdContext())
+        {
+            Proveedor provider = db.Proveedors.Find(entryId);
+
+            if (provider != null)
+            {
+                provider.IsActive = "No";
+            }
+
+            db.SaveChanges();
+        }
+    }
+
+    public async Task BlockProductAsync(int entryId)
+    {
+        using(HaliabdContext db = new HaliabdContext())
+        {
+            Producto product = db.Productos.Find(entryId);
+
+            if (product != null)
+            {
+                product.IsActive = "No";
+            }
+
+            db.SaveChanges();
+        }
+    }
+} 

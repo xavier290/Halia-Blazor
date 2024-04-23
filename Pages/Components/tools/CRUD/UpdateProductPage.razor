@@ -5,36 +5,102 @@
 @using NovaLaundryAppWebAdminBlazor.ModelsHalia
 
 <div class="popup-section">
-    <div class="modal-content">
+    <div class="modal-content product">
         <span class="close" @onclick="ClosePopup">&times;</span>
         <h2>Actualizar Producto</h2>
-        @if (Product != null)
-        {
-            <!-- Render the content that depends on Product -->
-            <form @onsubmit="UpdateProduct">
-                <label for="name">Nombre</label>
-                <input type="text" id="name" name="name" @bind="productName" required>
 
-                <label for="productService">Producto o Servicio?</label>
-                <input type="text" id="productService" name="productService" @bind="productService">
+        <form @onsubmit="UpdateProduct">
+            @if (Product != null)
+            {
+                <!-- Render the content that depends on Product -->
+                @if (currentPage == 1) 
+                {
+                    <label for="name">Nombre</label>
+                    <input type="text" id="name" name="name" @bind="productName" required>
 
-                <label for="code">Codigo</label>
-                <input type="text" id="code" name="code" @bind="code">
+                    <label for="code">Codigo</label>
+                    <input type="text" id="code" name="code" @bind="code">
 
-                <label for="description">Descripción</label>
-                <input type="text" id="description" name="description" @bind="description">
+                    <label for="description">Descripción</label>
+                    <input type="text" id="description" name="description" @bind="description">
 
-                <label for="price">Precio</label>
-                <input type="text" id="price" name="price" @bind="productPrice">
+                    <label for="price">Precio</label>
+                    <input type="text" id="price" name="price" @bind="productPrice">
 
-                <button type="submit">Guardar</button>
-            </form>
-        }
-        else
-        {
-            <!-- Render a placeholder or loading message -->
-            <p>Loading...</p>
-        }
+                    <button type="button" @onclick="GoToNextPage">Siguiente</button>
+                }
+                else if (currentPage == 2)
+                {
+                    <div class="category-selection form">
+                        <p>Asociar Categorías</p>
+                        <div class="search-container form">
+                            <form class="search-form" @onsubmit="searchCategories">
+                                <input @bind="@filterCat" class="search-input" type="text" name="q" placeholder="Buscar Categorias...">
+                                <button class="search-button" type="submit"><span class="hide-text"></span><img src="/Search.png" alt="Logo" class="search-icon"></button>
+                            </form>
+                        </div>
+                        @foreach (var category in DataCategories)
+                        {
+                            // Check if the category is already associated with the product
+                            bool isChecked = selectedCategoryIds.Contains(category[0].ToString());
+
+                            <div class="category-item">
+                                <input @bind="isChecked" type="checkbox" id="category_@category[0]" @onclick="() => ToggleCategorySelection(category[0].ToString())" />
+                                <label for="category_@category[0]">@category[1]</label>
+                            </div>
+                        }
+                    </div>
+
+                    <div class="category-selection form">
+                        <p>Asociar Proveedores</p>
+                        <div class="search-container form">
+                            <form class="search-form" @onsubmit="searchProviders">
+                                <input @bind="@filterPro" class="search-input" type="text" name="q" placeholder="Buscar Proveedores...">
+                                <button class="search-button" type="submit"><span class="hide-text"></span><img src="/Search.png" alt="Logo" class="search-icon"></button>
+                            </form>
+                        </div>
+                        @foreach (var provider in DataProviders)
+                        {
+                            bool isChecked = selectedProviderIds.Contains(provider[0].ToString());
+
+                            <div class="category-item">
+                                <input @bind="isChecked" type="checkbox" id="provider_@provider[0]" @onclick="() => ToggleProviderSelection(provider[0].ToString())" />
+                                <label for="provider_@provider[0]">@provider[1]</label>
+                            </div>
+                        }
+                    </div>
+
+                    <div class="category-selection form">
+                        <p>Asociar a Lineas de Productos</p>
+                        <div class="search-container form">
+                            <form class="search-form" @onsubmit="searchLines">
+                                <input @bind="@filterLin" class="search-input" type="text" name="q" placeholder="Buscar Lineas...">
+                                <button class="search-button" type="submit"><span class="hide-text"></span><img src="/Search.png" alt="Logo" class="search-icon"></button>
+                            </form>
+                        </div>
+                        @foreach (var line in DataLines)
+                        {
+                            bool isChecked = selectedLineIds.Contains(line[0].ToString());
+
+                            <div class="category-item">
+                                <input @bind="isChecked" type="checkbox" id="line_@line[0]" @onclick="() => ToggleLineSelection(line[0].ToString())" />
+                                <label for="line_@line[0]">@line[1]</label>
+                            </div>
+                        }
+                    </div>
+
+                    <div class="btns-section">
+                        <button type="button" @onclick="GoToPreviousPage">Atrás</button>
+                        <button class="saveProductoTercero" type="submit">Guardar</button>
+                    </div>
+                }
+            }
+            else
+            {
+                <!-- Render a placeholder or loading message -->
+                <p>Cargando...</p>
+            }
+        </form>
     </div>
 </div>
 
@@ -46,11 +112,21 @@
     [Parameter]
     public int SelectedItemId { get; set; }
     private Producto Product { get; set; }
+    private int currentPage = 1;    
     private string productName;
     private decimal productPrice;
-    private string productService;
     private string code;
     private string description;
+    private string filter = "";
+    private string filterCat = "";
+    private string filterLin = "";
+    private string filterPro = "";
+    private List<List<object>> DataCategories = new List<List<object>>();
+    private List<List<object>> DataProviders = new List<List<object>>();
+    private List<List<object>> DataLines = new List<List<object>>();
+    private List<string> selectedCategoryIds = new List<string>();
+    private List<string> selectedProviderIds = new List<string>();
+    private List<string> selectedLineIds = new List<string>();
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
@@ -68,9 +144,40 @@
         
         productName = Product.NombreProducto;
         productPrice = Product.Precio ?? 0;
-        productService = Product.ProductoServicio;
         code = Product.CodigoProducto;
         description = Product.Descripcion;
+
+        LoadCategoriesData();
+        LoadProvidersData();
+        LoadLinesData();
+
+        selectedCategoryIds = await catalogService.GetAssociatedCategoriesAsync(entryId);
+        selectedLineIds = await catalogService.GetAssociatedLinesAsync(entryId);
+        selectedProviderIds = await catalogService.GetAssociatedProvidersAsync(entryId);
+    }
+
+    private async void ToggleCategorySelection(string categoryId)
+    {
+        if (selectedCategoryIds.Contains(categoryId))
+            selectedCategoryIds.Remove(categoryId);
+        else
+            selectedCategoryIds.Add(categoryId);
+    }
+
+    private async void ToggleProviderSelection(string providerId)
+    {
+        if (selectedProviderIds.Contains(providerId))
+            selectedProviderIds.Remove(providerId);
+        else
+            selectedProviderIds.Add(providerId);
+    }
+
+    private async void ToggleLineSelection(string lineId)
+    {
+        if (selectedLineIds.Contains(lineId))
+            selectedLineIds.Remove(lineId);
+        else 
+            selectedLineIds.Add(lineId);
     }
     public async Task ClosePopup() 
     {
@@ -79,8 +186,69 @@
 
     public async Task UpdateProduct()
     {
-        await catalogService.UpdateProductAsync(SelectedItemId, productName, productPrice, productService, code, description);
+        await catalogService.UpdateProductAsync(SelectedItemId, productName, productPrice, code, description, selectedCategoryIds, selectedLineIds, selectedProviderIds);
         // Optionally, notify parent component that save button is clicked
         await OnSave.InvokeAsync();
+    }
+
+    private void GoToNextPage()
+    {
+        currentPage = 2;
+    }
+
+    private void GoToPreviousPage()
+    {
+        currentPage = 1;
+    }
+
+    private void searchCategories()
+    {
+        LoadCategoriesData();
+    }
+
+    private void searchLines()
+    {
+        LoadLinesData();
+    }
+
+    private void searchProviders()
+    {
+        LoadProvidersData();
+    }
+
+    private async Task LoadCategoriesData()
+    {
+        DataCategories.Clear();
+
+        List<List<object>> data = await catalogService.GetCategoryAsync(filterCat);
+        
+        foreach (var rowData in data)
+        {
+            DataCategories.Add(rowData);
+        }
+    }
+
+    private async Task LoadLinesData()
+    {
+        DataLines.Clear();
+
+        List<List<object>> data = await catalogService.GetProductLineAsync(filterLin);
+        
+        foreach (var rowData in data)
+        {
+            DataLines.Add(rowData);
+        }
+    }
+
+    private async Task LoadProvidersData()
+    {
+        DataProviders.Clear();
+
+        List<List<object>> data = await catalogService.GetProviderAsync(filterPro);
+
+        foreach (var rowData in data)
+        {
+            DataProviders.Add(rowData);
+        }
     }
 }

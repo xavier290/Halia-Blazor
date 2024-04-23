@@ -18,4 +18,6 @@ public partial class Proveedor
     public string? DepartamentoEstado { get; set; }
 
     public string? IsActive { get; set; }
+
+    public virtual ICollection<RelProveedorProducto> RelProveedorProductos { get; } = new List<RelProveedorProducto>();
 }

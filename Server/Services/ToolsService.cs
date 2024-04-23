@@ -167,4 +167,19 @@ public class ToolsService : IToolsService
             db.SaveChanges();
         }
     }
+
+    public async Task BlockBranchAsync(int entryId)
+    {
+        using(HaliabdContext db = new HaliabdContext())
+        {
+            Sucursale sucursale = db.Sucursales.Find(entryId);
+
+            if (sucursale != null)
+            {
+                sucursale.Estado = "No";
+            }
+
+            db.SaveChanges();
+        }
+    }
 }

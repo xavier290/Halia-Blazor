@@ -7,6 +7,7 @@ using NovaLaundryAppWebAdminBlazor.Server.ViewModels;
 using NovaLaundryAppWebAdminBlazor.ModelsHalia;
 
 using Microsoft.EntityFrameworkCore;
+using Grpc.Core;
 
 
 public class ThirdPartyService : IthirdPartyService
@@ -57,6 +58,21 @@ public class ThirdPartyService : IthirdPartyService
             if (categoriaTercero != null)
             {
                 categoriaTercero.Nombre = name.Trim();    
+            }
+
+            db.SaveChanges();
+        }
+    }
+
+    public async Task BlockCategoryAsync(int entryId)
+    {
+        using(HaliabdContext db = new HaliabdContext())
+        {
+            CategoriaTercero categoriaTercero = db.CategoriaTerceros.Find(entryId);
+
+            if (categoriaTercero != null)
+            {
+                categoriaTercero.IsActive = "No";
             }
 
             db.SaveChanges();
@@ -182,6 +198,21 @@ public class ThirdPartyService : IthirdPartyService
                 // Save changes to the database
                 await db.SaveChangesAsync();
             }
+        }
+    }
+
+    public async Task BlockProductAsync(int entryId)
+    {
+        using(HaliabdContext db = new HaliabdContext())
+        {
+            ProductosEmpresasTercera productos = db.ProductosEmpresasTerceras.Find(entryId);
+
+            if (productos != null)
+            {
+                productos.IsActive = "No";
+            }
+
+            db.SaveChanges();
         }
     }
 

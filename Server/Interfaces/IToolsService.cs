@@ -18,5 +18,6 @@ public interface IToolsService
     Task<Sucursale> GetSingleBranchAsync(int entryId);
     Task AddBranchAsync(string Name, string direccion, string estado, string telefono, string correo, int empresaId);
     Task UpdateBranchAsync(int entryId, string Name, string direccion, string estado, string telefono, string correo, int empresaId);
-
+    Task BlockBranchAsync(int entryId);
+    
 }
