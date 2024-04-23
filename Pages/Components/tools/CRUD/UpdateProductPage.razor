@@ -34,7 +34,7 @@
                     <div class="category-selection form">
                         <p>Asociar Categorías</p>
                         <div class="search-container form">
-                            <form class="search-form">
+                            <form class="search-form" @onsubmit="searchCategories">
                                 <input @bind="@filterCat" class="search-input" type="text" name="q" placeholder="Buscar Categorias...">
                                 <button class="search-button" type="submit"><span class="hide-text"></span><img src="/Search.png" alt="Logo" class="search-icon"></button>
                             </form>
@@ -54,7 +54,7 @@
                     <div class="category-selection form">
                         <p>Asociar Proveedores</p>
                         <div class="search-container form">
-                            <form class="search-form">
+                            <form class="search-form" @onsubmit="searchProviders">
                                 <input @bind="@filterPro" class="search-input" type="text" name="q" placeholder="Buscar Proveedores...">
                                 <button class="search-button" type="submit"><span class="hide-text"></span><img src="/Search.png" alt="Logo" class="search-icon"></button>
                             </form>
@@ -73,7 +73,7 @@
                     <div class="category-selection form">
                         <p>Asociar a Lineas de Productos</p>
                         <div class="search-container form">
-                            <form class="search-form">
+                            <form class="search-form" @onsubmit="searchLines">
                                 <input @bind="@filterLin" class="search-input" type="text" name="q" placeholder="Buscar Lineas...">
                                 <button class="search-button" type="submit"><span class="hide-text"></span><img src="/Search.png" alt="Logo" class="search-icon"></button>
                             </form>
@@ -140,10 +140,6 @@
 
     private async Task LoadData(int entryId)
     {
-        DataCategories.Clear();
-        DataLines.Clear();
-        DataProviders.Clear();
-
         Product = await catalogService.GetSingleProductAsync(entryId);
         
         productName = Product.NombreProducto;
@@ -151,26 +147,9 @@
         code = Product.CodigoProducto;
         description = Product.Descripcion;
 
-        List<List<object>> data = await catalogService.GetCategoryAsync(filter);
-        
-        foreach (var rowData in data)
-        {
-            DataCategories.Add(rowData);
-        }
-
-        List<List<object>> data1 = await catalogService.GetProductLineAsync(filter);
-        
-        foreach (var rowData in data1)
-        {
-            DataLines.Add(rowData);
-        }
-
-        List<List<object>> data2 = await catalogService.GetProviderAsync(filter);
-
-        foreach (var rowData in data2)
-        {
-            DataProviders.Add(rowData);
-        }
+        LoadCategoriesData();
+        LoadProvidersData();
+        LoadLinesData();
 
         selectedCategoryIds = await catalogService.GetAssociatedCategoriesAsync(entryId);
         selectedLineIds = await catalogService.GetAssociatedLinesAsync(entryId);
@@ -220,5 +199,56 @@
     private void GoToPreviousPage()
     {
         currentPage = 1;
+    }
+
+    private void searchCategories()
+    {
+        LoadCategoriesData();
+    }
+
+    private void searchLines()
+    {
+        LoadLinesData();
+    }
+
+    private void searchProviders()
+    {
+        LoadProvidersData();
+    }
+
+    private async Task LoadCategoriesData()
+    {
+        DataCategories.Clear();
+
+        List<List<object>> data = await catalogService.GetCategoryAsync(filterCat);
+        
+        foreach (var rowData in data)
+        {
+            DataCategories.Add(rowData);
+        }
+    }
+
+    private async Task LoadLinesData()
+    {
+        DataLines.Clear();
+
+        List<List<object>> data = await catalogService.GetProductLineAsync(filterLin);
+        
+        foreach (var rowData in data)
+        {
+            DataLines.Add(rowData);
+        }
+    }
+
+    private async Task LoadProvidersData()
+    {
+        DataProviders.Clear();
+
+        List<List<object>> data = await catalogService.GetProviderAsync(filterPro);
+
+        foreach (var rowData in data)
+        {
+            DataProviders.Add(rowData);
+        }
     }
 }
