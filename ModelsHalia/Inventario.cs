@@ -14,4 +14,6 @@ public partial class Inventario
     public int? StockMaximo { get; set; }
 
     public int? StockMinimo { get; set; }
+
+    public virtual ICollection<RelInventarioSucursal> RelInventarioSucursals { get; } = new List<RelInventarioSucursal>();
 }

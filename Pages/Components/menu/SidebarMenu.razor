@@ -12,50 +12,71 @@
         </div>
         <ul>
             <li>
-                <a @onclick="HandleLinkClick" href="/catalog" class="btn-sidebar first" style="user-select: none;">
-                    <img src="/Catalog.png" alt="Catalogo Icon" class="img-fluid mb-2 mt-2">
+                <a @onclick="HandleLinkClick" href="/catalog" class="btn-sidebar" style="user-select: none;">
+                    <img src="/Catalog.png" alt="Catalogo Icon">
                     <span class="text-light">Catálogo</span>
                 </a>
             </li>
-            <li>
-                <a @onclick="HandleLinkClick" href="/Home" class="btn-sidebar" style="user-select: none;">
-                    <img src="/inventario.png" alt="Logo" class="img-fluid mb-2">
-                    <span class="text-light">Inventario</span>
-                </a>
+            <li class="dropdown">
+                <div @onclick="OpenDropDown" class="btn-sidebar dropdown" style="user-select: none;">
+                    <div>
+                        <img src="/inventario.png" alt="Logo">
+                        <span class="text-light">Inventario</span>
+                    </div>
+                    <div class="arrow @opened"></div>
+                </div>
+                <div class="dropdown-content @opened">
+                    <a href="/Inventario">
+                        <i class="bx bx-book"></i>
+                        Productos
+                    </a>
+                    <a href="#">
+                        <i class="bx bx-plus-circle"></i>
+                        Agregar a Inventario
+                    </a>
+                    <a href="#">
+                        <i class='bx bx-folder-minus'></i>
+                        Remover de Inventario
+                    </a>
+                    <a href="#">
+                        <i class='bx bx-edit-alt'></i>
+                        Ajustes de Inventario
+                    </a>
+                </div>
             </li>
             <li>
                 <a @onclick="HandleLinkClick" href="/thirdparties" class="btn-sidebar" style="user-select: none;">
-                    <img src="/tools.svg" alt="Logo" class="img-fluid mb-2">
+                    <img src="/tools.svg" alt="Logo">
                     <span class="text-light">Empresas Terceras</span>
                 </a>
             </li>
             <li>
                 <a @onclick="HandleLinkClick" href="/Home" class="btn-sidebar" style="user-select: none;">
-                    <img src="/tarjeta.png" alt="Logo" class="img-fluid mb-2">
+                    <img src="/tarjeta.png" alt="Logo">
                     <span class="text-light">Facturación</span>
                 </a>
             </li>
             <li>
                 <a @onclick="HandleLinkClick" href="/Home" class="btn-sidebar" style="user-select: none;">
-                    <img src="/reportes.png" alt="Reportes Icon" class="img-fluid mb-2 mt-2">
+                    <img src="/reportes.png" alt="Reportes Icon">
                     <span class="text-light">Reportes</span>
                 </a>
             </li>
             <li>
                 <a @onclick="HandleLinkClick" href="/Home" class="btn-sidebar" style="user-select: none;">
-                    <img src="/prom.png" alt="Promociones Icon" class="img-fluid mb-2 mt-2">
+                    <img src="/prom.png" alt="Promociones Icon">
                     <span class="text-light">Promociones</span>
                 </a>
             </li>
             <li>
                 <a @onclick="HandleLinkClick" href="/tools" class="btn-sidebar" style="user-select: none;">
-                    <img src="/Soporte.png" alt="Soporte Técnico Icon" class="img-fluid mb-2 mt-2">
+                    <img src="/Soporte.png" alt="Soporte Técnico Icon">
                     <span class="text-light">Herramientas</span>
                 </a>
             </li>
             <li>
                  <button class="btn-sidebar" data-bs-toggle="modal" data-bs-target="#CerrarSesion">
-                    <img src="/Logout.png" alt="Logo" class="img-fluid mb-2 mt-2">
+                    <img src="/Logout.png" alt="Logo">
                     <p class="text-light">Cerrar Sesión</p>
                 </button>
             </li>
@@ -90,6 +111,7 @@
     
     [Parameter]
     public EventCallback<bool> ToggleSidebar { get; set; }
+    private bool opened = false;
 
     private async Task HandleLinkClick()
     {
@@ -100,5 +122,10 @@
     {
         await AuthenticationService.LogoutAsync();
         NavigationManager.NavigateTo("/", forceLoad: true);
+    }
+
+    private async void OpenDropDown()
+    {
+        opened = !opened;
     }
 }

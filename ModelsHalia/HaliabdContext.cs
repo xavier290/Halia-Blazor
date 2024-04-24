@@ -39,15 +39,13 @@ public partial class HaliabdContext : DbContext
 
     public virtual DbSet<RelAlmacenDetalle> RelAlmacenDetalles { get; set; }
 
-    public virtual DbSet<RelAlmacenProducto> RelAlmacenProductos { get; set; }
-
     public virtual DbSet<RelCategoriaProducto> RelCategoriaProductos { get; set; }
 
     public virtual DbSet<RelCategoriaProductosTercero> RelCategoriaProductosTerceros { get; set; }
 
-    public virtual DbSet<RelLineaProducto> RelLineaProductos { get; set; }
+    public virtual DbSet<RelInventarioSucursal> RelInventarioSucursals { get; set; }
 
-    public virtual DbSet<RelProductoSucursale> RelProductoSucursales { get; set; }
+    public virtual DbSet<RelLineaProducto> RelLineaProductos { get; set; }
 
     public virtual DbSet<RelProveedorProducto> RelProveedorProductos { get; set; }
 
@@ -218,13 +216,6 @@ public partial class HaliabdContext : DbContext
             entity.Property(e => e.Talla).HasMaxLength(50);
         });
 
-        modelBuilder.Entity<RelAlmacenProducto>(entity =>
-        {
-            entity.ToTable("RelAlmacenProducto");
-
-            entity.Property(e => e.RelAlmacenProductoId).HasColumnName("RelAlmacenProductoID");
-        });
-
         modelBuilder.Entity<RelCategoriaProducto>(entity =>
         {
             entity.HasKey(e => new { e.CategoriaId, e.ProductoId });
@@ -261,6 +252,25 @@ public partial class HaliabdContext : DbContext
                 .HasConstraintName("FK_RelCategoriaProductosTerceros_ProductosEmpresasTerceras");
         });
 
+        modelBuilder.Entity<RelInventarioSucursal>(entity =>
+        {
+            entity.HasKey(e => new { e.InventarioSucursalId, e.InventarioId, e.SucursalId });
+
+            entity.ToTable("RelInventarioSucursal");
+
+            entity.Property(e => e.InventarioSucursalId).ValueGeneratedOnAdd();
+
+            entity.HasOne(d => d.Inventario).WithMany(p => p.RelInventarioSucursals)
+                .HasForeignKey(d => d.InventarioId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_RelInventarioSucursal_Inventario");
+
+            entity.HasOne(d => d.Sucursal).WithMany(p => p.RelInventarioSucursals)
+                .HasForeignKey(d => d.SucursalId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_RelInventarioSucursal_Sucursales");
+        });
+
         modelBuilder.Entity<RelLineaProducto>(entity =>
         {
             entity.HasKey(e => new { e.LineaId, e.ProductoId });
@@ -278,15 +288,6 @@ public partial class HaliabdContext : DbContext
                 .HasForeignKey(d => d.ProductoId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_RelLineaProducto_Producto");
-        });
-
-        modelBuilder.Entity<RelProductoSucursale>(entity =>
-        {
-            entity.HasKey(e => e.RelProductoSucursalesId);
-
-            entity.Property(e => e.RelProductoSucursalesId).HasMaxLength(50);
-            entity.Property(e => e.ProductoId).HasColumnName("ProductoID");
-            entity.Property(e => e.SucursalId).HasColumnName("SucursalID");
         });
 
         modelBuilder.Entity<RelProveedorProducto>(entity =>
