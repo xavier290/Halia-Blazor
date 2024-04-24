@@ -55,15 +55,21 @@
                     <label for="productQuantityMin">Cantidad Minima</label>
                     <input id="productQuantityMin" @bind="@productQuantityMin" type="number" class="form-control" />
 
-                   <div class="category-selection">
-                        <h3>Agregar Categorías</h3>
+                    <div class="category-selection form">
+                        <p>Asociar Categorías</p>
+                        <div class="search-container form">
+                            <form class="search-form" @onsubmit="searchCategories">
+                                <input @bind="@filterCat" class="search-input" type="text" name="q" placeholder="Buscar Categorias...">
+                                <button class="search-button" type="submit"><span class="hide-text"></span><img src="/Search.png" alt="Logo" class="search-icon"></button>
+                            </form>
+                        </div>
                         @foreach (var category in DataCategories)
                         {
                             // Check if the category is already associated with the product
                             bool isChecked = selectedCategoryIds.Contains(category[0].ToString());
 
                             <div class="category-item">
-                                <input type="checkbox" id="category_@category[0]" @bind="isChecked" @onclick="() => ToggleCategorySelection(category[0].ToString())"/>
+                                <input @bind="isChecked" type="checkbox" id="category_@category[0]" @onclick="() => ToggleCategorySelection(category[0].ToString())" />
                                 <label for="category_@category[0]">@category[1]</label>
                             </div>
                         }
@@ -94,6 +100,7 @@
     private ProductosEmpresasTercera Product { get; set; }
     private int currentPage = 1;
     private string filter = "";
+    private string filterCat = "";
     private string productName;
     private string Code;
     private string productDescription;
@@ -119,7 +126,7 @@
     private async Task LoadData(int entryId)
     {
         DataThirdParties.Clear();
-        DataThirdParties.Clear();
+
         Product = await ThirdPartyService.GetSingleProductThirdPartyAsync(entryId);
         
         productName = Product.Nombre ?? "";
@@ -139,12 +146,7 @@
             DataThirdParties.Add(rowData);
         }
 
-        List<List<object>> dataCat = await ThirdPartyService.GetCategoriesAsync(filter);
-
-        foreach (var rowData in dataCat)
-        {
-            DataCategories.Add(rowData);
-        }
+        LoadCategoriesData();
 
         selectedCategoryIds = await ThirdPartyService.GetAssociatedCategoriesAsync(entryId);
     }
@@ -193,5 +195,22 @@
     private void GoToPreviousPage()
     {
         currentPage = 1;
+    }
+
+    private void searchCategories()
+    {
+        LoadCategoriesData();
+    }
+
+    private async Task LoadCategoriesData()
+    {
+        DataCategories.Clear();
+
+        List<List<object>> data = await ThirdPartyService.GetCategoriesAsync(filterCat);
+        
+        foreach (var rowData in data)
+        {
+            DataCategories.Add(rowData);
+        }
     }
 }
