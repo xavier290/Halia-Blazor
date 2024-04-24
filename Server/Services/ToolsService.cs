@@ -25,6 +25,7 @@ public class ToolsService : IToolsService
                 fila.Add(item.EmpresasTercerasId);
                 fila.Add(item.Nombre);
                 fila.Add(item.NombreComercial);
+                fila.Add(item.CodigoEmpresa);
                 fila.Add(item.Ruc);
                 fila.Add(item.Dirección);
                 fila.Add(item.Telefono);
@@ -36,7 +37,7 @@ public class ToolsService : IToolsService
         return rows;
     }
 
-    public async Task AddThirdPartyAsync(string Name, string ComercialName, string ruc, string direccion, string telefono) 
+    public async Task AddThirdPartyAsync(string Name, string ComercialName, string ruc, string direccion, string telefono, string claveEmpresa) 
     {
         using(HaliabdContext db = new HaliabdContext())
         {
@@ -47,7 +48,8 @@ public class ToolsService : IToolsService
                 Ruc = ruc.Trim(),
                 Dirección = direccion.Trim(),
                 Telefono = telefono.Trim(),
-                IsActive = "Activo"
+                IsActive = "Activo",
+                CodigoEmpresa = claveEmpresa.Trim(),
             };   
 
             db.Add(empresasTercera);
@@ -55,7 +57,7 @@ public class ToolsService : IToolsService
         }
     }
 
-    public async Task UpdateThirdPartyAsync(int entryId, string Name, string ComercialName, string ruc, string direccion, string telefono) 
+    public async Task UpdateThirdPartyAsync(int entryId, string Name, string ComercialName, string ruc, string direccion, string telefono, string claveEmpresa) 
     {
         using(HaliabdContext db = new HaliabdContext())
         {
@@ -68,6 +70,7 @@ public class ToolsService : IToolsService
                 empresasTercera.Ruc = ruc.Trim();
                 empresasTercera.Dirección = direccion.Trim();
                 empresasTercera.Telefono = telefono.Trim();
+                empresasTercera.CodigoEmpresa = claveEmpresa.Trim();
             }
 
             db.SaveChanges();

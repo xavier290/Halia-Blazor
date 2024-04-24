@@ -136,6 +136,7 @@ public partial class HaliabdContext : DbContext
             entity.HasKey(e => e.EmpresasTercerasId);
 
             entity.Property(e => e.EmpresasTercerasId).HasColumnName("EmpresasTercerasID");
+            entity.Property(e => e.CodigoEmpresa).HasMaxLength(100);
             entity.Property(e => e.Email).HasMaxLength(100);
             entity.Property(e => e.IsActive)
                 .HasMaxLength(50)

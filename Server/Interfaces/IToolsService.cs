@@ -10,8 +10,8 @@ public interface IToolsService
     // funcitions for CRUD products
     Task<List<List<object>>> GetThirdPartyAsync(string filter);
     Task<EmpresasTercera> GetSingleThirdPartyAsync(int entryId);
-    Task AddThirdPartyAsync(string Name, string ComercialName, string ruc, string direccion, string telefono);
-    Task UpdateThirdPartyAsync(int entryId, string Name, string ComercialName, string ruc, string direccion, string telefono);
+    Task AddThirdPartyAsync(string Name, string ComercialName, string ruc, string direccion, string telefono, string claveEmpresa);
+    Task UpdateThirdPartyAsync(int entryId, string Name, string ComercialName, string ruc, string direccion, string telefono, string claveEmpresa);
     Task BlockThirdPartyAsync(int entryId);
 
     Task<List<List<object>>> GetBranchesAsync(string filter, int empresaId);
