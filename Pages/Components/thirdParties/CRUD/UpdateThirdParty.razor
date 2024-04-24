@@ -18,6 +18,9 @@
                 <label for="ComercialName">Nombre Comercial</label>
                 <input type="text" id="ComercialName" name="ComercialName" @bind="ComercialName">
 
+                <label for="ClaveEmpresa">Clave Empresa</label>
+                <input type="text" id="ClaveEmpresa" name="ClaveEmpresa" @bind="claveEmpresa">
+
                 <label for="Ruc">Ruc</label>
                 <input type="text" id="Ruc" name="Ruc" @bind="Ruc">
 
@@ -51,6 +54,7 @@
     private string Ruc;
     private string Direccion;
     private string Telefono;
+    private string claveEmpresa;
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (firstRender)
@@ -78,7 +82,7 @@
 
     public async Task UpdateThirdPartySave()
     {
-        await ToolsService.UpdateThirdPartyAsync(SelectedItemId, Name, ComercialName, Ruc, Direccion, Telefono);
+        await ToolsService.UpdateThirdPartyAsync(SelectedItemId, Name, ComercialName, Ruc, Direccion, Telefono, claveEmpresa);
         // Optionally, notify parent component that save button is clicked
         await OnSave.InvokeAsync();
     }

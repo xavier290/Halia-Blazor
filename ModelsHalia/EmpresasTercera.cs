@@ -22,4 +22,6 @@ public partial class EmpresasTercera
     public int? SucursalId { get; set; }
 
     public string? IsActive { get; set; }
+
+    public string? CodigoEmpresa { get; set; }
 }
