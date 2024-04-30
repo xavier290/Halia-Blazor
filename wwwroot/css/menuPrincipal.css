@@ -33,7 +33,6 @@
 }
 
 .sidebar-menu .logo-section {
-    border-bottom: solid 1px #F1EAE0;
     height: 14vh;
     display: flex;
     justify-content: center;
@@ -57,8 +56,17 @@
 }
 
 .sidebar-menu ul li {
-    height: 56px;
+    border-bottom: solid 1px #bdaf9a;
 }
+
+.sidebar-menu ul li:first-child {
+    border-top: solid 1px #bdaf9a;
+}
+
+.sidebar-menu ul li:last-child {
+    border-bottom: solid 1px transparent;
+}
+
 .sidebar-menu ul li.dropdown {
     height: fit-content;
 }

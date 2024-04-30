@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "DIKiOf+6H6cUVEcK5i6htFR1+0jGSXO1SMlNeqKVOSs=",
+  "Hash": "x5827XOfekFLIbtfRK2DwJvayLNh3Wn9CV8vdRgcUS4=",
   "Source": "NovaLaundryAppWebAdminBlazor",
   "BasePath": "_content/NovaLaundryAppWebAdminBlazor",
   "Mode": "Default",
@@ -889,6 +889,25 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\css\\catalogo.css"
+    },
+    {
+      "Identity": "C:\\Users\\xa25a\\Documents\\Halia-Blazor\\NovaLaundryAppWebAdminBlazor\\wwwroot\\css\\inventario.css",
+      "SourceId": "NovaLaundryAppWebAdminBlazor",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\xa25a\\Documents\\Halia-Blazor\\NovaLaundryAppWebAdminBlazor\\wwwroot\\",
+      "BasePath": "_content/NovaLaundryAppWebAdminBlazor",
+      "RelativePath": "css/inventario.css",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\css\\inventario.css"
     },
     {
       "Identity": "C:\\Users\\xa25a\\Documents\\Halia-Blazor\\NovaLaundryAppWebAdminBlazor\\wwwroot\\css\\login.css",

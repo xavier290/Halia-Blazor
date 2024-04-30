@@ -18,6 +18,4 @@ public partial class Sucursale
     public string? Correo { get; set; }
 
     public int? EmpresaId { get; set; }
-
-    public virtual ICollection<RelInventarioSucursal> RelInventarioSucursals { get; } = new List<RelInventarioSucursal>();
 }

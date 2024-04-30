@@ -1,0 +1,265 @@
+@page "/Inventario/Add-new";
+
+@inject IcatalogService CatalogService;
+@inject IToolsService ToolsService;
+@inject IInventoryService InventoryService;
+
+@using NovaLaundryAppWebAdminBlazor.ModelsHalia;
+
+
+<PageTitle>Agregar Nuevo</PageTitle>
+
+<div class="inventory-cnt">
+    <h4>Agregar Nuevo Inventario</h4>
+
+    <section>
+        <form @onsubmit="AddProduct">
+            <select name="productSelect" id="productSelect" @bind="selectedProductId">
+                <option value="">Selecciona Productos</option>
+                @foreach (var item in products.Where(p => !SelectedItems.Any(si => si[0].ToString() == p[0].ToString())))
+                {
+                    <option value="@item[0]">@item[1]</option>
+                }
+            </select>
+            <button class="btn btn-primary" type="submit">Agregar</button>
+        </form>
+        <select id="branchSelect" @onchange="HandleSelectionbranchChange">
+            <option value="">Seleccciona Sucursal</option>
+            @foreach (var Item in BranchItem)
+            {
+                <option value="@Item[0]">@Item[1]</option>
+            }
+        </select>
+    </section>
+
+    @if (SelectedItems.Count > 0)
+    {
+        <h5>Productos Seleccionados:</h5>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Producto</th>
+                    <th>Cantidad</th>
+                    <th>Cantidad Máxima</th>
+                    <th>Cantidad Minima</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in SelectedItems)
+                {
+                    <tr>
+                        <td>@item[1]</td>
+                        <td>
+                            <input type="number" @bind="SelectedQuantities[(int)item[0]]" @oninput="((ChangeEventArgs __e) => UpdateQuantity((int)item[0], string.IsNullOrEmpty(__e.Value.ToString()) ? 0 : Convert.ToInt32(__e.Value)))" class="form-control" />
+                        </td>
+                        <td>
+                            <input type="number" @bind="MaxQuantities[(int)item[0]]" @oninput="((ChangeEventArgs __e) => UpdateMaxQuantity((int)item[0], string.IsNullOrEmpty(__e.Value.ToString()) ? 0 : Convert.ToInt32(__e.Value)))" class="form-control" />
+                        </td>
+                        <td>
+                            <input type="number" @bind="MinQuantities[(int)item[0]]" @oninput="((ChangeEventArgs __e) => UpdateMinQuantity((int)item[0], string.IsNullOrEmpty(__e.Value.ToString()) ? 0 : Convert.ToInt32(__e.Value)))" class="form-control" />
+                        </td>
+                        <td><button class="btn btn-danger" @onclick="() => RemoveProduct(item)">Remover</button></td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+    else {
+        <P>No hay productos seleccionados</P>
+    }
+
+    <footer class="footer-inventory">
+        <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#CancelarInventario">Cancelar</button>
+        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#GuardarInventario">Guardar</button>
+    </footer>
+</div>
+
+<section @onclick="() => showAlert = !showAlert" class="alert-section @showAlert">
+    <div class="alert alert-danger alert-dismissible" role="alert">
+        <h4 class="alert-heading">Oops Algo Salio Mal...</h4>
+        <button type="button" class="btn-close" aria-label="Close"></button>
+        <hr>
+        <p class="mb-0">Por favor revisa que hayas seleccionado al menos un producto y una sucursal.</p>
+    </div>
+</section>
+
+
+<div class="modal fade" id="CancelarInventario" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Atención</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                ¿Estás seguro que deseas cancelar la operación?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Volver</button>
+                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">
+                    <NavLink class="nav-link" href="/Inventario">
+                        <span aria-hidden="true"></span>Cancelar
+                    </NavLink>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="GuardarInventario" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Atención</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Favor de revisar la información antes de guardar.
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Volver</button>
+                <button @onclick="SaveToInventory" type="button" class="btn btn-primary" data-bs-dismiss="modal">
+                    <span aria-hidden="true"></span>Guardar
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    private string filter = "";
+    private int selectedProductId;
+    private string selectedBranchId;
+    private bool showAlert = false;
+    List<List<object>> dataProducts = new List<List<object>>();
+    List<List<object>> dataBranches = new List<List<object>>();
+    List<List<object>> products = new List<List<object>>();
+    List<List<object>> SelectedItems = new List<List<object>>();
+    private Dictionary<int, int> SelectedQuantities { get; set; }
+    private Dictionary<int, int> MaxQuantities { get; set; }
+    private Dictionary<int, int> MinQuantities { get; set; }
+    List<List<object>> BranchItem = new List<List<object>>();
+
+
+    protected override void OnInitialized()
+    {
+        SelectedQuantities = new Dictionary<int, int>();
+        MaxQuantities = new Dictionary<int, int>();
+        MinQuantities = new Dictionary<int, int>();
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await LoadData();
+        }
+
+        StateHasChanged();
+    }
+
+    private async Task LoadData()
+    {
+        products.Clear();
+        BranchItem.Clear();
+
+        dataProducts = await CatalogService.GetProductAsync(filter);
+        dataBranches = await ToolsService.GetBranchesAsync(filter, 1);
+
+        foreach (var Data in dataProducts)
+        {
+            products.Add(Data);
+        }
+
+        foreach (var Data in dataBranches)
+        {
+            BranchItem.Add(Data);
+        }
+    }
+
+    private void AddProduct()
+    {
+        if (!string.IsNullOrEmpty(selectedProductId.ToString()) || selectedProductId != 0)
+        {
+            var selectedProduct = products.FirstOrDefault(p => p[0].ToString() == selectedProductId.ToString());
+            if (selectedProduct != null)
+            {
+                SelectedItems.Add(selectedProduct);
+                SelectedQuantities[(int)selectedProduct[0]] = 1; // default quantity
+                
+                MaxQuantities[(int)selectedProduct[0]] = 0; // default Max quantity
+                MinQuantities[(int)selectedProduct[0]] = 0; // default Min quantity
+            }
+        }
+
+        selectedProductId = 0;
+    }
+
+    private void RemoveProduct(List<object> item)
+    {
+        SelectedItems.Remove(item);
+        SelectedQuantities.Remove((int)item[0]);
+        
+        MaxQuantities.Remove((int)item[0]);
+        MinQuantities.Remove((int)item[0]);
+    }
+
+    private void UpdateQuantity(int productId, int quantity)
+    {
+        if (SelectedQuantities.ContainsKey(productId) && quantity > 0)
+        {
+            SelectedQuantities[productId] = quantity;
+        }
+    }
+
+    private void UpdateMaxQuantity(int productId, int quantity)
+    {
+        if (MaxQuantities.ContainsKey(productId) && quantity > 0)
+        {
+            MaxQuantities[productId] = quantity;
+        }
+    }
+
+    private void UpdateMinQuantity(int productId, int quantity)
+    {
+        if (MinQuantities.ContainsKey(productId) && quantity > 0)
+        {
+            MinQuantities[productId] = quantity;
+        }
+    }
+
+    private void HandleSelectionbranchChange(ChangeEventArgs e)
+    {
+        selectedBranchId = e.Value.ToString();
+        @* Console.WriteLine(selectedBranchId); *@
+    }
+
+    private async Task SaveToInventory()
+    {
+        foreach (var item in SelectedItems)
+        {
+            var productId = (int)item[0];
+
+            if (SelectedQuantities.ContainsKey(productId) && MaxQuantities.ContainsKey(productId) && MinQuantities.ContainsKey(productId) && (selectedBranchId != null && selectedBranchId != ""))
+            {
+                showAlert = false;
+
+                Inventario inventory = new Inventario 
+                {
+                    ProductoId = productId,
+                    Cantidad = SelectedQuantities[productId],
+                    StockMaximo = MaxQuantities[productId],
+                    StockMinimo = MinQuantities[productId],
+                    SucursalId = Convert.ToInt32(selectedBranchId)
+                };
+
+                await InventoryService.AddInventoryAsync(inventory);
+            }
+            else 
+            {
+                showAlert = true;
+            }
+        }
+    }
+}

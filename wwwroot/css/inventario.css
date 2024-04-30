@@ -1,0 +1,72 @@
+.inventory-cnt {
+    width: 100%;
+    min-height: 88vh;
+    position: relative;
+    padding: 10px;
+}
+
+.inventory-cnt h4 {
+    margin-bottom: 20px;
+}
+
+.inventory-cnt section {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    margin-bottom: 16px;
+}
+
+.inventory-cnt form {
+    display: flex;
+    flex-direction: row;
+}
+
+.inventory-cnt section form #productSelect {
+    width: 100%;
+    max-width: 500px;
+    min-width: 380px;
+    margin-right: 8px;
+    border: solid 1px #000;
+    border-radius: 5px;
+}
+
+.inventory-cnt section #branchSelect {
+    max-width: 200px;
+    min-width: 200px;
+    border: solid 1px #000;
+    border-radius: 5px;
+}
+
+.footer-inventory {
+    position: fixed;
+    right: 0%;
+    bottom: 0;
+    width: 100%;
+    color: #000;
+    text-align: right;
+    padding: 10px;
+    border-top: 1px solid #797979;
+}
+
+.alert-section {
+    position: fixed;
+    right: 0;
+    top: 0;
+    width: 100%;
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    transition: all 0.5s;
+    overflow: hidden;
+}
+
+.alert-section.True {
+    height: 30vh;
+}
+
+.alert-section.False {
+    height: 0vh;
+}

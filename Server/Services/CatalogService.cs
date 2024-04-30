@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore;
 
 public class CatalogService : IcatalogService 
 {
-    // public Producto Product { get; set; }
+    // public Producto Product { get; set; } 
     public async Task<List<List<object>>> GetProductAsync(string filter) 
     {
         List<List<object>> rows = new List<List<object>>();
