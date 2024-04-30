@@ -41,6 +41,7 @@ builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
 builder.Services.AddScoped<IcatalogService, CatalogService>();
 builder.Services.AddScoped<IToolsService, ToolsService>();
 builder.Services.AddScoped<IthirdPartyService, ThirdPartyService>();
+builder.Services.AddScoped<IInventoryService, InventoryService>();
 
 var app = builder.Build();
 

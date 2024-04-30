@@ -81,6 +81,10 @@
       "PackagePath": "staticwebassets\\css\\catalogo.css"
     },
     {
+      "Id": "C:\\Users\\xa25a\\Documents\\Halia-Blazor\\NovaLaundryAppWebAdminBlazor\\wwwroot\\css\\inventario.css",
+      "PackagePath": "staticwebassets\\css\\inventario.css"
+    },
+    {
       "Id": "C:\\Users\\xa25a\\Documents\\Halia-Blazor\\NovaLaundryAppWebAdminBlazor\\wwwroot\\css\\login.css",
       "PackagePath": "staticwebassets\\css\\login.css"
     },
