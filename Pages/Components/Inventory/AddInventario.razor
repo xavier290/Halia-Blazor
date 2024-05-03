@@ -320,18 +320,6 @@
 
     private async Task SaveToInventory()
     {
-        Compra compra = new Compra
-        {
-            TotalProductos = SelectedQuantities.Values.Sum(),
-            TotalCosto = ProductCost.Values.Sum(),
-            DetallesCompra = "Reabastecimiento de Inventario",
-            Fecha = DateTime.Now,
-        };
-
-        await InventoryService.AddPurchaseAsync(compra);
-        @* Console.WriteLine(compra.ComprasInventarioId); *@
-        compraId = compra.ComprasInventarioId;
-
         foreach (var item in SelectedItems)
         {
             var productId = (int)item[0];
@@ -339,6 +327,18 @@
             if (SelectedQuantities.ContainsKey(productId) && ProductProviders.ContainsKey(productId) && MaxQuantities.ContainsKey(productId) && MinQuantities.ContainsKey(productId) && (selectedBranchId != null && selectedBranchId != ""))
             {
                 showAlert = false;
+
+                Compra compra = new Compra
+                {
+                    TotalProductos = SelectedQuantities.Values.Sum(),
+                    TotalCosto = ProductCost.Values.Sum(),
+                    DetallesCompra = "Reabastecimiento de Inventario",
+                    Fecha = DateTime.Now,
+                };
+
+                await InventoryService.AddPurchaseAsync(compra);
+                @* Console.WriteLine(compra.ComprasInventarioId); *@
+                compraId = compra.ComprasInventarioId;
 
                 InventarioProducto inventory = new InventarioProducto 
                 {
