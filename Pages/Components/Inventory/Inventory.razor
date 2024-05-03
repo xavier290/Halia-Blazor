@@ -1,3 +1,51 @@
 @page "/Inventario"
 
+@inject NavigationManager NavigationManager;
+
 <PageTitle>Halia || Inventario</PageTitle>
+
+<div class="inventory-main-cnt">
+    <h2>Inventario Halia</h2>
+    <section class="main-header-inventory">
+        <form @onsubmit="HandleSearch">
+            <button type="button" class="filter">
+                <img src="/filter.png" alt="filter products">        
+            </button>
+            <input placeholder="Buscar en Inventario..." @bind="filter" type="search" class="form-control" name="inventoryProducts" id="inventoryProducts">
+            <button class="btn btn-primary" type="submit">Buscar</button>
+        </form>
+            <button @onclick="GoTo" type="button" class="btn btn-secondary">
+                <svg xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns="http://www.w3.org/2000/svg" height="24" width="24" version="1.1" xmlns:cc="http://creativecommons.org/ns#" xmlns:dc="http://purl.org/dc/elements/1.1/">
+                    <g transform="translate(0 -1028.4)">
+                    <path d="m22 12c0 5.523-4.477 10-10 10-5.5228 0-10-4.477-10-10 0-5.5228 4.4772-10 10-10 5.523 0 10 4.4772 10 10z" transform="translate(0 1029.4)" fill="#27ae60"></path>
+                    <path d="m22 12c0 5.523-4.477 10-10 10-5.5228 0-10-4.477-10-10 0-5.5228 4.4772-10 10-10 5.523 0 10 4.4772 10 10z" transform="translate(0 1028.4)" fill="#2ecc71"></path>
+                    <path d="m6.0001 1042.4h4.9999v5h2v-5h5v-2h-5v-5h-2v5h-4.9999v2z" fill="#27ae60"></path>
+                    <path d="m6 1041.4h5v5h2v-5h5v-2h-5v-5h-2v5h-5v2z" fill="#ecf0f1"></path>
+                    </g>
+                </svg>
+                Agregar
+            </button>
+    </section>
+    <main>
+
+    </main>
+    <footer>
+
+    </footer>
+</div>
+
+@code 
+{
+    private string filter;
+
+    private void HandleSearch()
+    {
+        Console.WriteLine(filter);
+    }
+
+    private void GoTo()
+    {
+        NavigationManager.NavigateTo("/Inventario/Add-new");
+    }
+
+}

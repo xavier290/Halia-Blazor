@@ -5,6 +5,10 @@
       "PackagePath": "staticwebassets\\NovaLaundryAppWebAdminBlazor.bundle.scp.css"
     },
     {
+      "Id": "C:\\Users\\xa25a\\Documents\\Halia-Blazor\\NovaLaundryAppWebAdminBlazor\\wwwroot\\Add.svg",
+      "PackagePath": "staticwebassets\\Add.svg"
+    },
+    {
       "Id": "C:\\Users\\xa25a\\Documents\\Halia-Blazor\\NovaLaundryAppWebAdminBlazor\\wwwroot\\Bell.svg",
       "PackagePath": "staticwebassets\\Bell.svg"
     },
@@ -143,6 +147,10 @@
     {
       "Id": "C:\\Users\\xa25a\\Documents\\Halia-Blazor\\NovaLaundryAppWebAdminBlazor\\wwwroot\\favicon.ico",
       "PackagePath": "staticwebassets\\favicon.ico"
+    },
+    {
+      "Id": "C:\\Users\\xa25a\\Documents\\Halia-Blazor\\NovaLaundryAppWebAdminBlazor\\wwwroot\\filter.png",
+      "PackagePath": "staticwebassets\\filter.png"
     },
     {
       "Id": "C:\\Users\\xa25a\\Documents\\Halia-Blazor\\NovaLaundryAppWebAdminBlazor\\wwwroot\\inventario.png",
