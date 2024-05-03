@@ -23,11 +23,13 @@ public partial class HaliabdContext : DbContext
 
     public virtual DbSet<Categorium> Categoria { get; set; }
 
+    public virtual DbSet<Compra> Compras { get; set; }
+
     public virtual DbSet<Empresa> Empresas { get; set; }
 
     public virtual DbSet<EmpresasTercera> EmpresasTerceras { get; set; }
 
-    public virtual DbSet<Inventario> Inventarios { get; set; }
+    public virtual DbSet<InventarioProducto> InventarioProductos { get; set; }
 
     public virtual DbSet<Linea> Lineas { get; set; }
 
@@ -106,6 +108,18 @@ public partial class HaliabdContext : DbContext
             entity.Property(e => e.Nombre).HasMaxLength(50);
         });
 
+        modelBuilder.Entity<Compra>(entity =>
+        {
+            entity.HasKey(e => e.ComprasInventarioId);
+
+            entity.Property(e => e.ComprasInventarioId).HasColumnName("ComprasInventarioID");
+            entity.Property(e => e.DetallesCompra).HasMaxLength(200);
+            entity.Property(e => e.Fecha).HasColumnType("datetime");
+            entity.Property(e => e.TotalCosto)
+                .HasColumnType("decimal(10, 2)")
+                .HasColumnName("totalCosto");
+        });
+
         modelBuilder.Entity<Empresa>(entity =>
         {
             entity.HasKey(e => e.EmpresaId).HasName("PK_Empresa");
@@ -144,12 +158,13 @@ public partial class HaliabdContext : DbContext
             entity.Property(e => e.Telefono).HasMaxLength(50);
         });
 
-        modelBuilder.Entity<Inventario>(entity =>
+        modelBuilder.Entity<InventarioProducto>(entity =>
         {
-            entity.ToTable("Inventario");
+            entity.HasKey(e => e.InventarioId);
 
             entity.Property(e => e.InventarioId).HasColumnName("InventarioID");
-            entity.Property(e => e.ProductoId).HasColumnName("ProductoID");
+            entity.Property(e => e.Costo).HasColumnType("decimal(10, 2)");
+            entity.Property(e => e.Fecha).HasColumnType("datetime");
         });
 
         modelBuilder.Entity<Linea>(entity =>

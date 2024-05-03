@@ -7,9 +7,10 @@ using NovaLaundryAppWebAdminBlazor.ModelsHalia;
 
 public interface IInventoryService
 {
-    // Task GetInventories();
+    Task<List<ProductInventory>> GetInventories();
     // Task<Inventario> GetInventory(int id);
-Task AddInventoryAsync(Inventario inventory);
+    Task AddInventoryAsync(InventarioProducto inventory);
+    Task AddPurchaseAsync(Compra compras);
     // Task<Inventario> UpdateInventory(Inventario inventory);
     // Task DeleteInventory(int id);
 }
