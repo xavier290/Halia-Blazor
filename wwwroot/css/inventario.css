@@ -38,6 +38,14 @@
     border-radius: 5px;
 }
 
+.inventory-cnt table th, .inventory-cnt table td {
+    font-size: 14px;
+}
+
+.inventory-cnt table .form-control {
+    max-width: 120px;
+}
+
 .footer-inventory {
     position: fixed;
     right: 0%;

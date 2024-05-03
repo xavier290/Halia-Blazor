@@ -3,11 +3,13 @@ using System.Collections.Generic;
 
 namespace NovaLaundryAppWebAdminBlazor.ModelsHalia;
 
-public partial class Inventario
+public partial class InventarioProducto
 {
     public int InventarioId { get; set; }
 
     public int? ProductoId { get; set; }
+
+    public int? ProveedorId { get; set; }
 
     public int? Cantidad { get; set; }
 
@@ -17,11 +19,9 @@ public partial class Inventario
 
     public int? SucursalId { get; set; }
 
-    public DateTime? Fecha { get; set; }
-
-    public int? ProveedorId { get; set; }
-
     public int? CompraInventarioId { get; set; }
 
-    public int? Costo { get; set; }
+    public decimal? Costo { get; set; }
+
+    public DateTime? Fecha { get; set; }
 }

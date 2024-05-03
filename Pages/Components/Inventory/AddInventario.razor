@@ -3,8 +3,10 @@
 @inject IcatalogService CatalogService;
 @inject IToolsService ToolsService;
 @inject IInventoryService InventoryService;
+@inject NavigationManager NavigationManager;
 
 @using NovaLaundryAppWebAdminBlazor.ModelsHalia;
+
 
 
 <PageTitle>Agregar Nuevo</PageTitle>
@@ -42,6 +44,8 @@
                     <th>Cantidad</th>
                     <th>Cantidad Máxima</th>
                     <th>Cantidad Minima</th>
+                    <th>Proveedor</th>
+                    <th>Costo</th>
                     <th></th>
                 </tr>
             </thead>
@@ -59,13 +63,46 @@
                         <td>
                             <input type="number" @bind="MinQuantities[(int)item[0]]" @oninput="((ChangeEventArgs __e) => UpdateMinQuantity((int)item[0], string.IsNullOrEmpty(__e.Value.ToString()) ? 0 : Convert.ToInt32(__e.Value)))" class="form-control" />
                         </td>
+                        <td>
+                            @{
+                                var itemId = @item[0].ToString();
+                            }
+                            <select id="provider" @onchange="(e) => HandleSelectionChange(e, itemId)">
+                                <option value="">Selecciona Proveedor</option>
+                                @foreach (var Provider in providers)
+                                {
+                                    <option value="@Provider[0]">@Provider[1]</option>
+                                }
+                            </select>
+                        </td>
+                        <td>
+                            <input type="number" @bind="ProductCost[(int)item[0]]" @oninput="((ChangeEventArgs __e) => {
+                                decimal value;
+                                if (decimal.TryParse(__e.Value.ToString(), out value))
+                                {
+                                    UpdateCost((int)item[0], value);
+                                }
+                            })" class="form-control" />                        
+                        </td>
                         <td><button class="btn btn-danger" @onclick="() => RemoveProduct(item)">Remover</button></td>
                     </tr>
                 }
             </tbody>
+            <tfoot>
+                <tr>
+                    <td><strong>Total</strong></td>
+                    <td><strong>@SelectedQuantities.Values.Sum()</strong></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td><strong>@ProductCost.Values.Sum()</strong></td>
+                    <td></td>
+                </tr>
+            </tfoot>
         </table>
     }
-    else {
+    else 
+    {
         <P>No hay productos seleccionados</P>
     }
 
@@ -131,14 +168,20 @@
     private string filter = "";
     private int selectedProductId;
     private string selectedBranchId;
+    private int selectedProviderId;
+    private int compraId;
     private bool showAlert = false;
     List<List<object>> dataProducts = new List<List<object>>();
     List<List<object>> dataBranches = new List<List<object>>();
+    List<List<object>> dataProviders = new List<List<object>>();
     List<List<object>> products = new List<List<object>>();
+    List<List<object>> providers = new List<List<object>>();
     List<List<object>> SelectedItems = new List<List<object>>();
     private Dictionary<int, int> SelectedQuantities { get; set; }
     private Dictionary<int, int> MaxQuantities { get; set; }
     private Dictionary<int, int> MinQuantities { get; set; }
+    private Dictionary<int, int> ProductProviders { get; set; }
+    private Dictionary<int, decimal> ProductCost { get; set; }
     List<List<object>> BranchItem = new List<List<object>>();
 
 
@@ -147,6 +190,9 @@
         SelectedQuantities = new Dictionary<int, int>();
         MaxQuantities = new Dictionary<int, int>();
         MinQuantities = new Dictionary<int, int>();
+        
+        ProductProviders = new Dictionary<int, int>();
+        ProductCost = new Dictionary<int, decimal>();
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
@@ -163,9 +209,11 @@
     {
         products.Clear();
         BranchItem.Clear();
+        providers.Clear();
 
         dataProducts = await CatalogService.GetProductAsync(filter);
         dataBranches = await ToolsService.GetBranchesAsync(filter, 1);
+        dataProviders = await CatalogService.GetProviderAsync(filter);
 
         foreach (var Data in dataProducts)
         {
@@ -175,6 +223,11 @@
         foreach (var Data in dataBranches)
         {
             BranchItem.Add(Data);
+        }
+
+        foreach (var Data in dataProviders)
+        {
+            providers.Add(Data);
         }
     }
 
@@ -190,6 +243,10 @@
                 
                 MaxQuantities[(int)selectedProduct[0]] = 0; // default Max quantity
                 MinQuantities[(int)selectedProduct[0]] = 0; // default Min quantity
+            
+                // Add an entry to the ProductProviders dictionary
+                ProductProviders[(int)selectedProduct[0]] = selectedProviderId;
+                ProductCost[(int)selectedProduct[0]] = 0;
             }
         }
 
@@ -203,6 +260,10 @@
         
         MaxQuantities.Remove((int)item[0]);
         MinQuantities.Remove((int)item[0]);
+
+        // Remove the entry from the ProductProviders & the product cost dictionary
+        ProductProviders.Remove((int)item[0]);
+        ProductCost.Remove((int)item[0]);
     }
 
     private void UpdateQuantity(int productId, int quantity)
@@ -210,6 +271,14 @@
         if (SelectedQuantities.ContainsKey(productId) && quantity > 0)
         {
             SelectedQuantities[productId] = quantity;
+        }
+    }
+
+    private void UpdateCost(int productId, decimal cost)
+    {
+        if (ProductCost.ContainsKey(productId) && cost > 0)
+        {
+            ProductCost[productId] = cost;
         }
     }
 
@@ -232,7 +301,21 @@
     private void HandleSelectionbranchChange(ChangeEventArgs e)
     {
         selectedBranchId = e.Value.ToString();
-        @* Console.WriteLine(selectedBranchId); *@
+    }
+
+    private void UpdateProviderId(int productId, int newProviderId)
+    {
+        if (ProductProviders.ContainsKey(productId))
+        {
+            ProductProviders[productId] = newProviderId;
+        }
+    }
+
+    private void HandleSelectionChange(ChangeEventArgs e, string productId)
+    {
+        selectedProviderId = Convert.ToInt32(e.Value);
+
+        UpdateProviderId(Convert.ToInt32(productId), selectedProviderId);
     }
 
     private async Task SaveToInventory()
@@ -241,20 +324,37 @@
         {
             var productId = (int)item[0];
 
-            if (SelectedQuantities.ContainsKey(productId) && MaxQuantities.ContainsKey(productId) && MinQuantities.ContainsKey(productId) && (selectedBranchId != null && selectedBranchId != ""))
+            if (SelectedQuantities.ContainsKey(productId) && ProductProviders.ContainsKey(productId) && MaxQuantities.ContainsKey(productId) && MinQuantities.ContainsKey(productId) && (selectedBranchId != null && selectedBranchId != ""))
             {
                 showAlert = false;
 
-                Inventario inventory = new Inventario 
+                Compra compra = new Compra
+                {
+                    TotalProductos = SelectedQuantities.Values.Sum(),
+                    TotalCosto = ProductCost.Values.Sum(),
+                    DetallesCompra = "Reabastecimiento de Inventario",
+                    Fecha = DateTime.Now,
+                };
+
+                await InventoryService.AddPurchaseAsync(compra);
+                @* Console.WriteLine(compra.ComprasInventarioId); *@
+                compraId = compra.ComprasInventarioId;
+
+                InventarioProducto inventory = new InventarioProducto 
                 {
                     ProductoId = productId,
                     Cantidad = SelectedQuantities[productId],
                     StockMaximo = MaxQuantities[productId],
                     StockMinimo = MinQuantities[productId],
-                    SucursalId = Convert.ToInt32(selectedBranchId)
+                    SucursalId = Convert.ToInt32(selectedBranchId),
+                    ProveedorId = ProductProviders[productId],
+                    Costo = ProductCost[productId],
+                    CompraInventarioId = compraId
                 };
 
                 await InventoryService.AddInventoryAsync(inventory);
+
+                NavigationManager.NavigateTo("/Inventario");
             }
             else 
             {
