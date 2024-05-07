@@ -1,6 +1,10 @@
 @page "/Inventario"
 
 @inject NavigationManager NavigationManager;
+@inject IInventoryService InventoryService;
+
+@using NovaLaundryAppWebAdminBlazor.ModelsHalia;
+
 
 <PageTitle>Halia || Inventario</PageTitle>
 
@@ -27,7 +31,42 @@
             </button>
     </section>
     <main>
+        <h3>Productos Disponibles:</h3>
 
+        <div class="products-available">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>Nombre</th>
+                        <th>Codigo</th>
+                        <th>Precio</th>
+                        <th>Cantidad</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var product in products)
+                    {
+                        <tr>
+                            <td>
+                                <i class='bx bx-edit-alt'></i>
+                                <i @onclick="() => ToggleShowMoreData(product.ProductoId)" class='bx bxs-chevron-down'></i>                            
+                            </td>
+                            <td>@product.NombreProducto</td>
+                            <td>@product.CodigoProducto</td>
+                            <td>@product.Precio</td>
+                            <td>@product.Cantidad</td>
+                        </tr>
+                        <tr class="more-data @(showMoreData.ContainsKey(product.ProductoId) && showMoreData[product.ProductoId] ? "showData" : "noShow")">
+                            @if(showMoreData.ContainsKey(product.ProductoId) && showMoreData[product.ProductoId])
+                            {
+                                <td colspan="5"></td>
+                            }
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
     </main>
     <footer>
 
@@ -37,6 +76,36 @@
 @code 
 {
     private string filter;
+    private List<ProductInventory> dataProducts = new List<ProductInventory>();
+    private List<ProductInventory> products = new List<ProductInventory>();
+    private Dictionary<int, bool> showMoreData = new Dictionary<int, bool>();
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await LoadData();
+        }
+
+        StateHasChanged();
+    }
+
+    private async Task LoadData()
+    {
+        products.Clear();
+
+        dataProducts = await InventoryService.GetInventories();
+
+        foreach (var product in dataProducts)
+        {
+            products.Add(product);
+        }
+
+        foreach (var product in products)
+        {
+            showMoreData[product.ProductoId] = false;
+        }
+    }
 
     private void HandleSearch()
     {
@@ -48,4 +117,15 @@
         NavigationManager.NavigateTo("/Inventario/Add-new");
     }
 
+    private void ToggleShowMoreData(int productId)
+    {
+        if (showMoreData.ContainsKey(productId))
+        {
+            showMoreData[productId] = !showMoreData[productId];
+        }
+        else
+        {
+            showMoreData[productId] = true;
+        }
+    }
 }
