@@ -137,13 +137,19 @@
     height: 0px;
     transition: all ease-in-out 0.5s;
     overflow: hidden;
+    border: transparent none;
+    border-bottom: transparent none;
 }
 
 .more-data.showData {
-    height: 80px;
-    overflow-y: auto;
+    height: fit-content;
 }
 
 .more-data.noShow {
     height: 0px;
+}
+
+.more-data td {
+    font-size: 12px;
+    border-bottom: transparent;
 }
