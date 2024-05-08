@@ -313,9 +313,11 @@
 
     private void HandleSelectionChange(ChangeEventArgs e, string productId)
     {
-        selectedProviderId = Convert.ToInt32(e.Value);
-
-        UpdateProviderId(Convert.ToInt32(productId), selectedProviderId);
+        if (!string.IsNullOrEmpty(e.Value.ToString()))
+        {
+            selectedProviderId = Convert.ToInt32(e.Value);
+            UpdateProviderId(Convert.ToInt32(productId), selectedProviderId);
+        }
     }
 
     private async Task SaveToInventory()
