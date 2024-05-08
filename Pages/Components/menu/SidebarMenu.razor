@@ -26,19 +26,19 @@
                     <div class="arrow @opened"></div>
                 </div>
                 <div class="dropdown-content @opened">
-                    <a href="/Inventario">
+                    <a @onclick="HandleLinkClick" href="/Inventario">
                         <i class="bx bx-book"></i>
                         Productos en Inventario
                     </a>
-                    <a href="/Inventario/Add-new">
+                    <a @onclick="HandleLinkClick" href="/Inventario/Add-new">
                         <i class="bx bx-plus-circle"></i>
                         Agregar a Inventario
                     </a>
-                    <a href="/Inventario/Delete">
+                    <a @onclick="HandleLinkClick" href="/Inventario/Delete">
                         <i class='bx bx-folder-minus'></i>
                         Remover de Inventario
                     </a>
-                    <a href="/Ajustes-Inventario">
+                    <a @onclick="HandleLinkClick" href="/Ajustes-Inventario">
                         <i class='bx bx-edit-alt'></i>
                         Ajustes de Inventario
                     </a>

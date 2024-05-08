@@ -1,3 +1,183 @@
 @page "/Inventario"
 
+@inject NavigationManager NavigationManager;
+@inject IInventoryService InventoryService;
+
+@using NovaLaundryAppWebAdminBlazor.ModelsHalia;
+
+
 <PageTitle>Halia || Inventario</PageTitle>
+
+<div class="inventory-main-cnt">
+    <h2>Inventario Halia</h2>
+    <section class="main-header-inventory">
+        <form @onsubmit="HandleSearch">
+            <button type="button" class="filter">
+                <img src="/filter.png" alt="filter products">        
+            </button>
+            <input placeholder="Buscar en Inventario..." @bind="filter" type="search" class="form-control" name="inventoryProducts" id="inventoryProducts">
+            <button class="btn btn-primary" type="submit">Buscar</button>
+        </form>
+            <button @onclick="GoTo" type="button" class="btn btn-secondary">
+                <svg xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns="http://www.w3.org/2000/svg" height="24" width="24" version="1.1" xmlns:cc="http://creativecommons.org/ns#" xmlns:dc="http://purl.org/dc/elements/1.1/">
+                    <g transform="translate(0 -1028.4)">
+                    <path d="m22 12c0 5.523-4.477 10-10 10-5.5228 0-10-4.477-10-10 0-5.5228 4.4772-10 10-10 5.523 0 10 4.4772 10 10z" transform="translate(0 1029.4)" fill="#27ae60"></path>
+                    <path d="m22 12c0 5.523-4.477 10-10 10-5.5228 0-10-4.477-10-10 0-5.5228 4.4772-10 10-10 5.523 0 10 4.4772 10 10z" transform="translate(0 1028.4)" fill="#2ecc71"></path>
+                    <path d="m6.0001 1042.4h4.9999v5h2v-5h5v-2h-5v-5h-2v5h-4.9999v2z" fill="#27ae60"></path>
+                    <path d="m6 1041.4h5v5h2v-5h5v-2h-5v-5h-2v5h-5v2z" fill="#ecf0f1"></path>
+                    </g>
+                </svg>
+            </button>
+    </section>
+    <main>
+        <h3>Productos Disponibles:</h3>
+
+        <div class="table-container thirdparties-cnt">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>Nombre</th>
+                        <th>Codigo</th>
+                        <th>Precio</th>
+                        <th>Cantidad</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var product in products)
+                    {
+                        <tr>
+                            <td>
+                                <i @onclick="() => OpenPopupEdit(product.ProductoId)" class='bx bx-edit-alt'></i>
+                                <i @onclick="() => ToggleShowMoreData(product.ProductoId)" class='bx bxs-chevron-down'></i>                            
+                            </td>
+                            <td>@product.NombreProducto</td>
+                            <td>@product.CodigoProducto</td>
+                            <td>@product.Precio</td>
+                            <td>@product.Cantidad</td>
+                        </tr>
+
+                        @if(showMoreData.ContainsKey(product.ProductoId) && showMoreData[product.ProductoId])
+                        {
+                            @foreach (var data in additionalData[product.ProductoId])
+                            {
+                                <tr class="more-data @(showMoreData.ContainsKey(product.ProductoId) && showMoreData[product.ProductoId] ? "showData" : "noShow")">
+                                    <td>Lote: @data[0]</td>
+                                    <td>Cantidad: @data[1]</td>
+                                    <td>Cantidad Max: @data[2]</td>
+                                    <td>Cantidad Min: @data[3]</td>
+                                    <td>Fecha: @data[4]</td>
+                                    <td>
+                                        <i class='bx bx-edit-alt'></i>
+                                    </td>
+                                </tr>
+                            }
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+    </main>
+    <footer>
+
+    </footer>
+
+    @if (showPopup)
+    {
+        <NovaLaundryAppWebAdminBlazor.Pages.Components.tools.CRUD.UpdateProductPage OnSave="HandleSave" SelectedItemId="@entryId" />
+    }
+</div>
+
+@code 
+{
+    private string filter;
+    private List<ProductInventory> dataProducts = new List<ProductInventory>();
+    private List<ProductInventory> products = new List<ProductInventory>();
+    private Dictionary<int, bool> showMoreData = new Dictionary<int, bool>();
+    private Dictionary<int, List<List<object>>> additionalData { get; set; }
+    private bool showPopup = false;
+    private int entryId;
+
+
+    protected override void OnInitialized()
+    {
+        additionalData = new Dictionary<int, List<List<object>>>();
+    }
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await LoadData();
+        }
+
+        StateHasChanged();
+    }
+
+    private async Task HandleSave()
+    {
+        // Optionally, perform any logic after saving
+        showPopup = false; // Close the popup window
+        LoadData(); // Reload data after saving
+    }
+
+    private async Task LoadData()
+    {
+        products.Clear();
+
+        dataProducts = await InventoryService.GetInventories();
+
+        foreach (var product in dataProducts)
+        {
+            products.Add(product);
+        }
+
+        foreach (var product in products)
+        {
+            showMoreData[product.ProductoId] = false;
+            additionalData[product.ProductoId] = new List<List<object>>();
+        }
+    }
+
+    private void HandleSearch()
+    {
+        Console.WriteLine(filter);
+    }
+
+    private void GoTo()
+    {
+        NavigationManager.NavigateTo("/Inventario/Add-new");
+    }
+
+    private void ToggleShowMoreData(int productId)
+    {
+        if (showMoreData.ContainsKey(productId))
+        {
+            showMoreData[productId] = !showMoreData[productId];
+            LoadAdditionalData(productId);
+        }
+        else
+        {
+            showMoreData[productId] = true;
+        }
+
+    }
+
+    private async Task LoadAdditionalData(int productId)
+    {   
+        List<List<object>> data = new List<List<object>>();
+
+        if (additionalData.ContainsKey(productId))
+        {
+            data = await InventoryService.GetInventoryAsync(productId);
+
+            additionalData[productId] = data;
+        }
+    }
+
+    private async Task OpenPopupEdit(int Id)
+    {
+        entryId = Id;
+        showPopup = true;
+    }
+}

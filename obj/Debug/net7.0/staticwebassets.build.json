@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "x5827XOfekFLIbtfRK2DwJvayLNh3Wn9CV8vdRgcUS4=",
+  "Hash": "m2gFtypdVaf6aM2jZRI2jeSAzIEMm9PtpzhCbkW4YaY=",
   "Source": "NovaLaundryAppWebAdminBlazor",
   "BasePath": "_content/NovaLaundryAppWebAdminBlazor",
   "Mode": "Default",
@@ -720,6 +720,25 @@
       "OriginalItemSpec": "C:\\Users\\xa25a\\Documents\\Halia-Blazor\\NovaLaundryAppWebAdminBlazor\\obj\\Debug\\net7.0\\scopedcss\\projectbundle\\NovaLaundryAppWebAdminBlazor.bundle.scp.css"
     },
     {
+      "Identity": "C:\\Users\\xa25a\\Documents\\Halia-Blazor\\NovaLaundryAppWebAdminBlazor\\wwwroot\\Add.svg",
+      "SourceId": "NovaLaundryAppWebAdminBlazor",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\xa25a\\Documents\\Halia-Blazor\\NovaLaundryAppWebAdminBlazor\\wwwroot\\",
+      "BasePath": "_content/NovaLaundryAppWebAdminBlazor",
+      "RelativePath": "Add.svg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\Add.svg"
+    },
+    {
       "Identity": "C:\\Users\\xa25a\\Documents\\Halia-Blazor\\NovaLaundryAppWebAdminBlazor\\wwwroot\\Bell.svg",
       "SourceId": "NovaLaundryAppWebAdminBlazor",
       "SourceType": "Discovered",
@@ -1193,6 +1212,25 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\favicon.ico"
+    },
+    {
+      "Identity": "C:\\Users\\xa25a\\Documents\\Halia-Blazor\\NovaLaundryAppWebAdminBlazor\\wwwroot\\filter.png",
+      "SourceId": "NovaLaundryAppWebAdminBlazor",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\xa25a\\Documents\\Halia-Blazor\\NovaLaundryAppWebAdminBlazor\\wwwroot\\",
+      "BasePath": "_content/NovaLaundryAppWebAdminBlazor",
+      "RelativePath": "filter.png",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\filter.png"
     },
     {
       "Identity": "C:\\Users\\xa25a\\Documents\\Halia-Blazor\\NovaLaundryAppWebAdminBlazor\\wwwroot\\HaliaLogo.png",

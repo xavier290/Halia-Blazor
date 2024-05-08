@@ -13,14 +13,14 @@
     <!--Search+Button-->
     <div class="search-container">
         <form @onsubmit="LoadData" class="search-form">
-            <input @bind="@filter" class="search-input" type="text" name="q" placeholder="Buscar...">
+            <input @bind="@filter" class="search-input" type="search" name="q" placeholder="Buscar...">
             <button class="search-button" type="submit"><span class="hide-text">Buscar </span><img src="/Search.png" alt="Logo" class="search-icon"></button>
             <button @onclick="OpenPopupCreate" class="create-button" type="button">Crear <img src="/Create.png" alt="Logo" class="create-icon"></button>
         </form>
     </div>
 
     <!--Tabla-->
-    <div class="table-container">
+    <div class="table-container thirdparties-cnt">
         <table class="table">
             <thead>
                 <tr>

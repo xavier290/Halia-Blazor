@@ -62,25 +62,43 @@ public class InventoryService : IInventoryService
             // Perform a join between the Inventario and Producto tables
             var inventories = await (from i in db.InventarioProductos
                                     join p in db.Productos on i.ProductoId equals p.ProductoId
+                                    group i by new { i.ProductoId, p.NombreProducto, p.Precio, p.CodigoProducto } into g
                                     select new ProductInventory
                                     {
-                                        ProductoId = p.ProductoId,
-                                        NombreProducto = p.NombreProducto,
-                                        Precio = p.Precio,
-                                        CodigoProducto = p.CodigoProducto,
-                                        FechaCreacion = p.FechaCreacion,
-                                        Descripcion = p.Descripcion,
-                                        IsActive = p.IsActive,
-                                        Cantidad = i.Cantidad,
-                                        StockMaximo = i.StockMaximo,
-                                        StockMinimo = i.StockMinimo,
-                                        SucursalId = i.SucursalId,
-                                        Fecha = i.Fecha,
-                                        ProveedorId = i.ProveedorId,
-                                        Costo = i.Costo
+                                        ProductoId = g.Key.ProductoId ?? 0,
+                                        NombreProducto = g.Key.NombreProducto,
+                                        Precio = g.Key.Precio,
+                                        CodigoProducto = g.Key.CodigoProducto,
+                                        Cantidad = g.Sum(i => i.Cantidad),
+                                        // Other properties...
                                     }).ToListAsync();
 
             return inventories;
         }
+    }
+
+    public async Task<List<List<object>>> GetInventoryAsync(int id)
+    {
+        List<List<object>> data = new List<List<object>>();
+
+        using(HaliabdContext db = new HaliabdContext())
+        {
+            List<InventarioProducto> inventoryList = await db.InventarioProductos.Where(i => i.ProductoId == id).ToListAsync();
+
+            foreach (var item in inventoryList)
+            {
+                List<object> d = new List<object>();
+
+                d.Add(item.InventarioId);
+                d.Add(item.Cantidad);
+                d.Add(item.StockMaximo);
+                d.Add(item.StockMinimo);
+                d.Add(item.Fecha);
+
+                data.Add(d);
+            }
+        }
+
+        return data;
     }
 }

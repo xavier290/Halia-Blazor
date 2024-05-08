@@ -56,7 +56,7 @@
 }
 
 .sidebar-menu ul li {
-    border-bottom: solid 1px #bdaf9a;
+    padding: 6px 0;
 }
 
 .sidebar-menu ul li:first-child {
@@ -98,7 +98,7 @@
 }
 
 .sidebar-menu ul li img {
-    margin: 8px;
+    margin: 8px 12px 8px 8px;
 }
 
 .btn-sidebar {
@@ -204,12 +204,19 @@
     display: none;
 }
 
+.modal-dialog {
+    display: flex;
+    justify-content: center;
+}
+
 /* Dropdown Menu for Small Screens */
 @media screen and (max-width: 768px) {
     .sidebar-menu {
         position: fixed;
         top: 0;
-        left: -250px; /* Hide sidebar by default */
+        left: -260px; /* Hide sidebar by default */
+        width: 260px;
+        max-width: 260px;
         transition: left 0.3s ease-in-out;
         z-index: 1000; /* Ensure it's above other content */
     }
@@ -231,7 +238,7 @@
         width: 25px;
         height: 25px;
         border-radius: 100%;
-        background-color: #B66667;
+        /* background-color: #B66667; */
         text-align: center;
         cursor: pointer;
         position: absolute;
@@ -271,22 +278,12 @@
         padding: 10px;
     }
 
-    .dropdown-content {
-        display: none;
-        background-color: #333;
-        padding: 10px;
-    }
-
     .dropdown-content a {
         color: #fff;
         text-decoration: none;
         display: block;
-        padding: 5px 0;
     }
 
-    .dropdown-content a:hover {
-        background-color: #555;
-    }
     .main-elements {
         padding-left: 0;
         padding: 5px;
@@ -317,17 +314,6 @@
         margin: 5px auto;
         transition: background-color 0.3s ease;
     }
-    .sidebar-menu {
-        position: fixed;
-        top: 0;
-        left: -250px; /* Hide sidebar by default */
-        transition: left 0.3s ease-in-out;
-        z-index: 1000; /* Ensure it's above other content */
-    }
-    
-    .sidebar-menu.open {
-        left: 0; /* Show sidebar when open */
-    }
     
     .dropdown-toggle {
         display: block;
@@ -337,19 +323,12 @@
     
     .dropdown-content {
         display: none;
-        background-color: #333;
-        padding: 10px;
     }
     
     .dropdown-content a {
         color: #fff;
         text-decoration: none;
         display: block;
-        padding: 5px 0;
-    }
-    
-    .dropdown-content a:hover {
-        background-color: #555;
     }
 }
 
