@@ -59,21 +59,31 @@ public class InventoryService : IInventoryService
     {
         using(HaliabdContext db = new HaliabdContext())
         {
-            // Perform a join between the Inventario and Producto tables
-            var inventories = await (from i in db.InventarioProductos
-                                    join p in db.Productos on i.ProductoId equals p.ProductoId
-                                    group i by new { i.ProductoId, p.NombreProducto, p.Precio, p.CodigoProducto } into g
-                                    select new ProductInventory
-                                    {
-                                        ProductoId = g.Key.ProductoId ?? 0,
-                                        NombreProducto = g.Key.NombreProducto,
-                                        Precio = g.Key.Precio,
-                                        CodigoProducto = g.Key.CodigoProducto,
-                                        Cantidad = g.Sum(i => i.Cantidad),
-                                        // Other properties...
-                                    }).ToListAsync();
+            try
+            {
+                // Perform a join between the Inventario and Producto tables
+                var inventories = await (from i in db.InventarioProductos
+                                        join p in db.Productos on i.ProductoId equals p.ProductoId
+                                        group i by new { i.ProductoId, p.NombreProducto, p.Precio, p.CodigoProducto } into g
+                                        select new ProductInventory
+                                        {
+                                            ProductoId = g.Key.ProductoId ?? 0,
+                                            NombreProducto = g.Key.NombreProducto,
+                                            Precio = g.Key.Precio,
+                                            CodigoProducto = g.Key.CodigoProducto,
+                                            Cantidad = g.Sum(i => i.Cantidad),
+                                            // Other properties...
+                                        }).ToListAsync();
 
-            return inventories;
+                return inventories;
+            }
+            catch (Exception ex)
+            {
+                // Handle the exception
+                // This might involve logging the exception, displaying an error message to the user, etc.
+                Console.WriteLine(ex.Message);
+                return null;
+            }
         }
     }
 
@@ -83,19 +93,27 @@ public class InventoryService : IInventoryService
 
         using(HaliabdContext db = new HaliabdContext())
         {
-            List<InventarioProducto> inventoryList = await db.InventarioProductos.Where(i => i.ProductoId == id).ToListAsync();
-
-            foreach (var item in inventoryList)
+            try
             {
-                List<object> d = new List<object>();
+                List<InventarioProducto> inventoryList = await db.InventarioProductos.Where(i => i.ProductoId == id).ToListAsync();
 
-                d.Add(item.InventarioId);
-                d.Add(item.Cantidad);
-                d.Add(item.StockMaximo);
-                d.Add(item.StockMinimo);
-                d.Add(item.Fecha);
+                foreach (var item in inventoryList)
+                {
+                    List<object> d = new List<object>
+                    {
+                        item.InventarioId,
+                        item.Cantidad,
+                        item.StockMaximo,
+                        item.StockMinimo,
+                        item.Fecha
+                    };
 
-                data.Add(d);
+                    data.Add(d);
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
             }
         }
 

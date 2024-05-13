@@ -7,7 +7,6 @@ using NovaLaundryAppWebAdminBlazor.Server.ViewModels;
 using NovaLaundryAppWebAdminBlazor.ModelsHalia;
 
 using Microsoft.EntityFrameworkCore;
-using Grpc.Core;
 
 
 public class ThirdPartyService : IthirdPartyService
@@ -18,15 +17,24 @@ public class ThirdPartyService : IthirdPartyService
 
         using(HaliabdContext db = new HaliabdContext())
         {
-            List<CategoriaTercero> categoriaTercerosList = db.CategoriaTerceros.Where(e => e.Nombre.Contains(filter) && e.IsActive == "Activo").ToList();
-
-            foreach (var item in categoriaTercerosList)
+            try
             {
-                List<object> fila = new List<object>();
-                fila.Add(item.CategoriaId);
-                fila.Add(item.Nombre);
+                List<CategoriaTercero> categoriaTercerosList = await db.CategoriaTerceros.Where(e => e.IsActive == "Activo" && e.Nombre.Contains(filter)).ToListAsync();
 
-                rows.Add(fila);
+                foreach (var item in categoriaTercerosList)
+                {
+                    List<object> fila = new List<object>
+                    {
+                        item.CategoriaId,
+                        item.Nombre
+                    };
+
+                    rows.Add(fila);
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
             }
         }
 
@@ -38,14 +46,21 @@ public class ThirdPartyService : IthirdPartyService
         // active = "Activo";
         using(HaliabdContext db = new HaliabdContext())
         {
-            CategoriaTercero categoriaTercero = new CategoriaTercero()
+            try
             {
-                Nombre = name.Trim(),
-                IsActive = active
-            };   
+                CategoriaTercero categoriaTercero = new CategoriaTercero()
+                {
+                    Nombre = name.Trim(),
+                    IsActive = active
+                };   
 
-            db.Add(categoriaTercero);
-            db.SaveChanges();
+                db.Add(categoriaTercero);
+                await db.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
         }
     }
 
@@ -53,14 +68,21 @@ public class ThirdPartyService : IthirdPartyService
     {
         using(HaliabdContext db = new HaliabdContext())
         {
-            CategoriaTercero categoriaTercero = db.CategoriaTerceros.Find(entryId);
-
-            if (categoriaTercero != null)
+            try
             {
-                categoriaTercero.Nombre = name.Trim();    
-            }
+                CategoriaTercero categoriaTercero = db.CategoriaTerceros.Find(entryId);
 
-            db.SaveChanges();
+                if (categoriaTercero != null)
+                {
+                    categoriaTercero.Nombre = name.Trim();    
+                }
+
+                await db.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
         }
     }
 
@@ -68,14 +90,21 @@ public class ThirdPartyService : IthirdPartyService
     {
         using(HaliabdContext db = new HaliabdContext())
         {
-            CategoriaTercero categoriaTercero = db.CategoriaTerceros.Find(entryId);
-
-            if (categoriaTercero != null)
+            try
             {
-                categoriaTercero.IsActive = "No";
-            }
+                CategoriaTercero categoriaTercero = db.CategoriaTerceros.Find(entryId);
 
-            db.SaveChanges();
+                if (categoriaTercero != null)
+                {
+                    categoriaTercero.IsActive = "No";
+                }
+
+                await db.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
         }
     }
 
@@ -83,8 +112,16 @@ public class ThirdPartyService : IthirdPartyService
     {
         using (HaliabdContext db = new HaliabdContext())
         {
-            CategoriaTercero categoriaTercero = await db.CategoriaTerceros.FirstOrDefaultAsync(e => e.CategoriaId == entryId);
-            return categoriaTercero;
+            try
+            {
+                CategoriaTercero categoriaTercero = await db.CategoriaTerceros.FirstOrDefaultAsync(e => e.CategoriaId == entryId);
+                return categoriaTercero;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return null;
+            }
         }
     }
 
@@ -94,30 +131,40 @@ public class ThirdPartyService : IthirdPartyService
 
         using (HaliabdContext db = new HaliabdContext())
         {
-            IQueryable<ProductosEmpresasTercera> query = db.ProductosEmpresasTerceras.Where(e => e.IsActive == "Activo");
-
-            if (empresaId != 0) // Assuming 0 is the default value when no empresaId is selected
+            try
             {
-                query = query.Where(e => e.EmpresaTercerizadaId == empresaId);
+                IQueryable<ProductosEmpresasTercera> query = db.ProductosEmpresasTerceras.Where(e => e.IsActive == "Activo");
+
+                if (empresaId != 0) // Assuming 0 is the default value when no empresaId is selected
+                {
+                    query = query.Where(e => e.EmpresaTercerizadaId == empresaId);
+                }
+
+                if (!string.IsNullOrWhiteSpace(filter))
+                {
+                    query = query.Where(e => e.Nombre.Contains(filter));
+                }
+
+                List<ProductosEmpresasTercera> productosEmpresasTercera = await query.ToListAsync();
+
+                foreach (var item in productosEmpresasTercera)
+                {
+                    List<object> fila = new List<object>
+                    {
+                        item.ProductoId,
+                        item.Nombre,
+                        item.Descripcion,
+                        item.Precio,
+                        item.Cantidad
+                    };
+
+                    rows.Add(fila);
+                }
             }
-
-            if (!string.IsNullOrWhiteSpace(filter))
+            catch (Exception ex)
             {
-                query = query.Where(e => e.Nombre.Contains(filter));
-            }
-
-            List<ProductosEmpresasTercera> productosEmpresasTercera = await query.ToListAsync();
-
-            foreach (var item in productosEmpresasTercera)
-            {
-                List<object> fila = new List<object>();
-                fila.Add(item.ProductoId);
-                fila.Add(item.Nombre);
-                fila.Add(item.Descripcion);
-                fila.Add(item.Precio);
-                fila.Add(item.Cantidad);
-
-                rows.Add(fila);
+                Console.WriteLine(ex.Message);
+            
             }
         }
 
@@ -128,17 +175,24 @@ public class ThirdPartyService : IthirdPartyService
     {
         using(HaliabdContext db = new HaliabdContext())
         {
-            // Set the IsActive property to "Activo" by default
-            product.IsActive = "Activo";
-            
-            // Set the creation date
-            product.FechaCreacion = DateTime.Now;
+            try
+            {
+                // Set the IsActive property to "Activo" by default
+                product.IsActive = "Activo";
+                
+                // Set the creation date
+                product.FechaCreacion = DateTime.Now;
 
-            // Add the product to the database
-            db.Add(product);
-            
-            // Save changes to the database
-            await db.SaveChangesAsync();
+                // Add the product to the database
+                db.Add(product);
+                
+                // Save changes to the database
+                await db.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
         }
     }
 
@@ -146,14 +200,21 @@ public class ThirdPartyService : IthirdPartyService
     {
         using (HaliabdContext db = new HaliabdContext())
         {
-            RelCategoriaProductosTercero rel = new RelCategoriaProductosTercero
+            try
             {
-                ProductoId = productId,
-                CategoriaId = categoryId
-            };
+                RelCategoriaProductosTercero rel = new RelCategoriaProductosTercero
+                {
+                    ProductoId = productId,
+                    CategoriaId = categoryId
+                };
 
-            db.Add(rel);
-            await db.SaveChangesAsync();
+                db.Add(rel);
+                await db.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
         }
     }
 
@@ -161,42 +222,44 @@ public class ThirdPartyService : IthirdPartyService
     {
         using(HaliabdContext db = new HaliabdContext())
         {
-            ProductosEmpresasTercera existingProduct = await db.ProductosEmpresasTerceras.FindAsync(entryId);
-        
-            if (existingProduct != null)
+            try
             {
-                // Update the properties of the existing product with the values from the updated product
-                existingProduct.Nombre = product.Nombre;
-                existingProduct.Precio = product.Precio;
-                existingProduct.Codigo = product.Codigo;
-                existingProduct.Descripcion = product.Descripcion;
-                existingProduct.EmpresaTercerizadaId = product.EmpresaTercerizadaId;
-                existingProduct.Cantidad = product.Cantidad;
-                existingProduct.CantidadMaxima = product.CantidadMaxima;
-                existingProduct.CantidadMinima = product.CantidadMinima;
+                ProductosEmpresasTercera productos = db.ProductosEmpresasTerceras.Find(entryId);
 
-                // Remove existing associations not present in the updated list
-                db.RelCategoriaProductosTerceros.RemoveRange(
-                    db.RelCategoriaProductosTerceros
-                        .Where(rel => rel.ProductoId == entryId && !selectedCategoryIds.Contains(rel.CategoriaId.ToString()))
-                );
-
-                // Add new associations
-                foreach (string categoryId in selectedCategoryIds)
+                if (productos != null)
                 {
-                    if (!await db.RelCategoriaProductosTerceros.AnyAsync(rel => rel.ProductoId == entryId && rel.CategoriaId.ToString() == categoryId))
+                    productos.Nombre = product.Nombre;
+                    productos.Precio = product.Precio;
+                    productos.Codigo = product.Codigo;
+                    productos.Descripcion = product.Descripcion;
+                    productos.EmpresaTercerizadaId = product.EmpresaTercerizadaId;
+                    productos.Cantidad = product.Cantidad;
+                    productos.CantidadMaxima = product.CantidadMaxima;
+                    productos.CantidadMinima = product.CantidadMinima;
+
+                    db.RelCategoriaProductosTerceros.RemoveRange(
+                        db.RelCategoriaProductosTerceros
+                            .Where(rel => rel.ProductoId == entryId && !selectedCategoryIds.Contains(rel.CategoriaId.ToString()))
+                    );
+
+                    foreach (string categoryId in selectedCategoryIds)
                     {
-                        db.RelCategoriaProductosTerceros.Add(new RelCategoriaProductosTercero
+                        if (!await db.RelCategoriaProductosTerceros.AnyAsync(rel => rel.ProductoId == entryId && rel.CategoriaId.ToString() == categoryId))
                         {
-                            ProductoId = entryId,
-                            CategoriaId = int.Parse(categoryId)
-                        });
+                            db.RelCategoriaProductosTerceros.Add(new RelCategoriaProductosTercero
+                            {
+                                ProductoId = entryId,
+                                CategoriaId = int.Parse(categoryId)
+                            });
+                        }
                     }
+
+                    await db.SaveChangesAsync();
                 }
-
-
-                // Save changes to the database
-                await db.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
             }
         }
     }
@@ -205,14 +268,21 @@ public class ThirdPartyService : IthirdPartyService
     {
         using(HaliabdContext db = new HaliabdContext())
         {
-            ProductosEmpresasTercera productos = db.ProductosEmpresasTerceras.Find(entryId);
-
-            if (productos != null)
+            try
             {
-                productos.IsActive = "No";
-            }
+                ProductosEmpresasTercera productos = db.ProductosEmpresasTerceras.Find(entryId);
 
-            db.SaveChanges();
+                if (productos != null)
+                {
+                    productos.IsActive = "No";
+                }
+
+                await db.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
         }
     }
 
@@ -220,8 +290,16 @@ public class ThirdPartyService : IthirdPartyService
     {
         using (HaliabdContext db = new HaliabdContext())
         {
-            ProductosEmpresasTercera productosEmpresasTercera = await db.ProductosEmpresasTerceras.FirstOrDefaultAsync(e => e.ProductoId == entryId);
-            return productosEmpresasTercera;
+            try
+            {
+                ProductosEmpresasTercera productosEmpresasTercera = await db.ProductosEmpresasTerceras.FirstOrDefaultAsync(e => e.ProductoId == entryId);
+                return productosEmpresasTercera;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return null;
+            }
         }
     }
 
@@ -229,13 +307,21 @@ public class ThirdPartyService : IthirdPartyService
     {
         using (HaliabdContext db = new HaliabdContext())
         {
-            // Query the relational table to get the associated category IDs for the given product ID
-            List<string> associatedCategoryIds = await db.RelCategoriaProductosTerceros
-                .Where(rel => rel.ProductoId == productId)
-                .Select(rel => rel.CategoriaId.ToString())
-                .ToListAsync();
+            try
+            {
+                // Query the relational table to get the associated category IDs for the given product ID
+                List<string> associatedCategoryIds = await db.RelCategoriaProductosTerceros
+                    .Where(rel => rel.ProductoId == productId)
+                    .Select(rel => rel.CategoriaId.ToString())
+                    .ToListAsync();
 
-            return associatedCategoryIds;
+                return associatedCategoryIds;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return null;
+            }
         }
     }
 }

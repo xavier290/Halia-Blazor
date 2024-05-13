@@ -1,5 +1,6 @@
 @inject IToolsService ToolsService
 @inject NavigationManager NavigationManager
+@inject SweetAlertService Swal
 
 
 <div class="popup-section">
@@ -9,25 +10,35 @@
         <h2>Crear Nueva Empresa Tercerizada</h2>
 
         <form @onsubmit="SaveThirdParty">
-            <label for="name">Nombre</label>
-            <input type="text" id="name" name="name" @bind="Name" required>
+            @if(currentPage == 1)
+                {
+                    <label for="name">Nombre</label>
+                    <input type="text" id="name" name="name" @bind="Name" required>
 
-            <label for="ComercialName">Nombre Comercial</label>
-            <input type="text" id="ComercialName" name="ComercialName" @bind="ComercialName">
+                    <label for="ComercialName">Nombre Comercial</label>
+                    <input type="text" id="ComercialName" name="ComercialName" @bind="ComercialName">
 
-            <label for="ClaveEmpresa">Clave Empresa</label>
-            <input type="text" id="ClaveEmpresa" name="ClaveEmpresa" @bind="claveEmpresa">
+                    <label for="ClaveEmpresa">Clave Empresa</label>
+                    <input type="text" id="ClaveEmpresa" name="ClaveEmpresa" @bind="ClaveEmpresa">
+                    
+                    <button class="btn btn-primary" type="button" @onclick="GoToNextPage">Siguiente</button>
+                }
+                else if(currentPage == 2)
+                {
+                    <label for="Ruc">Ruc</label>
+                    <input type="text" id="Ruc" name="Ruc" @bind="Ruc">
 
-            <label for="Ruc">Ruc</label>
-            <input type="text" id="Ruc" name="Ruc" @bind="Ruc">
+                    <label for="Direccion">Dirección</label>
+                    <input type="text" id="Direccion" name="Direccion" @bind="Direccion">
 
-            <label for="Direccion">Dirección</label>
-            <input type="text" id="Direccion" name="Direccion" @bind="Direccion">
+                    <label for="Telefono">Telefono</label>
+                    <input type="text" id="Telefeno" name="Telefono" @bind="Telefono">
 
-            <label for="Telefono">Telefono</label>
-            <input type="text" id="Telefeno" name="Telefono" @bind="Telefono">
-
-            <button type="submit">Guardar</button>
+                    <div class="btns-section">
+                        <button class="btn btn-primary" type="button" @onclick="GoToPreviousPage">Atrás</button>
+                        <button class="btn btn-success" type="submit">Guardar</button>
+                    </div>
+                }
         </form>
     </div>
 </div>
@@ -44,16 +55,49 @@
     private string Ruc;
     private string Direccion;
     private string Telefono;
-    private string claveEmpresa;
+    private string ClaveEmpresa;
+    private int currentPage = 1;
+
     public async Task ClosePopup() 
     {
         await OnSave.InvokeAsync();
     }
     
-    public async Task SaveThirdParty()
+    private async Task SaveThirdParty()
     {
-        await ToolsService.AddThirdPartyAsync(Name, ComercialName, Ruc, Direccion, Telefono, claveEmpresa);
+        if (Name == null)
+        {
+            _ = Swal.FireAsync(new SweetAlertOptions
+                {
+                    Title = "Atención",
+                    Text = "Tienes que almenos ingresar el nombre de la empresa tercerizada",
+                    Icon = SweetAlertIcon.Warning,
+                    ConfirmButtonText = "Ok",
+                    CancelButtonText = "Volver"
+                });
+            currentPage = 1;
+            
+            return;
+        }
+
+        string comercialName = ComercialName ?? string.Empty;
+        string ruc = Ruc ?? string.Empty;
+        string direccion = Direccion ?? string.Empty;
+        string telefono = Telefono ?? string.Empty;
+        string claveEmpresa = ClaveEmpresa ?? string.Empty;
+
+        await ToolsService.AddThirdPartyAsync(Name, comercialName, ruc, direccion, telefono, claveEmpresa);
         // Optionally, notify parent component that save button is clicked
         await OnSave.InvokeAsync();
+    }
+
+    private void GoToNextPage()
+    {
+        currentPage = 2;
+    }
+
+    private void GoToPreviousPage()
+    {
+        currentPage = 1;
     }
 }

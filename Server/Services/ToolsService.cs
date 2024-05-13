@@ -17,20 +17,29 @@ public class ToolsService : IToolsService
 
         using(HaliabdContext db = new HaliabdContext())
         {
-            List<EmpresasTercera> empresasTerceraList = db.EmpresasTerceras.Where(e => e.IsActive == "Activo" && e.NombreComercial.Contains(filter)).ToList();
-
-            foreach (var item in empresasTerceraList)
+            try
             {
-                List<object> fila = new List<object>();
-                fila.Add(item.EmpresasTercerasId);
-                fila.Add(item.Nombre);
-                fila.Add(item.NombreComercial);
-                fila.Add(item.CodigoEmpresa);
-                fila.Add(item.Ruc);
-                fila.Add(item.Dirección);
-                fila.Add(item.Telefono);
+                List<EmpresasTercera> empresasTerceraList = db.EmpresasTerceras.Where(e => e.IsActive == "Activo" && e.NombreComercial.Contains(filter)).ToList();
 
-                rows.Add(fila);
+                foreach (var item in empresasTerceraList)
+                {
+                    List<object> fila = new List<object>
+                    {
+                        item.EmpresasTercerasId,
+                        item.Nombre,
+                        item.NombreComercial,
+                        item.CodigoEmpresa,
+                        item.Ruc,
+                        item.Dirección,
+                        item.Telefono
+                    };
+
+                    rows.Add(fila);
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
             }
         }
 
@@ -41,19 +50,27 @@ public class ToolsService : IToolsService
     {
         using(HaliabdContext db = new HaliabdContext())
         {
-            EmpresasTercera empresasTercera = new EmpresasTercera()
+            try
             {
-                Nombre = Name.Trim(), 
-                NombreComercial = ComercialName.Trim(),
-                Ruc = ruc.Trim(),
-                Dirección = direccion.Trim(),
-                Telefono = telefono.Trim(),
-                IsActive = "Activo",
-                CodigoEmpresa = claveEmpresa.Trim(),
-            };   
+                EmpresasTercera empresasTercera = new EmpresasTercera()
+                {
+                    Nombre = Name.Trim(), 
+                    NombreComercial = ComercialName.Trim(),
+                    Ruc = ruc.Trim(),
+                    Dirección = direccion.Trim(),
+                    Telefono = telefono.Trim(),
+                    IsActive = "Activo",
+                    CodigoEmpresa = claveEmpresa.Trim(),
+                };
 
-            db.Add(empresasTercera);
-            db.SaveChanges();
+                db.Add(empresasTercera);
+
+                await db.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
         }
     }
 
@@ -61,27 +78,42 @@ public class ToolsService : IToolsService
     {
         using(HaliabdContext db = new HaliabdContext())
         {
-            EmpresasTercera empresasTercera = db.EmpresasTerceras.Find(entryId);
-
-            if (empresasTercera != null)
+            try
             {
-                empresasTercera.Nombre = Name.Trim();
-                empresasTercera.NombreComercial = ComercialName.Trim();
-                empresasTercera.Ruc = ruc.Trim();
-                empresasTercera.Dirección = direccion.Trim();
-                empresasTercera.Telefono = telefono.Trim();
-                empresasTercera.CodigoEmpresa = claveEmpresa.Trim();
-            }
+                EmpresasTercera empresasTercera = db.EmpresasTerceras.Find(entryId);
 
-            db.SaveChanges();
+                if (empresasTercera != null)
+                {
+                    empresasTercera.Nombre = Name.Trim();
+                    empresasTercera.NombreComercial = ComercialName.Trim();
+                    empresasTercera.Ruc = ruc.Trim();
+                    empresasTercera.Dirección = direccion.Trim();
+                    empresasTercera.Telefono = telefono.Trim();
+                    empresasTercera.CodigoEmpresa = claveEmpresa.Trim();
+                }
+
+                await db.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
         }
     }
     public async Task<EmpresasTercera> GetSingleThirdPartyAsync(int entryId)
     {
         using (HaliabdContext db = new HaliabdContext())
         {
-            EmpresasTercera empresasTercera = await db.EmpresasTerceras.FirstOrDefaultAsync(e => e.EmpresasTercerasId == entryId);
-            return empresasTercera;
+            try
+            {
+                EmpresasTercera empresasTercera = await db.EmpresasTerceras.FirstOrDefaultAsync(e => e.EmpresasTercerasId == entryId);
+                return empresasTercera;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return null;
+            }
         }
     }
 
@@ -89,14 +121,21 @@ public class ToolsService : IToolsService
     {
         using (HaliabdContext db = new HaliabdContext())
         {
-            EmpresasTercera empresasTercera = await db.EmpresasTerceras.FirstOrDefaultAsync(e => e.EmpresasTercerasId == entryId);
-
-            if (empresasTercera != null)
+            try
             {
-                empresasTercera.IsActive = "No";
-            }
+                EmpresasTercera empresasTercera = await db.EmpresasTerceras.FirstOrDefaultAsync(e => e.EmpresasTercerasId == entryId);
 
-            db.SaveChanges();
+                if (empresasTercera != null)
+                {
+                    empresasTercera.IsActive = "No";
+                }
+
+                await db.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
         }
     }
 
@@ -106,19 +145,26 @@ public class ToolsService : IToolsService
 
         using(HaliabdContext db = new HaliabdContext())
         {
-            List<Sucursale> sucursale = db.Sucursales.Where(e => e.EmpresaId == empresaId && e.Estado == "Activo" && e.NombreSucursal.Contains(filter)).ToList();
-
-            foreach (var item in sucursale)
+            try
             {
-                List<object> fila = new List<object>();
+                List<Sucursale> sucursale = db.Sucursales.Where(e => e.EmpresaId == empresaId && e.Estado == "Activo" && e.NombreSucursal.Contains(filter)).ToList();
 
-                fila.Add(item.SucursalId);
-                fila.Add(item.NombreSucursal);
-                fila.Add(item.Direccion);
-                fila.Add(item.Telefono);
-                fila.Add(item.Correo);
+                foreach (var item in sucursale)
+                {
+                    List<object> fila = new List<object>();
 
-                rows.Add(fila);
+                    fila.Add(item.SucursalId);
+                    fila.Add(item.NombreSucursal);
+                    fila.Add(item.Direccion);
+                    fila.Add(item.Telefono);
+                    fila.Add(item.Correo);
+
+                    rows.Add(fila);
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
             }
         }
 
@@ -128,26 +174,41 @@ public class ToolsService : IToolsService
     {
         using (HaliabdContext db = new HaliabdContext())
         {
-            Sucursale sucursale = await db.Sucursales.FirstOrDefaultAsync(e => e.SucursalId == entryId);
-            return sucursale;
+            try
+            {
+                Sucursale sucursale = await db.Sucursales.FirstOrDefaultAsync(e => e.SucursalId == entryId);
+                return sucursale;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return null;
+            }
         }
     }
     public async Task AddBranchAsync(string Name, string direccion, string estado, string telefono, string correo, int empresaId)
     {
         using(HaliabdContext db = new HaliabdContext())
         {
-            Sucursale sucursale = new Sucursale()
+            try
             {
-                NombreSucursal = Name.Trim(), 
-                Direccion = direccion.Trim(),
-                Estado = estado.Trim(),
-                Telefono = telefono.Trim(),
-                Correo = correo.Trim(),
-                EmpresaId = empresaId
-            };   
+                Sucursale sucursale = new Sucursale()
+                {
+                    NombreSucursal = Name.Trim(), 
+                    Direccion = direccion.Trim(),
+                    Estado = estado.Trim(),
+                    Telefono = telefono.Trim(),
+                    Correo = correo.Trim(),
+                    EmpresaId = empresaId
+                };   
 
-            db.Add(sucursale);
-            db.SaveChanges();
+                db.Add(sucursale);
+                await db.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
         }
     }
 
@@ -155,19 +216,26 @@ public class ToolsService : IToolsService
     {
         using(HaliabdContext db = new HaliabdContext())
         {
-            Sucursale sucursale = db.Sucursales.Find(entryId);
-
-            if (sucursale != null)
+            try
             {
-                sucursale.NombreSucursal = Name.Trim();
-                sucursale.Direccion = direccion.Trim();
-                sucursale.Estado = estado.Trim();
-                sucursale.Telefono = telefono.Trim();
-                sucursale.Correo = correo.Trim();
-                sucursale.EmpresaId = empresaId;
-            }
+                Sucursale sucursale = db.Sucursales.Find(entryId);
 
-            db.SaveChanges();
+                if (sucursale != null)
+                {
+                    sucursale.NombreSucursal = Name.Trim();
+                    sucursale.Direccion = direccion.Trim();
+                    sucursale.Estado = estado.Trim();
+                    sucursale.Telefono = telefono.Trim();
+                    sucursale.Correo = correo.Trim();
+                    sucursale.EmpresaId = empresaId;
+                }
+
+                await db.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
         }
     }
 
@@ -175,14 +243,21 @@ public class ToolsService : IToolsService
     {
         using(HaliabdContext db = new HaliabdContext())
         {
-            Sucursale sucursale = db.Sucursales.Find(entryId);
-
-            if (sucursale != null)
+            try
             {
-                sucursale.Estado = "No";
-            }
+                Sucursale sucursale = db.Sucursales.Find(entryId);
 
-            db.SaveChanges();
+                if (sucursale != null)
+                {
+                    sucursale.Estado = "No";
+                }
+
+                await db.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
         }
     }
 }

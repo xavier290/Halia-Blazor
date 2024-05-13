@@ -1,4 +1,5 @@
 @inject IToolsService ToolsService
+@inject SweetAlertService Swal
 
 @using NovaLaundryAppWebAdminBlazor.Server.Services
 @using NovaLaundryAppWebAdminBlazor.Server.ViewModels
@@ -12,31 +13,40 @@
         {
             <!-- Render the content that depends on Product -->
             <form @onsubmit="UpdateThirdPartySave">
-                <label for="name">Nombre</label>
-                <input type="text" id="name" name="name" @bind="Name" required>
+                @if(currentPage == 1)
+                {
+                    <label for="name">Nombre</label>
+                    <input type="text" id="name" name="name" @bind="Name" required>
 
-                <label for="ComercialName">Nombre Comercial</label>
-                <input type="text" id="ComercialName" name="ComercialName" @bind="ComercialName">
+                    <label for="ComercialName">Nombre Comercial</label>
+                    <input type="text" id="ComercialName" name="ComercialName" @bind="ComercialName">
 
-                <label for="ClaveEmpresa">Clave Empresa</label>
-                <input type="text" id="ClaveEmpresa" name="ClaveEmpresa" @bind="claveEmpresa">
+                    <label for="ClaveEmpresa">Clave Empresa</label>
+                    <input type="text" id="ClaveEmpresa" name="ClaveEmpresa" @bind="ClaveEmpresa">
+                    
+                    <button class="btn btn-primary" type="button" @onclick="GoToNextPage">Siguiente</button>
+                }
+                else if(currentPage == 2)
+                {
+                    <label for="Ruc">Ruc</label>
+                    <input type="text" id="Ruc" name="Ruc" @bind="Ruc">
 
-                <label for="Ruc">Ruc</label>
-                <input type="text" id="Ruc" name="Ruc" @bind="Ruc">
+                    <label for="Direccion">Dirección</label>
+                    <input type="text" id="Direccion" name="Direccion" @bind="Direccion">
 
-                <label for="Direccion">Dirección</label>
-                <input type="text" id="Direccion" name="Direccion" @bind="Direccion">
+                    <label for="Telefono">Telefono</label>
+                    <input type="text" id="Telefeno" name="Telefono" @bind="Telefono">
 
-                <label for="Telefono">Telefono</label>
-                <input type="text" id="Telefeno" name="Telefono" @bind="Telefono">
-
-                <button type="submit">Guardar</button>
+                    <div class="btns-section">
+                        <button class="btn btn-primary" type="button" @onclick="GoToPreviousPage">Atrás</button>
+                        <button class="btn btn-success" type="submit">Guardar</button>
+                    </div>
+                }
             </form>
         }
         else
         {
-            <!-- Render a placeholder or loading message -->
-            <p>Loading...</p>
+            <p>Cargando...</p>
         }
     </div>
 </div>
@@ -54,7 +64,8 @@
     private string Ruc;
     private string Direccion;
     private string Telefono;
-    private string claveEmpresa;
+    private string ClaveEmpresa;
+    private int currentPage = 1;
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (firstRender)
@@ -74,16 +85,50 @@
         Ruc = ThirdParty.Ruc;
         Direccion = ThirdParty.Dirección;
         Telefono = ThirdParty.Telefono;
+        ClaveEmpresa = ThirdParty.CodigoEmpresa;
     }
+    
     public async Task ClosePopup() 
     {
         await OnSave.InvokeAsync();
     }
 
-    public async Task UpdateThirdPartySave()
+    private async Task UpdateThirdPartySave()
     {
-        await ToolsService.UpdateThirdPartyAsync(SelectedItemId, Name, ComercialName, Ruc, Direccion, Telefono, claveEmpresa);
-        // Optionally, notify parent component that save button is clicked
+        if(Name == null || Name == string.Empty)
+        {
+            _ = Swal.FireAsync(new SweetAlertOptions
+                {
+                    Title = "Atención",
+                    Text = "Asegurate de ingresar el nombre de la empresa tercerizada",
+                    Icon = SweetAlertIcon.Warning,
+                    ConfirmButtonText = "Ok",
+                    CancelButtonText = "Volver"
+                });
+
+            currentPage = 1;
+            return;
+        }
+
+        string comercialName = ComercialName ?? string.Empty;
+        string ruc = Ruc ?? string.Empty;
+        string direccion = Direccion ?? string.Empty;
+        string telefono = Telefono ?? string.Empty;
+        string claveEmpresa = ClaveEmpresa ?? string.Empty;
+
+        await ToolsService.UpdateThirdPartyAsync(SelectedItemId, Name, comercialName, ruc, direccion, telefono, claveEmpresa);
+        
+        // Notify parent component that save button is clicked
         await OnSave.InvokeAsync();
+    }
+
+    private void GoToNextPage()
+    {
+        currentPage = 2;
+    }
+
+    private void GoToPreviousPage()
+    {
+        currentPage = 1;
     }
 }

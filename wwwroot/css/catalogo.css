@@ -177,14 +177,9 @@
 }
 
 .popup-section button {
-    background-color: #007bff;
     color: white;
     border: none;
     cursor: pointer;
-}
-
-.popup-section button:hover {
-    background-color: #0056b3;
 }
 
 @media (max-width: 768px) {

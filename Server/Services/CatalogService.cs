@@ -12,24 +12,30 @@ using Microsoft.EntityFrameworkCore;
 
 public class CatalogService : IcatalogService 
 {
-    // public Producto Product { get; set; } 
     public async Task<List<List<object>>> GetProductAsync(string filter) 
     {
         List<List<object>> rows = new List<List<object>>();
 
         using(HaliabdContext db = new HaliabdContext())
         {
-            List<Producto> productoList = db.Productos.Where(e => e.NombreProducto.Contains(filter) && e.IsActive == "Activo").ToList();
-
-            foreach (var item in productoList)
+            try
             {
-                List<object> fila = new List<object>();
-                fila.Add(item.ProductoId);
-                fila.Add(item.NombreProducto);
-                fila.Add(item.Descripcion);
-                fila.Add(item.Precio);
+                List<Producto> productoList = await db.Productos.Where(e => e.NombreProducto.Contains(filter) && e.IsActive == "Activo").ToListAsync();
 
-                rows.Add(fila);
+                foreach (var item in productoList)
+                {
+                    List<object> fila = new List<object>();
+                    fila.Add(item.ProductoId);
+                    fila.Add(item.NombreProducto);
+                    fila.Add(item.Descripcion);
+                    fila.Add(item.Precio);
+
+                    rows.Add(fila);
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
             }
         }
 
@@ -40,8 +46,16 @@ public class CatalogService : IcatalogService
     {
         using (HaliabdContext db = new HaliabdContext())
         {
-            Producto producto = await db.Productos.FirstOrDefaultAsync(e => e.ProductoId == entryId);
-            return producto;
+            try
+            {
+                Producto producto = await db.Productos.FirstOrDefaultAsync(e => e.ProductoId == entryId);
+                return producto;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return null;
+            }
         }
     }
 
@@ -49,17 +63,24 @@ public class CatalogService : IcatalogService
     {
         using(HaliabdContext db = new HaliabdContext())
         {
-            // Set the IsActive property to "Activo" by default
-            product.IsActive = "Activo";
-            
-            // Set the creation date
-            product.FechaCreacion = DateTime.Now;
+            try
+            {
+                // Set the IsActive property to "Activo" by default
+                product.IsActive = "Activo";
+                
+                // Set the creation date
+                product.FechaCreacion = DateTime.Now;
 
-            // Add the product to the database
-            db.Add(product);
-            
-            // Save changes to the database
-            await db.SaveChangesAsync();
+                // Add the product to the database
+                db.Add(product);
+                
+                // Save changes to the database
+                await db.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
         }
     }
 
@@ -67,14 +88,21 @@ public class CatalogService : IcatalogService
     {
         using (HaliabdContext db = new HaliabdContext())
         {
-            RelCategoriaProducto rel = new RelCategoriaProducto
+            try
             {
-                ProductoId = productId,
-                CategoriaId = categoryId
-            };
+                RelCategoriaProducto rel = new RelCategoriaProducto
+                {
+                    ProductoId = productId,
+                    CategoriaId = categoryId
+                };
 
-            db.Add(rel);
-            await db.SaveChangesAsync();
+                db.Add(rel);
+                await db.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
         }
     }
 
@@ -82,14 +110,21 @@ public class CatalogService : IcatalogService
     {
         using (HaliabdContext db = new HaliabdContext())
         {
-            RelLineaProducto rel = new RelLineaProducto
+            try
             {
-                ProductoId = productId,
-                LineaId = lineId
-            };
+                RelLineaProducto rel = new RelLineaProducto
+                {
+                    ProductoId = productId,
+                    LineaId = lineId
+                };
 
-            db.Add(rel);
-            await db.SaveChangesAsync();
+                db.Add(rel);
+                await db.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
         }
     }
 
@@ -97,14 +132,21 @@ public class CatalogService : IcatalogService
     {
         using (HaliabdContext db = new HaliabdContext())
         {
-            RelProveedorProducto rel = new RelProveedorProducto
+            try
             {
-                ProductoId = productId,
-                ProveedorId = providerId
-            };
+                RelProveedorProducto rel = new RelProveedorProducto
+                {
+                    ProductoId = productId,
+                    ProveedorId = providerId
+                };
 
-            db.Add(rel);
-            await db.SaveChangesAsync();
+                db.Add(rel);
+                await db.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
         }
     }
 
@@ -112,13 +154,21 @@ public class CatalogService : IcatalogService
     {
         using (HaliabdContext db = new HaliabdContext())
         {
-            // Query the relational table to get the associated category IDs for the given product ID
-            List<string> associatedCategoryIds = await db.RelCategoriaProductos
-                .Where(rel => rel.ProductoId == productId)
-                .Select(rel => rel.CategoriaId.ToString())
-                .ToListAsync();
+            try
+            {
+                // Query the relational table to get the associated category IDs for the given product ID
+                List<string> associatedCategoryIds = await db.RelCategoriaProductos
+                    .Where(rel => rel.ProductoId == productId)
+                    .Select(rel => rel.CategoriaId.ToString())
+                    .ToListAsync();
 
-            return associatedCategoryIds;
+                return associatedCategoryIds;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return null;
+            }
         }
     }
     
@@ -126,13 +176,21 @@ public class CatalogService : IcatalogService
     {
         using (HaliabdContext db = new HaliabdContext())
         {
-            // Query the relational table to get the associated category IDs for the given product ID
-            List<string> associatedLineIds = await db.RelLineaProductos
-                .Where(rel => rel.ProductoId == productId)
-                .Select(rel => rel.LineaId.ToString())
-                .ToListAsync();
+            try
+            {
+                // Query the relational table to get the associated category IDs for the given product ID
+                List<string> associatedLineIds = await db.RelLineaProductos
+                    .Where(rel => rel.ProductoId == productId)
+                    .Select(rel => rel.LineaId.ToString())
+                    .ToListAsync();
 
-            return associatedLineIds;
+                return associatedLineIds;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return null;
+            }
         }
     }
 
@@ -140,13 +198,21 @@ public class CatalogService : IcatalogService
     {
         using (HaliabdContext db = new HaliabdContext())
         {
-            // Query the relational table to get the associated category IDs for the given product ID
-            List<string> associatedProviderIds = await db.RelProveedorProductos
-                .Where(rel => rel.ProductoId == productId)
-                .Select(rel => rel.ProveedorId.ToString())
-                .ToListAsync();
+            try
+            {
+                // Query the relational table to get the associated category IDs for the given product ID
+                List<string> associatedProviderIds = await db.RelProveedorProductos
+                    .Where(rel => rel.ProductoId == productId)
+                    .Select(rel => rel.ProveedorId.ToString())
+                    .ToListAsync();
 
-            return associatedProviderIds;
+                return associatedProviderIds;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return null;
+            }
         }
     }
 
@@ -154,74 +220,82 @@ public class CatalogService : IcatalogService
     {
         using(HaliabdContext db = new HaliabdContext())
         {
-            Producto producto = db.Productos.Find(entryId);
-
-            if (producto != null)
+            try
             {
-                producto.NombreProducto = name.Trim();
-                producto.Precio = price;
-                producto.CodigoProducto = code.Trim();
-                producto.Descripcion = description.Trim();    
+                Producto producto = db.Productos.Find(entryId);
 
-                // Remove associations for categories that are no longer linked to the product
-                db.RelCategoriaProductos.RemoveRange(
-                    db.RelCategoriaProductos
-                        .Where(rel => rel.ProductoId == entryId && !selectedCategoryIds.Contains(rel.CategoriaId.ToString()))
-                );
-
-                // Add new associations
-                foreach (string categoryId in selectedCategoryIds)
+                if (producto != null)
                 {
-                    if (!await db.RelCategoriaProductos.AnyAsync(rel => rel.ProductoId == entryId && rel.CategoriaId.ToString() == categoryId))
+                    producto.NombreProducto = name.Trim();
+                    producto.Precio = price;
+                    producto.CodigoProducto = code.Trim();
+                    producto.Descripcion = description.Trim();    
+
+                    // Remove associations for categories that are no longer linked to the product
+                    db.RelCategoriaProductos.RemoveRange(
+                        db.RelCategoriaProductos
+                            .Where(rel => rel.ProductoId == entryId && !selectedCategoryIds.Contains(rel.CategoriaId.ToString()))
+                    );
+
+                    // Add new associations
+                    foreach (string categoryId in selectedCategoryIds)
                     {
-                        db.RelCategoriaProductos.Add(new RelCategoriaProducto
+                        if (!await db.RelCategoriaProductos.AnyAsync(rel => rel.ProductoId == entryId && rel.CategoriaId.ToString() == categoryId))
                         {
-                            ProductoId = entryId,
-                            CategoriaId = int.Parse(categoryId)
-                        });
+                            db.RelCategoriaProductos.Add(new RelCategoriaProducto
+                            {
+                                ProductoId = entryId,
+                                CategoriaId = int.Parse(categoryId)
+                            });
+                        }
+                    }
+
+                    // Remove associations for providers that are no longer linked to the product
+                    db.RelProveedorProductos.RemoveRange(
+                        db.RelProveedorProductos
+                            .Where(rel => rel.ProductoId == entryId && !selectedProviderIds.Contains(rel.ProveedorId.ToString()))
+                    );
+
+                    // Add new associations
+                    foreach (string providerId in selectedProviderIds)
+                    {
+                        if (!await db.RelProveedorProductos.AnyAsync(rel => rel.ProductoId == entryId && rel.ProveedorId.ToString() == providerId))
+                        {
+                            db.RelProveedorProductos.Add(new RelProveedorProducto
+                            {
+                                ProductoId = entryId,
+                                ProveedorId = int.Parse(providerId)
+                            });
+                        }
+                    }
+
+                    // Remove associations for product lines that are no longer linked to the product
+                    db.RelLineaProductos.RemoveRange(
+                        db.RelLineaProductos
+                            .Where(rel => rel.ProductoId == entryId && !selectedLineIds.Contains(rel.LineaId.ToString()))
+                    );
+
+                    // Add new associations
+                    foreach (string LineId in selectedLineIds)
+                    {
+                        if (!await db.RelLineaProductos.AnyAsync(rel => rel.ProductoId == entryId && rel.LineaId.ToString() == LineId))
+                        {
+                            db.RelLineaProductos.Add(new RelLineaProducto
+                            {
+                                ProductoId = entryId,
+                                LineaId = int.Parse(LineId)
+                            });
+                        }
                     }
                 }
 
-                // Remove associations for providers that are no longer linked to the product
-                db.RelProveedorProductos.RemoveRange(
-                    db.RelProveedorProductos
-                        .Where(rel => rel.ProductoId == entryId && !selectedProviderIds.Contains(rel.ProveedorId.ToString()))
-                );
-
-                // Add new associations
-                foreach (string providerId in selectedProviderIds)
-                {
-                    if (!await db.RelProveedorProductos.AnyAsync(rel => rel.ProductoId == entryId && rel.ProveedorId.ToString() == providerId))
-                    {
-                        db.RelProveedorProductos.Add(new RelProveedorProducto
-                        {
-                            ProductoId = entryId,
-                            ProveedorId = int.Parse(providerId)
-                        });
-                    }
-                }
-
-                // Remove associations for product lines that are no longer linked to the product
-                db.RelLineaProductos.RemoveRange(
-                    db.RelLineaProductos
-                        .Where(rel => rel.ProductoId == entryId && !selectedLineIds.Contains(rel.LineaId.ToString()))
-                );
-
-                // Add new associations
-                foreach (string LineId in selectedLineIds)
-                {
-                    if (!await db.RelLineaProductos.AnyAsync(rel => rel.ProductoId == entryId && rel.LineaId.ToString() == LineId))
-                    {
-                        db.RelLineaProductos.Add(new RelLineaProducto
-                        {
-                            ProductoId = entryId,
-                            LineaId = int.Parse(LineId)
-                        });
-                    }
-                }
+                await db.SaveChangesAsync();
             }
-
-            db.SaveChanges();
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            
+            }
         }
     }
 
@@ -231,15 +305,24 @@ public class CatalogService : IcatalogService
 
         using(HaliabdContext db = new HaliabdContext())
         {
-            List<Linea> lineaList = db.Lineas.Where(e => e.Nombre.Contains(filter) && e.IsActive == "Activo").ToList();
-
-            foreach (var item in lineaList)
+            try
             {
-                List<object> fila = new List<object>();
-                fila.Add(item.LineaId);
-                fila.Add(item.Nombre);
+                List<Linea> lineaList = await db.Lineas.Where(e => e.Nombre.Contains(filter) && e.IsActive == "Activo").ToListAsync();
 
-                rows.Add(fila);
+                foreach (var item in lineaList)
+                {
+                    List<object> fila = new List<object>
+                    {
+                        item.LineaId,
+                        item.Nombre
+                    };
+
+                    rows.Add(fila);
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
             }
         }
 
@@ -250,8 +333,16 @@ public class CatalogService : IcatalogService
     {
         using (HaliabdContext db = new HaliabdContext())
         {
-            Linea linea = await db.Lineas.FirstOrDefaultAsync(e => e.LineaId == entryId);
-            return linea;
+            try
+            {
+                Linea linea = await db.Lineas.FirstOrDefaultAsync(e => e.LineaId == entryId);
+                return linea;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return null;
+            }
         }
     }
 
@@ -259,14 +350,21 @@ public class CatalogService : IcatalogService
     {
         using(HaliabdContext db = new HaliabdContext())
         {
-            Linea linea = new Linea()
+            try
             {
-                Nombre = name.Trim(), 
-                IsActive = "Activo"
-            };   
+                Linea linea = new Linea()
+                {
+                    Nombre = name.Trim(), 
+                    IsActive = "Activo"
+                };   
 
-            db.Add(linea);
-            db.SaveChanges();
+                db.Add(linea);
+                await db.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
         }
     }
 
@@ -274,14 +372,21 @@ public class CatalogService : IcatalogService
     {
         using(HaliabdContext db = new HaliabdContext())
         {
-            Linea linea = db.Lineas.Find(entryId);
-
-            if (linea != null)
+            try
             {
-                linea.Nombre = name.Trim();    
-            }
+                Linea linea = db.Lineas.Find(entryId);
 
-            db.SaveChanges();
+                if (linea != null)
+                {
+                    linea.Nombre = name.Trim();    
+                }
+
+                await db.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
         }
     }
 
@@ -291,18 +396,27 @@ public class CatalogService : IcatalogService
 
         using(HaliabdContext db = new HaliabdContext())
         {
-            List<Proveedor> proveedorList = db.Proveedors.Where(e => e.NombreProveedor.Contains(filter) && e.IsActive == "Activo").ToList();
-
-            foreach (var item in proveedorList)
+            try
             {
-                List<object> fila = new List<object>();
-                fila.Add(item.ProveedorId);
-                fila.Add(item.NombreProveedor);
-                fila.Add(item.NumeroTelefono);
-                fila.Add(item.Direccion);
-                fila.Add(item.Pais);
+                List<Proveedor> proveedorList = await db.Proveedors.Where(e => e.NombreProveedor.Contains(filter) && e.IsActive == "Activo").ToListAsync();
 
-                rows.Add(fila);
+                foreach (var item in proveedorList)
+                {
+                    List<object> fila = new List<object>
+                    {
+                        item.ProveedorId,
+                        item.NombreProveedor,
+                        item.NumeroTelefono,
+                        item.Direccion,
+                        item.Pais
+                    };
+
+                    rows.Add(fila);
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
             }
         }
 
@@ -313,8 +427,16 @@ public class CatalogService : IcatalogService
     {
         using (HaliabdContext db = new HaliabdContext())
         {
-            Proveedor proveedor = await db.Proveedors.FirstOrDefaultAsync(e => e.ProveedorId == entryId);
-            return proveedor;
+            try
+            {
+                Proveedor proveedor = await db.Proveedors.FirstOrDefaultAsync(e => e.ProveedorId == entryId);
+                return proveedor;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return null;
+            }
         }
     }
 
@@ -322,17 +444,24 @@ public class CatalogService : IcatalogService
     {
         using(HaliabdContext db = new HaliabdContext())
         {
-            Proveedor proveedor = new Proveedor()
+            try
             {
-                NombreProveedor = name.Trim(), 
-                NumeroTelefono = telefono.Trim(),
-                Direccion = direccion.Trim(),
-                Pais = pais.Trim(),
-                IsActive = "Activo"
-            };
+                Proveedor proveedor = new Proveedor()
+                {
+                    NombreProveedor = name.Trim(), 
+                    NumeroTelefono = telefono.Trim(),
+                    Direccion = direccion.Trim(),
+                    Pais = pais.Trim(),
+                    IsActive = "Activo"
+                };   
 
-            db.Add(proveedor);
-            db.SaveChanges();
+                db.Add(proveedor);
+                await db.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
         }
     }
 
@@ -340,17 +469,24 @@ public class CatalogService : IcatalogService
     {
         using(HaliabdContext db = new HaliabdContext())
         {
-            Proveedor proveedor = db.Proveedors.Find(entryId);
-
-            if (proveedor != null)
+            try 
             {
-                proveedor.NombreProveedor = name.Trim();
-                proveedor.NumeroTelefono = telefono.Trim();
-                proveedor.Direccion = direccion.Trim();
-                proveedor.Pais = pais.Trim();
-            }
+                Proveedor proveedor = db.Proveedors.Find(entryId);
 
-            db.SaveChanges();
+                if (proveedor != null)
+                {
+                    proveedor.NombreProveedor = name.Trim();
+                    proveedor.NumeroTelefono = telefono.Trim();
+                    proveedor.Direccion = direccion.Trim();
+                    proveedor.Pais = pais.Trim();
+                }
+
+                await db.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
         }
     }
 
@@ -358,14 +494,21 @@ public class CatalogService : IcatalogService
     {
         using(HaliabdContext db = new HaliabdContext())
         {
-            Categorium categoria = new Categorium()
+            try
             {
-                Nombre = name.Trim(),
-                IsActive = "Activo" 
-            };   
+                Categorium categoria = new Categorium()
+                {
+                    Nombre = name.Trim(), 
+                    IsActive = "Activo" 
+                };   
 
-            db.Add(categoria);
-            db.SaveChanges();
+                db.Add(categoria);
+                await db.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
         }
     }
 
@@ -373,14 +516,21 @@ public class CatalogService : IcatalogService
     {
         using(HaliabdContext db = new HaliabdContext())
         {
-            Categorium categoria = db.Categoria.Find(entryId);
-
-            if (categoria != null)
+            try
             {
-                categoria.Nombre = name.Trim();    
-            }
+                Categorium categoria = db.Categoria.Find(entryId);
 
-            db.SaveChanges();
+                if (categoria != null)
+                {
+                    categoria.Nombre = name.Trim();    
+                }
+
+                await db.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
         }
     }
 
@@ -390,15 +540,24 @@ public class CatalogService : IcatalogService
 
         using(HaliabdContext db = new HaliabdContext())
         {
-            List<Categorium> categoria = db.Categoria.Where(e => e.Nombre.Contains(filter) && e.IsActive == "Activo").ToList();
-
-            foreach (var item in categoria)
+            try
             {
-                List<object> fila = new List<object>();
-                fila.Add(item.CategoriaId);
-                fila.Add(item.Nombre);
+                List<Categorium> categoria = await db.Categoria.Where(e => e.Nombre.Contains(filter) && e.IsActive == "Activo").ToListAsync();
 
-                rows.Add(fila);
+                foreach (var item in categoria)
+                {
+                    List<object> fila = new List<object>
+                    {
+                        item.CategoriaId,
+                        item.Nombre
+                    };
+
+                    rows.Add(fila);
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
             }
         }
 
@@ -409,8 +568,16 @@ public class CatalogService : IcatalogService
     {
         using (HaliabdContext db = new HaliabdContext())
         {
-            Categorium categoria = await db.Categoria.FirstOrDefaultAsync(e => e.CategoriaId == entryId);
-            return categoria;
+            try
+            {
+                Categorium categoria = await db.Categoria.FirstOrDefaultAsync(e => e.CategoriaId == entryId);
+                return categoria;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return null;
+            }
         }
     }
 
@@ -418,14 +585,21 @@ public class CatalogService : IcatalogService
     {
         using(HaliabdContext db = new HaliabdContext())
         {
-            Categorium category = db.Categoria.Find(entryId);
-
-            if (category != null)
+            try
             {
-                category.IsActive = "No";
-            }
+                Categorium category = db.Categoria.Find(entryId);
 
-            db.SaveChanges();
+                if (category != null)
+                {
+                    category.IsActive = "No";
+                }
+
+                await db.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
         }
     }
 
@@ -433,14 +607,21 @@ public class CatalogService : IcatalogService
     {
         using(HaliabdContext db = new HaliabdContext())
         {
-            Linea line = db.Lineas.Find(entryId);
-
-            if (line != null)
+            try
             {
-                line.IsActive = "No";
-            }
+                Linea line = db.Lineas.Find(entryId);
 
-            db.SaveChanges();
+                if (line != null)
+                {
+                    line.IsActive = "No";
+                }
+
+                await db.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
         }
     }
 
@@ -448,29 +629,44 @@ public class CatalogService : IcatalogService
     {
         using(HaliabdContext db = new HaliabdContext())
         {
-            Proveedor provider = db.Proveedors.Find(entryId);
-
-            if (provider != null)
+            try
             {
-                provider.IsActive = "No";
-            }
+                Proveedor provider = db.Proveedors.Find(entryId);
 
-            db.SaveChanges();
+                if (provider != null)
+                {
+                    provider.IsActive = "No";
+                }
+
+                await db.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
         }
     }
 
     public async Task BlockProductAsync(int entryId)
     {
         using(HaliabdContext db = new HaliabdContext())
-        {
-            Producto product = db.Productos.Find(entryId);
-
-            if (product != null)
+        { 
+            try
             {
-                product.IsActive = "No";
-            }
+                Producto product = db.Productos.Find(entryId);
 
-            db.SaveChanges();
+                if (product != null)
+                {
+                    product.IsActive = "No";
+                }
+
+                await db.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            
+            }
         }
     }
 } 
