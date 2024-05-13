@@ -1,4 +1,5 @@
 @inject IToolsService ToolsService
+@inject SweetAlertService Swal
 
 @using NovaLaundryAppWebAdminBlazor.Server.Services
 @using NovaLaundryAppWebAdminBlazor.Server.ViewModels
@@ -94,14 +95,28 @@
 
     private async Task UpdateThirdPartySave()
     {
-        string name = Name ?? string.Empty;
+        if(Name == null || Name == string.Empty)
+        {
+            _ = Swal.FireAsync(new SweetAlertOptions
+                {
+                    Title = "Atención",
+                    Text = "Asegurate de ingresar el nombre de la empresa tercerizada",
+                    Icon = SweetAlertIcon.Warning,
+                    ConfirmButtonText = "Ok",
+                    CancelButtonText = "Volver"
+                });
+
+            currentPage = 1;
+            return;
+        }
+
         string comercialName = ComercialName ?? string.Empty;
         string ruc = Ruc ?? string.Empty;
         string direccion = Direccion ?? string.Empty;
         string telefono = Telefono ?? string.Empty;
         string claveEmpresa = ClaveEmpresa ?? string.Empty;
 
-        await ToolsService.UpdateThirdPartyAsync(SelectedItemId, name, comercialName, ruc, direccion, telefono, claveEmpresa);
+        await ToolsService.UpdateThirdPartyAsync(SelectedItemId, Name, comercialName, ruc, direccion, telefono, claveEmpresa);
         
         // Notify parent component that save button is clicked
         await OnSave.InvokeAsync();
