@@ -15,7 +15,7 @@
     <h4>Agregar Nuevo Inventario</h4>
 
     <section>
-        <form @onsubmit="AddProduct">
+        <form @onsubmit="OnFormSubmit" class="form-inventory">
             <select name="productSelect" id="productSelect" @bind="selectedProductId">
                 <option value="">Selecciona Productos</option>
                 @foreach (var item in products.Where(p => !SelectedItems.Any(si => si[0].ToString() == p[0].ToString())))
@@ -110,9 +110,17 @@
     }
 
     <footer class="footer-inventory">
-        <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#CancelarInventario">Cancelar</button>
-        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#GuardarInventario">Guardar</button>
+        <button @onclick="() => showPopup = !showPopup" class="btn btn-secondary">Config Producto Nuevo</button>
+        <div class="action-btns">
+            <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#CancelarInventario">Cancelar</button>
+            <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#GuardarInventario">Guardar</button>
+        </div>
     </footer>
+
+    @if (showPopup)
+    {
+        <NovaLaundryAppWebAdminBlazor.Pages.Components.tools.CRUD.CreateProductPage OnSave="HandleSave" />
+    }
 </div>
 
 <section @onclick="() => showAlert = !showAlert" class="alert-section @showAlert">
@@ -174,6 +182,7 @@
     private int selectedProviderId;
     private int compraId;
     private bool showAlert = false;
+    private bool showPopup = false;
     List<List<object>> dataProducts = new List<List<object>>();
     List<List<object>> dataBranches = new List<List<object>>();
     List<List<object>> dataProviders = new List<List<object>>();
@@ -208,6 +217,15 @@
         StateHasChanged();
     }
 
+    private async Task HandleSave(int newProductId)
+    {
+        // Optionally, perform any logic after saving
+        showPopup = false; // Close the popup window
+        await LoadData();
+        
+        AddProduct(newProductId);
+    }
+
     private async Task LoadData()
     {
         products.Clear();
@@ -234,11 +252,13 @@
         }
     }
 
-    private void AddProduct()
+    private void AddProduct(int newProductId = 0)
     {
-        if (!string.IsNullOrEmpty(selectedProductId.ToString()) || selectedProductId != 0)
+        int productId = newProductId != 0 ? newProductId : selectedProductId;
+
+        if (!string.IsNullOrEmpty(productId.ToString()) || productId != 0)
         {
-            var selectedProduct = products.FirstOrDefault(p => p[0].ToString() == selectedProductId.ToString());
+            var selectedProduct = products.FirstOrDefault(p => p[0].ToString() == productId.ToString());
             if (selectedProduct != null)
             {
                 SelectedItems.Add(selectedProduct);
@@ -254,6 +274,11 @@
         }
 
         selectedProductId = 0;
+    }
+
+    private void OnFormSubmit()
+    {   
+        AddProduct();
     }
 
     private void RemoveProduct(List<object> item)
