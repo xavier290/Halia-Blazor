@@ -25,6 +25,7 @@
     background-color: #87705E;
     color: #F1EAE0;
     position: fixed;
+    z-index: 999;
 }
 
 .main-elements {

@@ -24,7 +24,7 @@
                 <label for="price">Precio</label>
                 <input type="text" id="price" name="price" @bind="productPrice">
 
-                <button type="button" @onclick="GoToNextPage">Siguiente</button>
+                <button class="btn btn-primary" type="button" @onclick="GoToNextPage">Siguiente</button>
             }
             else if(currentPage == 2)
             {
@@ -80,7 +80,7 @@
                 </div>
 
                 <div class="btns-section">
-                    <button type="button" @onclick="GoToPreviousPage">Atrás</button>
+                    <button class="btn btn-primary" type="button" @onclick="GoToPreviousPage">Atrás</button>
                     <button class="saveProductoTercero" type="submit">Guardar</button>
                 </div>
             }
@@ -91,7 +91,7 @@
 @code 
 {
     [Parameter]
-    public EventCallback OnSave { get; set; }
+    public EventCallback<int> OnSave { get; set; }
     private int currentPage = 1;
     
     // Define fields to bind with input elements
@@ -214,7 +214,7 @@
         }
 
 
-        await OnSave.InvokeAsync();
+        await OnSave.InvokeAsync(productId);
     }
 
     private void GoToNextPage()

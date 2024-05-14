@@ -17,7 +17,7 @@
     margin-bottom: 16px;
 }
 
-.inventory-cnt form {
+.inventory-cnt .form-inventory {
     display: flex;
     flex-direction: row;
 }
@@ -53,8 +53,11 @@
     width: 100%;
     color: #000;
     text-align: right;
-    padding: 10px;
+    padding: 10px 10px 10px 240px;
     border-top: 1px solid #797979;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
 }
 
 .alert-section {
